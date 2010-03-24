@@ -11,7 +11,6 @@ namespace KaupischITC.Shared
 	{
 		private static readonly object lockingObject = new object();								// Lock-Objekt für threadübergreifende Zugriffe
 		private static readonly Dictionary<Control,int> nestingMap = new Dictionary<Control,int>();	// Verzeichnis für die Verschachtelungstiefen 
-
 		private readonly Control control;															// das Control für das der Cursor geändert werden soll 
 
 
@@ -24,7 +23,7 @@ namespace KaupischITC.Shared
 		{
 			this.control = getRootControl(control);
 			lock (WaitCursorChanger.lockingObject)
-				if (!nestingMap.ContainsKey(this.control))
+				if (!WaitCursorChanger.nestingMap.ContainsKey(this.control))
 					WaitCursorChanger.invoke(control,delegate
 					{
 						this.control.UseWaitCursor = true;
@@ -32,7 +31,7 @@ namespace KaupischITC.Shared
 						WaitCursorChanger.nestingMap.Add(this.control,1);
 					});
 				else
-					nestingMap[this.control]++;
+					WaitCursorChanger.nestingMap[this.control]++;
 		}
 
 
