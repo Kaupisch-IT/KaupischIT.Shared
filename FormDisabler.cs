@@ -1,79 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace KaupischITC.Shared
 {
-	public class FormDisabler : IDisposable
+	/// <summary>
+	/// Bietet durch Implementation von IDisposable eine kompakte Möglichkeit, die Enabled-Eigenschaft eines Fensters für eine bestimmte Zeit ändern und danach wieder automatisch zurückzusetzen.
+	/// </summary>
+	public class FormDisabler : BaseControlChanger
 	{
-		private static readonly object lockingObject = new object();			// Lock-Objekt für threadübergreifende Zugriffe
-		private static readonly Dictionary<Control,int> nestingMap = new Dictionary<Control,int>();	// Verzeichnis für die Verschachtelungstiefen
-		private readonly Control control;										// das Control, dessen Kindcontrols deaktiviert werden sollen
-		private readonly List<Control> disabledControls = new List<Control>();
+		private readonly List<Control> disabledControls = new List<Control>();	// Liste der Controls, die deaktiviert wurden
 
 
+		/// <summary>
+		/// Erstellt ein neues FormDisabler-Objekt und setzt die Enabled-Eigenschaft der aktivierten Kindcontrols des angegbeben Controls auf false.
+		/// Sobald alle erstellten FormDisabler-Objekte zu einem Basiscontrol freigegeben wurden, werden die deaktivierten Controls wieder aktiviert.
+		/// </summary>
+		/// <param name="control"></param>
 		public FormDisabler(Control control)
+			: base(control)
+		{}
+
+		
+		/// <summary>
+		/// Alle aktierten Kindcontrols des Basiscontrols deaktivieren
+		/// </summary>
+		/// <param name="baseControl">das Basiscontrol</param>
+		protected override void EnableChanger(Control baseControl)
 		{
-			this.control = getRootControl(control);
-
-			lock (FormDisabler.lockingObject)
-				if (!nestingMap.ContainsKey(this.control))
-					FormDisabler.invoke(control,delegate
-					{
-						foreach (Control childControl in this.control.Controls)
-							if (childControl.Enabled)
-							{
-								this.disabledControls.Add(childControl);
-								childControl.Enabled = false;
-							}
-
-						FormDisabler.nestingMap.Add(this.control,1);
-					});
-				else
-					nestingMap[this.control]++;
+			foreach (Control childControl in baseControl.Controls)
+				if (childControl.Enabled)
+				{
+					this.disabledControls.Add(childControl);
+					childControl.Enabled = false;
+				}
 		}
 
 
 		/// <summary>
-		/// Ermittelt das Root-Control
+		/// Alle zuvor deaktivierten Controls wieder aktivieren
 		/// </summary>
-		/// <param name="control">Control, dessen Root-Control ermittelt werden soll</param>
-		/// <returns>das Root-Control des übergebenen Controls</returns>
-		private Control getRootControl(Control control)
+		/// <param name="baseControl"></param>
+		protected override void DisableChanger(Control baseControl)
 		{
-			return (control.Parent==null) ? control : getRootControl(control.Parent);
-		}
-
-
-		/// <summary>
-		/// Freigeben des Objektes
-		/// </summary>
-		public void Dispose()
-		{
-			lock (FormDisabler.lockingObject)
-				if (--FormDisabler.nestingMap[this.control]==0)
-					FormDisabler.invoke(this.control,delegate
-					{
-						foreach (Control childControl in this.disabledControls)
-							childControl.Enabled = true;
-
-						FormDisabler.nestingMap.Remove(this.control);
-					});
-		}
-
-
-		/// <summary>
-		/// Hilfsmethode zum Delegieren einer Aktion in den GUI-Thread
-		/// </summary>
-		/// <param name="control">ein Control (das der GUI-Thread erstellt hat)</param>
-		/// <param name="action">die Aktion, die ausgeführt werden soll</param>
-		private static void invoke(Control control,Action action)
-		{
-			if (!control.IsDisposed)
-				if (control.InvokeRequired)
-					control.Invoke((MethodInvoker)delegate { action(); });
-				else
-					action();
+			foreach (Control childControl in this.disabledControls)
+				childControl.Enabled = true;
 		}
 	}
 }
