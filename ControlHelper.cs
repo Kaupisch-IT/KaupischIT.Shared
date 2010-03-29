@@ -1,4 +1,6 @@
 ﻿using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System;
 
 namespace KaupischITC.Shared
 {
@@ -7,6 +9,14 @@ namespace KaupischITC.Shared
 	/// </summary>
 	public static class ControlHelper
 	{
+		private const int BCM_FIRST = 0x1600;
+		private const int BCM_SETSHIELD = (BCM_FIRST + 0x000C);
+
+		[DllImport("user32")]
+		public static extern UInt32 SendMessage(IntPtr hWnd,UInt32 msg,UInt32 wParam,UInt32 lParam);
+
+		
+
 		/// <summary>
 		/// Hilfsmethode zum Delegieren einer Aktion in den GUI-Thread
 		/// </summary>
@@ -16,9 +26,25 @@ namespace KaupischITC.Shared
 		{
 			if (!control.IsDisposed)
 				if (control.InvokeRequired)
-					control.Invoke((MethodInvoker)delegate { action(); });
+					control.Invoke((MethodInvoker)delegate
+					{
+						if (!control.IsDisposed)
+							action();
+					});
 				else
 					action();
+		}
+
+
+
+		/// <summary>
+		/// Fügt einem Button das Admin-Schild hinzu
+		/// </summary>
+		/// <param name="b">The button</param>
+		public static void AddShieldToButton(Button button)
+		{
+			button.FlatStyle = FlatStyle.System;
+			SendMessage(button.Handle,BCM_SETSHIELD,0,0xFFFFFFFF);
 		}
 	}
 }
