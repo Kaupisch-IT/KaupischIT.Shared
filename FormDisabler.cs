@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
+[assembly: KaupischITC.Shared.Subversion("$Id$")]
 namespace KaupischITC.Shared
 {
 	/// <summary>
 	/// Bietet durch Implementation von IDisposable eine kompakte Möglichkeit, die Enabled-Eigenschaft eines Fensters für eine bestimmte Zeit ändern und danach wieder automatisch zurückzusetzen.
 	/// </summary>
+	[Subversion("$Id$")]
 	public class FormDisabler : BaseControlChanger
 	{
 		private readonly List<Control> disabledControls = new List<Control>();	// Liste der Controls, die deaktiviert wurden

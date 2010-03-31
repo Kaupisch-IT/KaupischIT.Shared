@@ -2,11 +2,13 @@
 using System.Runtime.InteropServices;
 using System;
 
+[assembly: KaupischITC.Shared.Subversion("$Id$")]
 namespace KaupischITC.Shared
 {
 	/// <summary>
 	/// Stellt Hilfsmethoden für die Control-Klasse bereit
 	/// </summary>
+	[Subversion("$Id$")]
 	public static class ControlHelper
 	{
 		private const int BCM_FIRST = 0x1600;

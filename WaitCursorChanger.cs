@@ -1,10 +1,12 @@
 ﻿using System.Windows.Forms;
 
+[assembly: KaupischITC.Shared.Subversion("$Id$")]
 namespace KaupischITC.Shared
 {
 	/// <summary>
 	/// Bietet durch Implementation von IDisposable eine kompakte Möglichkeit, die UseWaitCursor-Eigenschaft eines Fensters für eine bestimmte Zeit ändern und danach wieder automatisch zurückzusetzen.
 	/// </summary>
+	[Subversion("$Id$")]
 	public class WaitCursorChanger : BaseControlChanger
 	{
 		/// <summary>

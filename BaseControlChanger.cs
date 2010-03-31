@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+[assembly: KaupischITC.Shared.Subversion("$Id$")]
 namespace KaupischITC.Shared
 {
 	/// <summary>
 	/// Bietet durch Implementation von IDisposable eine kompakte Möglichkeit, Eigenschaften eines Controls für eine bestimmte Zeit ändern und danach wieder automatisch zurückzusetzen.
 	/// </summary>
+	[Subversion("$Id$")]
 	public abstract class BaseControlChanger : IDisposable
 	{
 		private static readonly object lockingObject = new object();	// Lock-Objekt für threadübergreifende Zugriffe
