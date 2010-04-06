@@ -81,7 +81,7 @@ namespace KaupischITC.Shared
 		/// <returns>das SubversionAttribute, das Informationen über die aktuellste Revision enthält, oder null</returns>
 		public static SubversionAttribute FindLatest(Assembly assembly)
 		{
-			return FindLatest(assembly);
+			return SubversionAttribute.findLatest(assembly);
 		}
 
 
@@ -92,7 +92,7 @@ namespace KaupischITC.Shared
 		/// <returns>das SubversionAttribute, das Informationen über die aktuellste Revision enthält, oder null</returns>
 		public static SubversionAttribute FindLatest(Type type)
 		{
-			return FindLatest(type);
+			return SubversionAttribute.findLatest(type);
 		}
 
 
@@ -101,7 +101,7 @@ namespace KaupischITC.Shared
 		/// </summary>
 		/// <param name="customAttributeProvider">der CustomAttributeProvider zum Ermitteln der Attribute</param>
 		/// <returns>das SubversionAttribute, das Informationen über die aktuellste Revision enthält, oder null</returns>
-		private static SubversionAttribute FindLatest(ICustomAttributeProvider customAttributeProvider)
+		private static SubversionAttribute findLatest(ICustomAttributeProvider customAttributeProvider)
 		{
 			SubversionAttribute[] subversionAttributes = SubversionAttribute.findAll(customAttributeProvider).ToArray();
 			if (subversionAttributes.Length>0)
