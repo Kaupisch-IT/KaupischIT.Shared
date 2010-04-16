@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="BaseControlChanger.cs" />
     <Compile Include="ControlHelper.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="FormDisabler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubversionAttribute.cs" />

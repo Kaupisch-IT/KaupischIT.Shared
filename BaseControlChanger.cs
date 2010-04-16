@@ -33,7 +33,7 @@ namespace KaupischITC.Shared
 				if (!BaseControlChanger.nestingMap[type].ContainsKey(this.baseControl))
 					ControlHelper.Invoke(control,delegate
 					{
-						this.EnableChanger(control);
+						this.EnableChanger(this.baseControl);
 						BaseControlChanger.nestingMap[type].Add(this.baseControl,1);
 					});
 				else
