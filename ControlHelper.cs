@@ -17,7 +17,7 @@ namespace KaupischITC.Shared
 		[DllImport("user32")]
 		public static extern UInt32 SendMessage(IntPtr hWnd,UInt32 msg,UInt32 wParam,UInt32 lParam);
 
-		
+
 
 		/// <summary>
 		/// Hilfsmethode zum Delegieren einer Aktion in den GUI-Thread
@@ -28,11 +28,16 @@ namespace KaupischITC.Shared
 		{
 			if (!control.IsDisposed)
 				if (control.InvokeRequired)
-					control.Invoke((MethodInvoker)delegate
+					try
 					{
-						if (!control.IsDisposed)
-							action();
-					});
+						control.Invoke((MethodInvoker)delegate
+						{
+							if (!control.IsDisposed)
+								action();
+						});
+					}
+					catch (ObjectDisposedException)
+					{ }
 				else
 					action();
 		}
