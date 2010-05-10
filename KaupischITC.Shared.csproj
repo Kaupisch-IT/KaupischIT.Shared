@@ -39,6 +39,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -51,6 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseControlChanger.cs" />
+    <Compile Include="ComboBoxControlHost.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ControlHelper.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="FormDisabler.cs" />
