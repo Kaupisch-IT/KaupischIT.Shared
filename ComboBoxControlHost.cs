@@ -21,7 +21,7 @@ namespace KaupischITC.Shared
 		private const int CBN_DROPDOWN = 7;
 		private const int WM_CLICK = 513;
 
-	
+
 
 		/// <summary>
 		/// Gibt das Steuerelement, dass beim DropDown angezeigt wird, zurück oder legt dieses fest
@@ -43,16 +43,33 @@ namespace KaupischITC.Shared
 
 
 		/// <summary>
+		/// Erstellt ein neues ComboBoxControlHost-Steuerelement
+		/// </summary>
+		public ComboBoxControlHost()
+		{
+			this.toolStripDropDown.Opened += delegate
+			{
+				if (this.HostedControl!=null)
+					this.HostedControl.Focus();
+			};
+		}
+
+
+
+		/// <summary>
 		/// Zeigt den DropDown an
 		/// </summary>
-		private void showDropDown()
+		public void ShowDropDown()
 		{
-			if (this.toolStripDropDown != null)
-			{
-				this.toolStripControlHost.Control.Width = this.DropDownWidth;
-				this.toolStripControlHost.Control.Height = this.DropDownHeight;
-				this.toolStripDropDown.Show(this,0,this.Height);
-			}
+			this.toolStripControlHost.Control.Width = this.DropDownWidth;
+			this.toolStripControlHost.Control.Height = this.DropDownHeight;
+			this.toolStripDropDown.Show(this,0,this.Height);
+		}
+
+
+		public void HideDropDown()
+		{
+			this.toolStripDropDown.Hide();
 		}
 
 
@@ -74,7 +91,7 @@ namespace KaupischITC.Shared
 		protected override void WndProc(ref Message message)
 		{
 			if ((message.Msg==(WM_REFLECT + WM_COMMAND) && HIWORD((int)message.WParam)==CBN_DROPDOWN) || message.Msg == WM_CLICK)
-				this.showDropDown();
+				this.ShowDropDown();
 			else
 				base.WndProc(ref message);
 		}
@@ -86,8 +103,7 @@ namespace KaupischITC.Shared
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
-				if (this.toolStripDropDown!=null)
-					this.toolStripDropDown.Dispose();
+				this.toolStripDropDown.Dispose();
 			base.Dispose(disposing);
 		}
 	}
