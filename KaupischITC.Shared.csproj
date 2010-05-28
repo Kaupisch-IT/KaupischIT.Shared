@@ -58,6 +58,7 @@
     <Compile Include="ControlHelper.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="FormDisabler.cs" />
+    <Compile Include="Lazy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubversionAttribute.cs" />
     <Compile Include="WaitCursorChanger.cs" />
