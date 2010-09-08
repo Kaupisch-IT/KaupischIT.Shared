@@ -16,9 +16,9 @@ namespace KaupischITC.Shared
 		/// <summary>
 		/// Containerobjekt für bereits geladene Objekte
 		/// </summary>
-		private class Boxed
+		private class Boxed   
 		{
-			public T Value { get; set; }
+			public T Value { get; set; }  
 		}
 
 

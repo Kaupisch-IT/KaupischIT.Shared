@@ -24,6 +24,7 @@ namespace KaupischITC.Shared
 		/// <param name="baseControl"></param>
 		protected override void EnableChanger(Control baseControl)
 		{
+		//	Cursor.Current = Cursors.WaitCursor;
 			baseControl.UseWaitCursor = true;
 			baseControl.Cursor = Cursors.WaitCursor;
 		}
@@ -31,7 +32,11 @@ namespace KaupischITC.Shared
 		protected override void DisableChanger(Control baseControl)
 		{
 			baseControl.UseWaitCursor = false;
-			baseControl.Cursor = Cursors.Default;
+			baseControl.Cursor = Cursors.Default;			
+//			Cursor.Current = Cursor.Current;
+
+			Application.DoEvents();
+			Cursor.Position = Cursor.Position;
 		}
 	}
 }
