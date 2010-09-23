@@ -8,7 +8,7 @@ namespace KaupischITC.Shared
 	/// Bietet durch Implementation von IDisposable eine kompakte Möglichkeit, die Enabled-Eigenschaft eines Fensters für eine bestimmte Zeit ändern und danach wieder automatisch zurückzusetzen.
 	/// </summary>
 	[Subversion("$Id$")]
-	public class FormDisabler : BaseControlChanger
+	public class FormDisabler : ControlChangerBase
 	{
 		private readonly List<Control> disabledControls = new List<Control>();	// Liste der Controls, die deaktiviert wurden
 

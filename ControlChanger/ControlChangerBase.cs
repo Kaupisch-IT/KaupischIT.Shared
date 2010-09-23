@@ -9,7 +9,7 @@ namespace KaupischITC.Shared
 	/// Bietet durch Implementation von IDisposable eine kompakte Möglichkeit, Eigenschaften eines Controls für eine bestimmte Zeit ändern und danach wieder automatisch zurückzusetzen.
 	/// </summary>
 	[Subversion("$Id$")]
-	public abstract class BaseControlChanger : IDisposable
+	public abstract class ControlChangerBase : IDisposable
 	{
 		private static readonly object lockingObject = new object();	// Lock-Objekt für threadübergreifende Zugriffe
 		private static readonly Dictionary<Type,Dictionary<Control,int>> nestingMap = new Dictionary<Type,Dictionary<Control,int>>();	// Verzeichnis für die Verschachtelungstiefen 
@@ -21,23 +21,23 @@ namespace KaupischITC.Shared
 		/// Erstellt ein neues ControlChanger-Objekt
 		/// </summary>
 		/// <param name="control">das betroffene Control</param>
-		public BaseControlChanger(Control control)
+		public ControlChangerBase(Control control)
 		{
 			this.baseControl = getRootControl(control);
 			Type type = this.GetType();
-			lock (BaseControlChanger.lockingObject)
+			lock (ControlChangerBase.lockingObject)
 			{
-				if (!BaseControlChanger.nestingMap.ContainsKey(type))
-					BaseControlChanger.nestingMap.Add(type,new Dictionary<Control,int>());
+				if (!ControlChangerBase.nestingMap.ContainsKey(type))
+					ControlChangerBase.nestingMap.Add(type,new Dictionary<Control,int>());
 
-				if (!BaseControlChanger.nestingMap[type].ContainsKey(this.baseControl))
+				if (!ControlChangerBase.nestingMap[type].ContainsKey(this.baseControl))
 					ControlHelper.Invoke(control,delegate
 					{
 						this.EnableChanger(this.baseControl);
-						BaseControlChanger.nestingMap[type].Add(this.baseControl,1);
+						ControlChangerBase.nestingMap[type].Add(this.baseControl,1);
 					});
 				else
-					BaseControlChanger.nestingMap[type][this.baseControl]++;
+					ControlChangerBase.nestingMap[type][this.baseControl]++;
 			}
 		}
 
@@ -55,13 +55,13 @@ namespace KaupischITC.Shared
 		public void Dispose()
 		{
 			Type type = this.GetType();
-			lock (BaseControlChanger.lockingObject)
+			lock (ControlChangerBase.lockingObject)
 				if (!this.isDisposed)
-					if (--BaseControlChanger.nestingMap[type][this.baseControl]==0)
+					if (--ControlChangerBase.nestingMap[type][this.baseControl]==0)
 						ControlHelper.Invoke(this.baseControl,delegate
 						{
 							this.DisableChanger(baseControl);
-							BaseControlChanger.nestingMap[type].Remove(this.baseControl);
+							ControlChangerBase.nestingMap[type].Remove(this.baseControl);
 							this.isDisposed = true;
 						});
 		}

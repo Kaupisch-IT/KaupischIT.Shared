@@ -12,7 +12,7 @@
     <AssemblyName>KaupischITC.Shared</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -57,11 +57,30 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Infragistics2.Shared.v10.2, Version=10.2.20102.1004, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>D:\Development\MTK-BusinessIntelligence\VisualQueryBuilder\Referenced Assemblies\Infragistics2.Shared.v10.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.Misc.v10.2, Version=10.2.20102.1004, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>D:\Development\MTK-BusinessIntelligence\VisualQueryBuilder\Referenced Assemblies\Infragistics2.Win.Misc.v10.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v10.2, Version=10.2.20102.1004, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>D:\Development\MTK-BusinessIntelligence\VisualQueryBuilder\Referenced Assemblies\Infragistics2.Win.UltraWinGrid.v10.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics2.Win.v10.2, Version=10.2.20102.1004, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>D:\Development\MTK-BusinessIntelligence\VisualQueryBuilder\Referenced Assemblies\Infragistics2.Win.v10.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack">
+      <HintPath>Referenced Assemblies\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell">
+      <HintPath>Referenced Assemblies\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -73,17 +92,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseControlChanger.cs" />
-    <Compile Include="ComboBoxControlHost.cs">
+    <Compile Include="ControlChanger\ControlChangerBase.cs" />
+    <Compile Include="ControlChanger\TaskbarIndeterminateProgressChanger.cs" />
+    <Compile Include="Controls\ComboBoxControlHost.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ControlHelper.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
-    <Compile Include="FormDisabler.cs" />
-    <Compile Include="Lazy.cs" />
+    <Compile Include="Controls\ControlHelper.cs" />
+    <Compile Include="Controls\SeparatorLabel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="ControlChanger\FormDisabler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubversionAttribute.cs" />
-    <Compile Include="WaitCursorChanger.cs" />
+    <Compile Include="Attributes\SubversionAttribute.cs" />
+    <Compile Include="ControlChanger\WaitCursorChanger.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UltraGrid\PrintUltraGridDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UltraGrid\PrintUltraGridDialog.designer.cs">
+      <DependentUpon>PrintUltraGridDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UltraGrid\UltraGridPrintSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
@@ -104,6 +138,16 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UltraGrid\PrintUltraGridDialog.resx">
+      <DependentUpon>PrintUltraGridDialog.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
