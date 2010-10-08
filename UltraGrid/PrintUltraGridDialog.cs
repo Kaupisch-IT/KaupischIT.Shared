@@ -42,8 +42,8 @@ namespace KaupischITC.Shared
 			this.comboBoxPrinter.SelectedItem = new PrinterSettings().PrinterName;
 
 			//Laden der Kopf- und Fußzeile
-			radioButtonColumn2.Checked = true;
-			numericUpDownColumn.Value = 1;
+			radioButtonColumnAutoFitPages.Checked = true;
+			numericUpDownAutoFitPageCount.Value = 1;
 
 			ultraPrintDocument.PageBody.BorderStyle = UIElementBorderStyle.None;
 			ultraPrintDocument.Page.BorderStyle = UIElementBorderStyle.None;
@@ -81,8 +81,7 @@ namespace KaupischITC.Shared
 			this.ultraPrintDocument.DefaultPageSettings.Margins.Left = CmToPrintInch(numericUpDownLeft.Value);
 			this.ultraPrintDocument.DefaultPageSettings.Margins.Right = CmToPrintInch(numericUpDownRight.Value);
 			this.ultraPrintDocument.DefaultPageSettings.Landscape = radioButtonLandscape.Checked;
-			this.ultraPrintDocument.FitWidthToPages = (int)this.numericUpDownColumn.Value;
-
+			this.ultraPrintDocument.FitWidthToPages = (this.radioButtonColumnDefaultSize.Checked) ? 0 : (int)this.numericUpDownAutoFitPageCount.Value;
 		}
 
 
@@ -114,7 +113,7 @@ namespace KaupischITC.Shared
 
 		private void numericUpDownColumn_ValueChanged(object sender,EventArgs e)
 		{
-			radioButtonColumn2.Checked = true;
+			radioButtonColumnAutoFitPages.Checked = true;
 			this.RefreshPreview();
 		}
 

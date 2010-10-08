@@ -45,9 +45,9 @@
 			this.label6 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-			this.radioButtonColumn1 = new System.Windows.Forms.RadioButton();
-			this.radioButtonColumn2 = new System.Windows.Forms.RadioButton();
-			this.numericUpDownColumn = new System.Windows.Forms.NumericUpDown();
+			this.radioButtonColumnDefaultSize = new System.Windows.Forms.RadioButton();
+			this.radioButtonColumnAutoFitPages = new System.Windows.Forms.RadioButton();
+			this.numericUpDownAutoFitPageCount = new System.Windows.Forms.NumericUpDown();
 			this.buttonPrint = new System.Windows.Forms.Button();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.radioButtonLandscape = new System.Windows.Forms.RadioButton();
@@ -71,7 +71,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownBottom)).BeginInit();
 			this.tableLayoutPanel7.SuspendLayout();
 			this.tableLayoutPanel5.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDownColumn)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownAutoFitPageCount)).BeginInit();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -295,9 +295,9 @@
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute,20F));
-			this.tableLayoutPanel5.Controls.Add(this.radioButtonColumn1,0,0);
-			this.tableLayoutPanel5.Controls.Add(this.radioButtonColumn2,0,1);
-			this.tableLayoutPanel5.Controls.Add(this.numericUpDownColumn,1,1);
+			this.tableLayoutPanel5.Controls.Add(this.radioButtonColumnDefaultSize,0,0);
+			this.tableLayoutPanel5.Controls.Add(this.radioButtonColumnAutoFitPages,0,1);
+			this.tableLayoutPanel5.Controls.Add(this.numericUpDownAutoFitPageCount,1,1);
 			this.tableLayoutPanel5.Location = new System.Drawing.Point(20,392);
 			this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(20,3,3,3);
 			this.tableLayoutPanel5.Name = "tableLayoutPanel5";
@@ -307,48 +307,46 @@
 			this.tableLayoutPanel5.Size = new System.Drawing.Size(255,58);
 			this.tableLayoutPanel5.TabIndex = 4;
 			// 
-			// radioButtonColumn1
+			// radioButtonColumnDefaultSize
 			// 
-			this.radioButtonColumn1.AutoSize = true;
-			this.radioButtonColumn1.Enabled = false;
-			this.radioButtonColumn1.Location = new System.Drawing.Point(3,3);
-			this.radioButtonColumn1.Name = "radioButtonColumn1";
-			this.radioButtonColumn1.Size = new System.Drawing.Size(189,17);
-			this.radioButtonColumn1.TabIndex = 0;
-			this.radioButtonColumn1.TabStop = true;
-			this.radioButtonColumn1.Text = "&Wie angezeigt (keine Änderungen)";
-			this.radioButtonColumn1.UseVisualStyleBackColor = true;
+			this.radioButtonColumnDefaultSize.AutoSize = true;
+			this.radioButtonColumnDefaultSize.Checked = true;
+			this.radioButtonColumnDefaultSize.Location = new System.Drawing.Point(3,3);
+			this.radioButtonColumnDefaultSize.Name = "radioButtonColumnDefaultSize";
+			this.radioButtonColumnDefaultSize.Size = new System.Drawing.Size(189,17);
+			this.radioButtonColumnDefaultSize.TabIndex = 0;
+			this.radioButtonColumnDefaultSize.TabStop = true;
+			this.radioButtonColumnDefaultSize.Text = "&Wie angezeigt (keine Änderungen)";
+			this.radioButtonColumnDefaultSize.UseVisualStyleBackColor = true;
 			// 
-			// radioButtonColumn2
+			// radioButtonColumnAutoFitPages
 			// 
-			this.radioButtonColumn2.AutoSize = true;
-			this.radioButtonColumn2.Enabled = false;
-			this.radioButtonColumn2.Location = new System.Drawing.Point(3,26);
-			this.radioButtonColumn2.Name = "radioButtonColumn2";
-			this.radioButtonColumn2.Size = new System.Drawing.Size(155,17);
-			this.radioButtonColumn2.TabIndex = 1;
-			this.radioButtonColumn2.TabStop = true;
-			this.radioButtonColumn2.Text = "&Maximale Anzahl an Seiten:";
-			this.radioButtonColumn2.UseVisualStyleBackColor = true;
+			this.radioButtonColumnAutoFitPages.AutoSize = true;
+			this.radioButtonColumnAutoFitPages.Location = new System.Drawing.Point(3,26);
+			this.radioButtonColumnAutoFitPages.Name = "radioButtonColumnAutoFitPages";
+			this.radioButtonColumnAutoFitPages.Size = new System.Drawing.Size(155,17);
+			this.radioButtonColumnAutoFitPages.TabIndex = 1;
+			this.radioButtonColumnAutoFitPages.Text = "&Maximale Anzahl an Seiten:";
+			this.radioButtonColumnAutoFitPages.UseVisualStyleBackColor = true;
 			// 
-			// numericUpDownColumn
+			// numericUpDownAutoFitPageCount
 			// 
-			this.numericUpDownColumn.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.numericUpDownColumn.Location = new System.Drawing.Point(198,26);
-			this.numericUpDownColumn.Maximum = new decimal(new int[] {
+			this.numericUpDownAutoFitPageCount.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.numericUpDownAutoFitPageCount.Location = new System.Drawing.Point(198,26);
+			this.numericUpDownAutoFitPageCount.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-			this.numericUpDownColumn.Name = "numericUpDownColumn";
-			this.numericUpDownColumn.Size = new System.Drawing.Size(54,20);
-			this.numericUpDownColumn.TabIndex = 2;
-			this.numericUpDownColumn.Value = new decimal(new int[] {
+			this.numericUpDownAutoFitPageCount.Name = "numericUpDownAutoFitPageCount";
+			this.numericUpDownAutoFitPageCount.Size = new System.Drawing.Size(54,20);
+			this.numericUpDownAutoFitPageCount.TabIndex = 2;
+			this.numericUpDownAutoFitPageCount.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-			this.numericUpDownColumn.ValueChanged += new System.EventHandler(this.numericUpDownColumn_ValueChanged);
+			this.numericUpDownAutoFitPageCount.ValueChanged += new System.EventHandler(this.numericUpDownColumn_ValueChanged);
 			// 
 			// buttonPrint
 			// 
@@ -579,7 +577,7 @@
 			this.tableLayoutPanel7.PerformLayout();
 			this.tableLayoutPanel5.ResumeLayout(false);
 			this.tableLayoutPanel5.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDownColumn)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDownAutoFitPageCount)).EndInit();
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
 			this.splitContainer1.Panel1.ResumeLayout(false);
@@ -618,10 +616,10 @@
         private System.Windows.Forms.ComboBox comboBoxPapersize;
 		private KaupischITC.Shared.SeparatorLabel separatorLabel4;
 		private KaupischITC.Shared.SeparatorLabel separatorLabel6;
-        private System.Windows.Forms.RadioButton radioButtonColumn2;
-        private System.Windows.Forms.RadioButton radioButtonColumn1;
+        private System.Windows.Forms.RadioButton radioButtonColumnAutoFitPages;
+        private System.Windows.Forms.RadioButton radioButtonColumnDefaultSize;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-		private System.Windows.Forms.NumericUpDown numericUpDownColumn;
+		private System.Windows.Forms.NumericUpDown numericUpDownAutoFitPageCount;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private Infragistics.Win.Printing.UltraPrintPreviewControl ultraPrintPreviewControl;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
