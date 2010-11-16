@@ -57,18 +57,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Infragistics2.Shared.v10.2, Version=10.2.20102.1004, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>D:\Development\MTK-BusinessIntelligence\VisualQueryBuilder\Referenced Assemblies\Infragistics2.Shared.v10.2.dll</HintPath>
-    </Reference>
-    <Reference Include="Infragistics2.Win.Misc.v10.2, Version=10.2.20102.1004, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>D:\Development\MTK-BusinessIntelligence\VisualQueryBuilder\Referenced Assemblies\Infragistics2.Win.Misc.v10.2.dll</HintPath>
-    </Reference>
-    <Reference Include="Infragistics2.Win.UltraWinGrid.v10.2, Version=10.2.20102.1004, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>D:\Development\MTK-BusinessIntelligence\VisualQueryBuilder\Referenced Assemblies\Infragistics2.Win.UltraWinGrid.v10.2.dll</HintPath>
-    </Reference>
-    <Reference Include="Infragistics2.Win.v10.2, Version=10.2.20102.1004, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>D:\Development\MTK-BusinessIntelligence\VisualQueryBuilder\Referenced Assemblies\Infragistics2.Win.v10.2.dll</HintPath>
-    </Reference>
+    <Reference Include="Infragistics2.Shared.v10.3, Version=10.3.20103.2015, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="Infragistics2.Win.Misc.v10.3, Version=10.3.20103.2015, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="Infragistics2.Win.UltraWinGrid.v10.3, Version=10.3.20103.2015, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
+    <Reference Include="Infragistics2.Win.v10.3, Version=10.3.20103.2015, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAPICodePack">
       <HintPath>Referenced Assemblies\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>

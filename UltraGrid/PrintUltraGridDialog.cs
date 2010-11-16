@@ -26,6 +26,7 @@ namespace KaupischITC.Shared
 			this.ultraPrintDocument.Grid = ultraGrid;
 			this.ultraPrintPreviewControl.Document = this.ultraPrintDocument;
 
+			this.ultraPrintDocument.DocumentName = title;
 			this.ultraPrintDocument.Header.TextCenter = title;
 			this.ultraPrintDocument.Header.TextLeft = "\r\n\r\n"+description;
 		}
@@ -49,7 +50,6 @@ namespace KaupischITC.Shared
 			ultraPrintDocument.Page.BorderStyle = UIElementBorderStyle.None;
 
 			ultraPrintDocument.PrintColorStyle = ColorRenderMode.Monochrome;
-			// ultraPrintDocument.Header.TextCenter = ultraPrintDocument.DocumentName;
 			ultraPrintDocument.Header.Margins.Bottom = 10;
 			
 			ultraPrintDocument.Footer.TextLeft = "[Date Printed] [Time Printed]";
