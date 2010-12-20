@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using Infragistics.Win.UltraWinGrid;
 using System.Drawing.Printing;
+using System.Linq;
+using System.Windows.Forms;
 using Infragistics.Win;
+using Infragistics.Win.UltraWinGrid;
 
 namespace KaupischITC.Shared
 {
@@ -75,6 +72,7 @@ namespace KaupischITC.Shared
 		public void RefreshPrintDocumentSettings()
 		{
 			this.ultraPrintDocument.PrinterSettings.PrinterName = (string)this.comboBoxPrinter.SelectedItem;
+			this.ultraPrintDocument.PrinterSettings.Duplex = (this.checkBoxDuplex.Checked) ? Duplex.Default : Duplex.Simplex;
 			this.ultraPrintDocument.DefaultPageSettings.PaperSize = (PaperSize)this.comboBoxPapersize.SelectedItem;
 			this.ultraPrintDocument.DefaultPageSettings.Margins.Top = CmToPrintInch(numericUpDownTop.Value);
 			this.ultraPrintDocument.DefaultPageSettings.Margins.Bottom = CmToPrintInch(numericUpDownBottom.Value);
@@ -84,8 +82,7 @@ namespace KaupischITC.Shared
 			this.ultraPrintDocument.FitWidthToPages = (this.radioButtonColumnDefaultSize.Checked) ? 0 : (int)this.numericUpDownAutoFitPageCount.Value;
 		}
 
-
-
+		
 
 		private void comboBoxPrinter_SelectedIndexChanged(object sender,EventArgs e)
 		{
@@ -95,7 +92,9 @@ namespace KaupischITC.Shared
 			this.comboBoxPapersize.DataSource =  paperSizes;
 			this.comboBoxPapersize.DisplayMember = "PaperName";
 			this.comboBoxPapersize.SelectedItem = paperSizes.FirstOrDefault(ps => ps.PaperName==printDocument.DefaultPageSettings.PaperSize.PaperName);
-
+			this.checkBoxDuplex.Enabled = printDocument.PrinterSettings.CanDuplex;
+			if (!this.checkBoxDuplex.Enabled)
+				this.checkBoxDuplex.Checked = false;
 			this.RefreshPreview();
 		}
 
@@ -137,7 +136,7 @@ namespace KaupischITC.Shared
 			this.RefreshPreview();
 		}
 
-		private void radioButtonLandscape_CheckedChanged(object sender,EventArgs e)
+		private void radioButton_CheckedChanged(object sender,EventArgs e)
 		{
 			if (((RadioButton)sender).Checked)
 				this.RefreshPreview();
