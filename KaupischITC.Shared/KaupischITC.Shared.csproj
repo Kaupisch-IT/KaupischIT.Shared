@@ -97,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlChanger\ControlChangerBase.cs" />
-    <Compile Include="ControlChanger\LayoutSuspenser.cs" />
     <Compile Include="ControlChanger\TaskbarIndeterminateProgressChanger.cs" />
     <Compile Include="Controls\ComboBoxControlHost.cs">
       <SubType>Component</SubType>
