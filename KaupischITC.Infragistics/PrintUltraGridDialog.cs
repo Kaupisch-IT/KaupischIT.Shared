@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
 
-namespace KaupischITC.Shared
+namespace KaupischITC.InfragisticsControls
 {
 	public partial class PrintUltraGridDialog : Form
 	{

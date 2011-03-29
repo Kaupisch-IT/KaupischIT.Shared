@@ -6,18 +6,29 @@ using KaupischITC.Extensions;
 
 namespace KaupischITC.Charting
 {
-	public class BarChart
+	/// <summary>
+	/// Stellt Methoden bereit, um ein Balkendiagramm zu erstellen.
+	/// </summary>
+	internal class BarChart
 	{
 		/// <summary>
 		/// Stellt Informationen über einen Balken im Balkendiagram bereit
 		/// </summary>
-		public class Bar
+		public class Item
 		{
+			/// <summary> Gibt den Anzeigetext zurück oder legt diesen fest. </summary>
 			public string DisplayText { get; set; }
+
+			/// <summary> Gibt den Text für den Wert zurück oder legt diesen fest. </summary>
 			public string ValueText { get; set; }
+
+			/// <summary> Gibt den Wert zurück oder legt diesen fest. </summary>
 			public double Value { get; set; }
+
+			/// <summary> Gibt die Farbe für den Balken zurück oder legt diese fest </summary>
 			public Color Color { get; set; }
 		}
+
 
 
 		/// <summary> Ruft die Breite des Balkendiagramms ab oder legt diese fest. </summary>
@@ -55,7 +66,7 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen.</param>
 		/// <returns>Bitmap-Objekt, auf das das Kreisdiagramm gezeichnet wurde.</returns>
-		public Bitmap Draw(List<Bar> bars)
+		public Bitmap Draw(List<Item> bars)
 		{
 			// Bild und Zeichenfläche für das Balkendiagramm erstellen
 			Bitmap bitmap = new Bitmap(this.Width,(bars.Count+1)*this.LineHeight);
@@ -76,7 +87,7 @@ namespace KaupischITC.Charting
 				// alle Balken zeichnen
 				for (int i=0;i<bars.Count;i++)
 				{
-					Bar bar = bars[i];
+					Item bar = bars[i];
 
 					using (Pen pen = new Pen(bar.Color.ChangeBrightness(0.5f)))
 					using (Brush brush = new SolidBrush(bar.Color.ChangeBrightness(0.5f)))

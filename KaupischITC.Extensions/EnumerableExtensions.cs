@@ -4,8 +4,18 @@ using System.Linq;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die IEnumerable-Schnittstelle bereit
+	/// </summary>
 	public static class EnumerableExtensions
 	{
+		/// <summary>
+		/// Reduziert eine hierarchische Struktur in eine flache Struktur
+		/// </summary>
+		/// <typeparam name="T">der Typ der Elemente der Sequenz</typeparam>
+		/// <param name="value">die hierarchische Struktur, die in eine Flache Struktur umgewandelt werden soll</param>
+		/// <param name="childSelector">eine Funktion zum Ermitteln der untergeordneten Elemente</param>
+		/// <returns>die in eine flache Struktur umgewandelten Elemente</returns>
 		public static IEnumerable<T> Flatten<T>(this T value,Func<T,IEnumerable<T>> childSelector)
 		{
 			yield return value;

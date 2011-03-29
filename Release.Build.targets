@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Condition="false">
+
+  <!-- Babel, Codesignierung und Hack für Setup in den Buildprozess aufnehmen -->
+  <Import Project="C:\Program Files\Babel\MSBuild\Babel.Build.targets" />
+  <PropertyGroup>
+    <BuildDependsOn>       
+        $(BuildDependsOn);
+        CodeSigning;
+        CopyTargetBackToIntermediateDirectory;   
+    </BuildDependsOn>
+  </PropertyGroup>
+
+
+  <!-- Babel Obfuscator -->  
+  <PropertyGroup>
+    <EnableObfuscation>true</EnableObfuscation>
+    <ShowStatistics>false</ShowStatistics>
+    <BabelOutputFile>$(TargetPath)</BabelOutputFile>
+    <FlattenNamespaces>true</FlattenNamespaces>
+    <UnicodeNormalization>true</UnicodeNormalization>
+    <ObfuscateTypes>true</ObfuscateTypes>
+    <ObfuscateEvents>true</ObfuscateEvents>
+    <ObfuscateMethods>true</ObfuscateMethods>
+    <ObfuscateProperties>true</ObfuscateProperties>
+    <ObfuscateFields>true</ObfuscateFields>
+    <VirtualFunctions>true</VirtualFunctions>
+    <OverloadedRenaming>true</OverloadedRenaming>
+    <ControlFlowObfuscation>false</ControlFlowObfuscation>
+    <EmitInvalidOpcodes>false</EmitInvalidOpcodes>
+    <StringEncryption>true</StringEncryption>
+    <MsilEncryption>false</MsilEncryption>
+    <SuppressIldasm>true</SuppressIldasm>
+    <DeadCodeElimination>false</DeadCodeElimination>
+  </PropertyGroup>
+  
+  <!-- Code-Signierung mit Zertifikat -->
+  <Target Name="CodeSigning">
+    <Exec Command="&quot;$(FrameworkSDKDir)bin\signtool.exe&quot; sign /n &quot;Kaupisch ITC-Solution&quot; /t http://timestamp.verisign.com/scripts/timstamp.dll &quot;$(TargetPath)&quot;" />
+  </Target>
+  
+  <!-- Hack für Setup-Bauen: Obfuskierte und signierte Assembly wieder zurück in den obj-Ordner kopieren -->
+  <Target Name="CopyTargetBackToIntermediateDirectory">
+    <Exec Command="copy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)$(IntermediateOutputPath)$(TargetFileName)&quot; /Y" />
+  </Target>
+  
+</Project>

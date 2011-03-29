@@ -10,12 +10,12 @@ namespace KaupischITC.Charting
 	/// <summary>
 	/// Stellt Funktionen bereit, um Kreisdiagramme zu erstellen
 	/// </summary>
-	public class PieChart
+	internal class PieChart
 	{
 		/// <summary>
 		/// Stellt Informationen über ein Kuchenstück des Kreisdiagramms/"Kuchendiagramm" bereit
 		/// </summary>
-		public class PieSlice
+		public class Slice
 		{
 			/// <summary> Ruft die Beschriftung ab oder legt diese fest. </summary>
 			public string Text { get; set; }
@@ -81,7 +81,7 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen.</param>
 		/// <returns>Bitmap-Objekt, auf das das Kreisdiagramm gezeichnet wurde.</returns>
-		public Bitmap Draw(IList<PieSlice> pieSlices)
+		public Bitmap Draw(IList<Slice> pieSlices)
 		{
 			// (Henne-Ei-Problem: Um die Bitmap-Größe zu bestimmen, braucht man ein Graphics-Objekt, für ein Graphics-Objekt braucht man ein Bitmap)
 			Bitmap bitmap = new Bitmap(1,1);
@@ -131,7 +131,7 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlice">Kuchenstück, das gezeichnet werden soll</param>
-		private void DrawLonelySlice(Graphics graphics,PieSlice pieSlice)
+		private void DrawLonelySlice(Graphics graphics,Slice pieSlice)
 		{
 			using (Pen pen = new Pen(pieSlice.Color.ChangeBrightness(0.8f)))
 			using (Brush brush = new SolidBrush(Color.FromArgb(this.Opacity,pieSlice.Color)))
@@ -143,8 +143,8 @@ namespace KaupischITC.Charting
 				graphics.DrawEllipse(pen,sliceFocus.X,sliceFocus.Y,this.EllipseWidth,this.EllipseHeight);
 
 				// Seitenflächen hinten und vorn
-				this.DrawSurfaces(graphics,new PieSlice[] { pieSlice },ps => 180,ps => 360);
-				this.DrawSurfaces(graphics,new PieSlice[] { pieSlice },ps => 0,ps => 180);
+				this.DrawSurfaces(graphics,new Slice[] { pieSlice },ps => 180,ps => 360);
+				this.DrawSurfaces(graphics,new Slice[] { pieSlice },ps => 0,ps => 180);
 
 				// Fläche und Kontur oben
 				graphics.FillEllipse(brush,sliceFocus.X,sliceFocus.Y-this.PieHeight,this.EllipseWidth,this.EllipseHeight);
@@ -158,7 +158,7 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
-		private void DrawBottoms(Graphics graphics,IEnumerable<PieSlice> pieSlices)
+		private void DrawBottoms(Graphics graphics,IEnumerable<Slice> pieSlices)
 		{
 			this.DrawPlanes(graphics,pieSlices,0);
 		}
@@ -168,7 +168,7 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
-		private void DrawTops(Graphics graphics,IEnumerable<PieSlice> pieSlices)
+		private void DrawTops(Graphics graphics,IEnumerable<Slice> pieSlices)
 		{
 			this.DrawPlanes(graphics,pieSlices,this.PieHeight);
 		}
@@ -180,9 +180,9 @@ namespace KaupischITC.Charting
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
 		/// <param name="altitude">relative Höhe der Flächen</param>
-		private void DrawPlanes(Graphics graphics,IEnumerable<PieSlice> pieSlices,int altitude)
+		private void DrawPlanes(Graphics graphics,IEnumerable<Slice> pieSlices,int altitude)
 		{
-			foreach (PieSlice pieSlice in pieSlices)
+			foreach (Slice pieSlice in pieSlices)
 				using (Pen pen = new Pen(pieSlice.Color.ChangeBrightness(0.8f)))
 				using (Brush brush = new SolidBrush(Color.FromArgb(this.Opacity,pieSlice.Color)))
 				{
@@ -203,15 +203,15 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
-		private void DrawBackgroundSurfaces(Graphics graphics,IEnumerable<PieSlice> pieSlices)
+		private void DrawBackgroundSurfaces(Graphics graphics,IEnumerable<Slice> pieSlices)
 		{
 			// Seitenflächen ermitteln, die im Hintergrund liegen, und von hinten nach vorn sortieren
-			IEnumerable<PieSlice> slicesWithBackground = pieSlices.Where(p => p.StartAngle>180 || p.EndAngle>180 || p.StartAngle>p.EndAngle);
+			IEnumerable<Slice> slicesWithBackground = pieSlices.Where(p => p.StartAngle>180 || p.EndAngle>180 || p.StartAngle>p.EndAngle);
 			slicesWithBackground = slicesWithBackground.OrderBy(ps => Math.Abs(ps.StartAngle+ps.SweepAngle/2-270));
 
 			// entsprechende Seitenflächen zeichnen (fangen frühestens bei 180° an und hören spätestens bei 360° auf)
-			Func<PieSlice,float> start = (pieSlice) => Math.Max(180,pieSlice.StartAngle);
-			Func<PieSlice,float> end = (pieSlice) => (pieSlice.EndAngle>180) ? pieSlice.EndAngle : 0;
+			Func<Slice,float> start = (pieSlice) => Math.Max(180,pieSlice.StartAngle);
+			Func<Slice,float> end = (pieSlice) => (pieSlice.EndAngle>180) ? pieSlice.EndAngle : 0;
 			this.DrawSurfaces(graphics,slicesWithBackground,start,end);
 		}
 
@@ -220,15 +220,15 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
-		private void DrawForegroundSurfaces(Graphics graphics,IEnumerable<PieSlice> pieSlices)
+		private void DrawForegroundSurfaces(Graphics graphics,IEnumerable<Slice> pieSlices)
 		{
 			// Seitenflächen ermitteln, die im Vordergrund liegen, und von hinten nach vorn sortieren
-			IEnumerable<PieSlice> slicesWithForeground = pieSlices.Where(p => p.StartAngle<180 || p.EndAngle<180 || p.StartAngle>p.EndAngle);
+			IEnumerable<Slice> slicesWithForeground = pieSlices.Where(p => p.StartAngle<180 || p.EndAngle<180 || p.StartAngle>p.EndAngle);
 			slicesWithForeground = slicesWithForeground.OrderByDescending(ps => Math.Abs(ps.StartAngle+ps.SweepAngle/2-90));
 
 			// entsprechende Seitenflächen zeichnen (fangen frühestens bei 0° an und hören spätestens bei 180° auf)
-			Func<PieSlice,float> start = (pieSlice) => (pieSlice.StartAngle<180) ? pieSlice.StartAngle : 0;
-			Func<PieSlice,float> end = (pieSlice) => Math.Min(180,pieSlice.EndAngle);
+			Func<Slice,float> start = (pieSlice) => (pieSlice.StartAngle<180) ? pieSlice.StartAngle : 0;
+			Func<Slice,float> end = (pieSlice) => Math.Min(180,pieSlice.EndAngle);
 			this.DrawSurfaces(graphics,slicesWithForeground,start,end);
 		}
 
@@ -240,9 +240,9 @@ namespace KaupischITC.Charting
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
 		/// <param name="getStartAngle">Delegat zur Bestimmung des Startwinkels eines Kreisausschnitts.</param>
 		/// <param name="getEndAngle">Delegat zur Bestimmung des Endwinkels eines Kreisausschnitts.</param>
-		private void DrawSurfaces(Graphics graphics,IEnumerable<PieSlice> pieSlices,Func<PieSlice,float> getStartAngle,Func<PieSlice,float> getEndAngle)
+		private void DrawSurfaces(Graphics graphics,IEnumerable<Slice> pieSlices,Func<Slice,float> getStartAngle,Func<Slice,float> getEndAngle)
 		{
-			foreach (PieSlice pieSlice in pieSlices)
+			foreach (Slice pieSlice in pieSlices)
 				using (Pen pen = new Pen(pieSlice.Color.ChangeBrightness(0.8f)))
 				{
 					// Brush für die Seitenfläche erstellen
@@ -287,7 +287,7 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
-		private void DrawCuttingEdges(Graphics graphics,IEnumerable<PieSlice> pieSlices)
+		private void DrawCuttingEdges(Graphics graphics,IEnumerable<Slice> pieSlices)
 		{
 			// Auflistung der ganzen Seitenflächen der Kuchenstücke erstellen (ein Kuchenstück hat ja zwei Seitenflächen)
 			var cuttingEdges = pieSlices.Select(ps => new { Angle = ps.StartAngle,PieSlice = ps }).Concat(pieSlices.Select(ps => new { Angle = ps.EndAngle,PieSlice = ps }));
@@ -309,7 +309,7 @@ namespace KaupischITC.Charting
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="angle">Winkel der Seitenfläche</param>
 		/// <param name="pieSlice">Kuchenstück, zu dem die Seitenfläche gehört</param>
-		private void DrawCuttingEdge(Graphics graphics,float angle,PieSlice pieSlice)
+		private void DrawCuttingEdge(Graphics graphics,float angle,Slice pieSlice)
 		{
 			// Mittelpunkt bestimmen und Koordinatensystem so verschieben, dass eine Seite der Seitenfläche im Koordinatenursprung beginnt
 			PointF sliceFocus = this.GetSliceFocus(pieSlice);
@@ -349,9 +349,9 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
-		private void DrawTexts(Graphics graphics,IEnumerable<PieSlice> pieSlices)
+		private void DrawTexts(Graphics graphics,IEnumerable<Slice> pieSlices)
 		{
-			foreach (PieSlice pieSlice in pieSlices)
+			foreach (Slice pieSlice in pieSlices)
 				if (!String.IsNullOrEmpty(pieSlice.Text))
 					using (Pen pen = new Pen(pieSlice.Color.ChangeBrightness(0.5f)))
 					using (Brush brush = new SolidBrush(pieSlice.Color.ChangeBrightness(0.5f)))
@@ -415,7 +415,7 @@ namespace KaupischITC.Charting
 		/// </summary>
 		/// <param name="pieSlice">der Kreisausschnitt, dessen Mittelpunkt bestimmt werden soll</param>
 		/// <returns>den Mittelpunkt des Kreisausschnitts</returns>
-		private PointF GetSliceFocus(PieSlice pieSlice)
+		private PointF GetSliceFocus(Slice pieSlice)
 		{
 			// Winkelhalbierende bestimmen...
 			float startAngleT = TransformAngle(pieSlice.StartAngle);

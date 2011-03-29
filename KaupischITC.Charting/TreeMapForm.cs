@@ -4,17 +4,29 @@ using System.Linq;
 
 namespace KaupischITC.Charting
 {
+	/// <summary>
+	/// Stellt ein Flächendiagramm/eine TreeMap dar
+	/// </summary>
 	public class TreeMapForm : ChartForm
 	{
+		/// <summary>
+		/// Erstellt ein neues Fenster zum Darstellen eines Kreisdiagramms
+		/// </summary>
 		public TreeMapForm()
 		{
 			this.Text = "Flächendiagramm";
 			this.SortItems = true;
 		}
 
+
+		/// <summary>
+		/// Zeichnet das Flächendiagramm
+		/// </summary>
+		/// <param name="items">die Elemente, die gezeichnet werden sollen-</param>
+		/// <returns>ein Bild, das das gezeichnete Diagramm enthält</returns>
 		protected override Bitmap DrawChart(IEnumerable<ChartItem> slices)
 		{
-			List<BarChart.Bar> bars = slices.Select((item,index) => new BarChart.Bar
+			List<TreeMap.Item> items = slices.Select((item,index) => new TreeMap.Item
 			{
 				DisplayText = item.DisplayText,
 				ValueText = item.ValueText,
@@ -23,7 +35,7 @@ namespace KaupischITC.Charting
 			}).ToList();
 
 			TreeMap paneChart = new TreeMap();
-			return paneChart.Draw(bars);
+			return paneChart.Draw(items);
 		}
 	}
 }

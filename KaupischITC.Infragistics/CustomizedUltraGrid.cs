@@ -107,7 +107,9 @@ namespace KaupischITC.InfragisticsControls
 			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.ValueBasedAppearance = ((ToolStripMenuItem)sender).Checked ? null : new IconValueAppearance(); });
 
 			this.visualizationToolStripMenuItem = (ToolStripMenuItem)this.ContextMenuStrip.Items.Add("Visualisierung");
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowPieForm(); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate { this.ShowChartForm(new BarChartForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate { this.ShowChartForm(new TreeMapForm()); });
 		}
 
 		private void SummaryMenuItem_Click(object sender,EventArgs e)
@@ -145,22 +147,20 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
-		private void ShowPieForm()
+		private void ShowChartForm(ChartForm chartForm)
 		{
 			var elements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => !ugr.Hidden && !ugr.IsFilteredOut).Select(ugr => ugr.ListObject).ToList();
 			if (elements.Any())
 			{
-				PieChartForm pieForm = new PieChartForm()
-				{
-					DisplayedType = elements.First().GetType(),
-					Elements = elements,
-					EmphasizedElements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => ugr.Selected).Select(ugr => ugr.ListObject).ToList(),
-					ShowInTaskbar = false,
-					DisplayMember = this.ContextUltraGridColumn.Band.GetFirstVisibleCol(this.ActiveColScrollRegion,true).Key,
-					ValueMember = this.ContextUltraGridColumn.Key,
-					GetFormatString = (columnName) => (this.ContextUltraGridColumn.Band.Columns.Exists(columnName)) ? this.ContextUltraGridColumn.Band.Columns[columnName].Format : null
-				};
-				pieForm.Show(this);
+				chartForm.DisplayedType = elements.First().GetType();
+				chartForm.Elements = elements;
+				chartForm.EmphasizedElements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => ugr.Selected).Select(ugr => ugr.ListObject).ToList();
+				chartForm.ShowInTaskbar = false;
+				chartForm.DisplayMember = this.ContextUltraGridColumn.Band.GetFirstVisibleCol(this.ActiveColScrollRegion,true).Key;
+				chartForm.ValueMember = this.ContextUltraGridColumn.Key;
+				chartForm.GetFormatString = (columnName) => (this.ContextUltraGridColumn.Band.Columns.Exists(columnName)) ? this.ContextUltraGridColumn.Band.Columns[columnName].Format : null;
+
+				chartForm.Show(this);
 			}
 		}
 

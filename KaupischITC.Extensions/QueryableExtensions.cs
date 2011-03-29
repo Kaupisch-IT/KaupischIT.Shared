@@ -6,6 +6,9 @@ using System.Reflection;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die IQueryable-Schnittstelle bereit
+	/// </summary>
 	public static class QueryableExtensions
 	{
 		/// <summary>

@@ -1,4 +1,4 @@
-﻿namespace KaupischITC.Shared
+﻿namespace KaupischITC.InfragisticsControls
 {
     partial class PrintUltraGridDialog
     {

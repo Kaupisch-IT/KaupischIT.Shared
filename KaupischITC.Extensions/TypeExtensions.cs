@@ -4,18 +4,25 @@ using System.Reflection;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die Type-Klasse bereit
+	/// </summary>
 	public static class TypeExtensions
 	{
 		private static readonly Type[] numericTypes = new[] { typeof(Byte),typeof(Decimal),typeof(Double),typeof(Int16),typeof(Int32),typeof(Int64),typeof(SByte),typeof(Single),typeof(UInt16),typeof(UInt32),typeof(UInt64) };
 		private static readonly Type[] numericNullableTypes = new[] { typeof(Byte?),typeof(Decimal?),typeof(Double?),typeof(Int16?),typeof(Int32?),typeof(Int64?),typeof(SByte?),typeof(Single?),typeof(UInt16?),typeof(UInt32?),typeof(UInt64) };
 
 
+		/// <summary>
+		/// Ermittelt, ob ein Typ ein numerischer Typ ist
+		/// </summary>
+		/// <param name="type">der Typ, der überprüft werden soll.</param>
+		/// <returns></returns>
 		public static bool IsNumeric(this Type type)
 		{
 			return TypeExtensions.numericTypes.Contains(type) || TypeExtensions.numericNullableTypes.Contains(type);
 		}
-
-
+		
 
 		/// <summary>
 		/// Sucht die angegebene generische öffentliche Methode, deren Parameter den angegebenen Argumenttypen entsprechen.

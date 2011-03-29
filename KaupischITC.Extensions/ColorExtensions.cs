@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die Color-Klasse bereit
+	/// </summary>
 	public static class ColorExtensions
 	{
 		/// <summary>
