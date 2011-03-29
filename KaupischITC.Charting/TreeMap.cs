@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -62,23 +63,23 @@ namespace KaupischITC.Charting
 
 
 		/// <summary>
-		/// Zeichnet ein neues Balkendiagramm
+		/// Zeichnet ein neues Flächendiagramm
 		/// </summary>
-		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen.</param>
+		/// <param name="items">Flächen, die gezeichnet werden sollen.</param>
 		/// <returns>Bitmap-Objekt, auf das das Kreisdiagramm gezeichnet wurde.</returns>
-		public Bitmap Draw(List<Item> bars)
+		public Bitmap Draw(List<Item> items)
 		{
+			if (items.Any(i => i.Value<0))
+				throw new ArgumentException("Die Werte dürfen nicht negativ sein.");
+
 			// Bild und Zeichenfläche für das Balkendiagramm erstellen
 			Bitmap bitmap = new Bitmap(this.Width+2,this.Width+2);
 			using (Graphics graphics = Graphics.FromImage(bitmap))
 			{
 				// weißer Hintergrund (sonst sieht die Schrift blöd aus)
 				graphics.FillRectangle(Brushes.White,0,0,bitmap.Width,bitmap.Height);
-
-				//bars = bars.OrderByDescending(b => b.Value).ToList();
 				Rectangle rectangle = new Rectangle(0,0,bitmap.Width,bitmap.Height);
-
-				this.DrawPanes(bars,graphics,rectangle);
+				this.DrawPanes(items,graphics,rectangle);
 			}
 			return bitmap;
 		}

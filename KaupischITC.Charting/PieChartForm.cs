@@ -16,6 +16,7 @@ namespace KaupischITC.Charting
 		{
 			this.Text = "Kreisdiagramm";
 			this.SortItems = true;
+			this.SupportsNegativeValues = false;
 		}
 
 

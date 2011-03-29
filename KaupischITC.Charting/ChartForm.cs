@@ -17,6 +17,11 @@ namespace KaupischITC.Charting
 		/// Gibt an, ob die Elemente sortiert werden sollen.
 		/// </summary>
 		protected bool SortItems { get; set; }
+		
+		/// <summary>
+		/// Gibt an, ob negative Werte dargestellt werden können.
+		/// </summary>
+		protected bool SupportsNegativeValues { get; set; }
 
 		/// <summary>
 		/// Gibt die darzustellenden Elemente zurück oder legt diese fest.
@@ -128,19 +133,27 @@ namespace KaupischITC.Charting
 							IsEmphasized = group.Any(item => item.IsEmphasized) 
 						})
 						.ToList();
-					
-					// aggregierte Elemente zeichnen
-					Bitmap bitmap = this.DrawPercent(
-						values,
-						item => item.Value,
-						(item) => item.DisplayText,
-						(value) => getValueText(value),
-						(items,percentage) => items.Count()+" sonstige",
-						(float)this.numericUpDownPercentageThreshold.Value,
-						values.Where(item => item.IsEmphasized).ToList());
 
-					this.pictureBoxPie.Image = bitmap;
-					this.pictureBoxPie.Size = bitmap.Size;
+					if (!this.SupportsNegativeValues && values.Any(v => v.Value<0))
+					{
+						this.pictureBoxPie.Image = null;
+						MessageBox.Show("Die Darstellung von negativen Werten wird vom aktuellen Diagrammtyp nicht unterstützt.","Diagramm",MessageBoxButtons.OK,MessageBoxIcon.Information);
+					}
+					else
+					{
+						// aggregierte Elemente zeichnen
+						Bitmap bitmap = this.DrawPercent(
+							values,
+							item => item.Value,
+							(item) => item.DisplayText,
+							(value) => getValueText(value),
+							(items,percentage) => items.Count()+" sonstige",
+							(float)this.numericUpDownPercentageThreshold.Value,
+							values.Where(item => item.IsEmphasized).ToList());
+
+						this.pictureBoxPie.Image = bitmap;
+						this.pictureBoxPie.Size = bitmap.Size;
+					}
 				}
 		}
 

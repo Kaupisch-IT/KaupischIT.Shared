@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -75,14 +76,18 @@ namespace KaupischITC.Charting
 				// weißer Hintergrund (sonst sieht die Schrift blöd aus)
 				graphics.FillRectangle(Brushes.White,0,0,bitmap.Width,bitmap.Height);
 
-				// Maximalwerte ermitteln (dargestellter Wert & Breite der Beschriftungen)
-				double maxValue = bars.Max(ps => (float)ps.Value);
+				// Maximalwerte ermitteln (dargestellte Werte, Breite der Beschriftungen & Balkenbreite)
+				double maxPositiveValue = Math.Max(0,bars.Max(ps => ps.Value));
+				double maxNegativeValue = Math.Abs(Math.Min(0,bars.Min(ps => ps.Value)));
+				double range = maxPositiveValue + maxNegativeValue;
 				int maxDisplayTextWidth = bars.Max(bar => (int)graphics.MeasureString(bar.DisplayText,this.LegendFont).Width);
 				int maxValueTextWidth = bars.Max(bar => (int)graphics.MeasureString(bar.ValueText,this.LegendFont).Width);
+				int availableBarWidth = bitmap.Width-maxDisplayTextWidth-maxValueTextWidth-2*this.BarPadding;
+				int baseLine = (int)(maxDisplayTextWidth + this.BarPadding + (maxNegativeValue/range)*availableBarWidth);
 
 				// gepunktete Null-Linie zeichnen
 				using (Pen pen = new Pen(Color.DarkGray) { DashStyle = DashStyle.Dot })
-					graphics.DrawLine(pen,maxDisplayTextWidth+this.BarPadding,this.LineHeight,maxDisplayTextWidth+this.BarPadding,bitmap.Height-this.LineHeight);
+					graphics.DrawLine(pen,baseLine,this.LineHeight,baseLine,bitmap.Height-this.LineHeight);
 
 				// alle Balken zeichnen
 				for (int i=0;i<bars.Count;i++)
@@ -94,14 +99,14 @@ namespace KaupischITC.Charting
 					{
 						// Abstand von oberen Rand und Breite des zu zeichnenden Balkens ermitteln
 						int top = i*this.LineHeight+this.LineHeight/2;
-						int barWidth = (int)((bitmap.Width-maxDisplayTextWidth-maxValueTextWidth-2*this.BarPadding) * (bar.Value/maxValue));
+						int barWidth = (int)(availableBarWidth * (Math.Abs(bar.Value)/range));
 
 						// den eigentlichen Balken zeichnen
 						Rectangle rectangle = new Rectangle
 						{
-							X = maxDisplayTextWidth+this.BarPadding,
+							X = (bar.Value>=0) ? baseLine : baseLine-barWidth,
 							Y = top+this.BarPadding,
-							Width = barWidth,
+							Width = Math.Max(1,barWidth),
 							Height = this.LineHeight-2*this.BarPadding
 						};
 						Color backColor = Color.FromArgb(this.Opacity,bar.Color);
@@ -114,7 +119,10 @@ namespace KaupischITC.Charting
 							graphics.DrawString(bar.DisplayText,this.LegendFont,brush,new PointF(maxDisplayTextWidth,top+this.LineHeight/2),stringFormat);
 						// Text für Werte
 						using (StringFormat stringFormat = new StringFormat { Alignment = StringAlignment.Near,LineAlignment = StringAlignment.Center })
-							graphics.DrawString(bar.ValueText,this.LegendFont,brush,new PointF(maxDisplayTextWidth+barWidth+2*this.BarPadding,top+this.LineHeight/2),stringFormat);
+						{
+							int left = (bar.Value>=0) ? baseLine+barWidth+2*this.BarPadding : baseLine+this.BarPadding;
+							graphics.DrawString(bar.ValueText,this.LegendFont,brush,new PointF(left,top+this.LineHeight/2),stringFormat);
+						}
 					}
 				}
 			}

@@ -16,6 +16,7 @@ namespace KaupischITC.Charting
 		{
 			this.Text = "Flächendiagramm";
 			this.SortItems = true;
+			this.SupportsNegativeValues = false;
 		}
 
 

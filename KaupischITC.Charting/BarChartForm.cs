@@ -16,6 +16,7 @@ namespace KaupischITC.Charting
 		{
 			this.Text = "Balkendiagramm";
 			this.SortItems = false;
+			this.SupportsNegativeValues = true;
 		}
 
 
