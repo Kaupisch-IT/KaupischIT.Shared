@@ -97,15 +97,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlChanger\ControlChangerBase.cs" />
+    <Compile Include="ControlChanger\LayoutSuspenser.cs" />
     <Compile Include="ControlChanger\TaskbarIndeterminateProgressChanger.cs" />
     <Compile Include="Controls\ComboBoxControlHost.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ControlHelper.cs" />
+    <Compile Include="Controls\ObjectBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ObjectBrowser.designer.cs">
+      <DependentUpon>ObjectBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PropertyBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\SeparatorLabel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="ControlChanger\FormDisabler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Attributes\SubversionAttribute.cs" />
@@ -144,6 +153,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\ObjectBrowser.resx">
+      <DependentUpon>ObjectBrowser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -152,6 +164,12 @@
     <EmbeddedResource Include="UltraGrid\PrintUltraGridDialog.resx">
       <DependentUpon>PrintUltraGridDialog.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KaupischITC.Extensions\KaupischITC.Extensions.csproj">
+      <Project>{6E4F8863-7A8C-4163-B95A-AB413017A7F7}</Project>
+      <Name>KaupischITC.Extensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

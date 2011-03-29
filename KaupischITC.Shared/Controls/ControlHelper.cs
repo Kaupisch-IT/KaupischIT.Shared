@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
 using System.Runtime.InteropServices;
-using System;
+using System.Windows.Forms;
 
 [assembly: KaupischITC.Shared.Subversion("$Id$")]
 namespace KaupischITC.Shared
