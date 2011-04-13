@@ -332,6 +332,26 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
+		protected override void OnBeforeSortChange(BeforeSortChangeEventArgs e)
+		{
+			// wenn Sortierung von aufsteigend nach absteigend geändert wird...
+			foreach (UltraGridColumn column in e.SortedColumns)
+				if (e.Band.SortedColumns.Exists(column.Key))
+					if (column.SortIndicator == SortIndicator.Ascending && e.Band.SortedColumns[column.Key].SortIndicator == SortIndicator.Descending)
+					{
+						// ...dies abbrechen und die Sortierung entfernen
+						e.Cancel = true;
+						this.BeginInvoke((MethodInvoker)delegate
+						{
+							e.Band.SortedColumns[column.Key].SortIndicator = SortIndicator.None;
+							column.Band.SortedColumns.RefreshSort(true);
+						});
+					}
+
+			base.OnBeforeSortChange(e);
+		}
+
+
 		protected override void OnInitializePrint(CancelablePrintEventArgs e)
 		{
 			e.PrintLayout.BorderStyle = UIElementBorderStyle.None;

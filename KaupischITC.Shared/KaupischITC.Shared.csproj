@@ -79,6 +79,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ControlHelper.cs" />
+    <Compile Include="Controls\DelayTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ObjectBrowser.cs">
       <SubType>Component</SubType>
     </Compile>

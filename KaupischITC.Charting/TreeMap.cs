@@ -103,6 +103,8 @@ namespace KaupischITC.Charting
 				using (Brush backBrush = new SolidBrush(Color.FromArgb(this.Opacity,treeItem.Color)))
 				{
 					rectangle.Inflate(-1,-1); // 1-Pixel-Abstand von rechts und unten
+					if (rectangle.Height==0 || rectangle.Width==0)
+						return;
 					
 					// Hintergrundfläche zeichnen
 					Color backColor = Color.FromArgb(this.Opacity,treeItem.Color);
