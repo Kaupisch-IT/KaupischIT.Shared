@@ -290,7 +290,7 @@ namespace KaupischITC.InfragisticsControls
 
 						if (ultraGridColumn.Format==null)
 						{
-							if (ultraGridColumn.Key.EndsWith("Preis"))
+							if (ultraGridColumn.Key.EndsWith("Preis",StringComparison.InvariantCultureIgnoreCase))
 								ultraGridColumn.Format = "C";
 							else if (Regex.IsMatch(ultraGridColumn.Key,"[^A-Z]P$"))
 								ultraGridColumn.Format = "P";

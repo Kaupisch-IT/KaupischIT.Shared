@@ -19,7 +19,8 @@ namespace KaupischITC.Shared
 		public bool RemoveEmptyTypes { get; set; }
 
 		public Func<Type,bool> TypeFilter { get; set; }
-
+		
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public IEnumerable<string> CheckedNodes
 		{
 			get
@@ -94,6 +95,7 @@ namespace KaupischITC.Shared
 
 
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Type DisplayedType
 		{
 			get { return this.displayedType; }

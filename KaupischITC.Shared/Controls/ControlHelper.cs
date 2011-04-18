@@ -43,6 +43,25 @@ namespace KaupischITC.Shared
 		}
 
 
+		public static void InvokeAsync(Control control,MethodInvoker action)
+		{
+			if (!control.IsDisposed)
+				if (control.InvokeRequired)
+					try
+					{
+						control.BeginInvoke((MethodInvoker)delegate
+						{
+							if (!control.IsDisposed)
+								action();
+						});
+					}
+					catch (ObjectDisposedException)
+					{ }
+				else
+					action();
+		}
+
+
 
 		/// <summary>
 		/// Fügt einem Button das Admin-Schild hinzu

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace KaupischITC.Shared
 {
@@ -10,6 +11,7 @@ namespace KaupischITC.Shared
 	{
 		private ObjectBrowser objectBrowser = new ObjectBrowser();
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SelectedProperty
 		{
 			get { return (this.objectBrowser.SelectedNode!=null) ? this.objectBrowser.SelectedNode.Name.TrimStart('.') : null; }
@@ -24,6 +26,7 @@ namespace KaupischITC.Shared
 		}
 
 
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Type DisplayedType
 		{
 			get { return this.objectBrowser.DisplayedType; }
@@ -38,6 +41,7 @@ namespace KaupischITC.Shared
 			}
 		}
 
+		
 		public Func<Type,bool> TypeFilter
 		{
 			get { return this.objectBrowser.TypeFilter; }

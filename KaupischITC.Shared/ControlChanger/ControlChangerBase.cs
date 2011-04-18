@@ -31,7 +31,7 @@ namespace KaupischITC.Shared
 					ControlChangerBase.nestingMap.Add(type,new Dictionary<Control,int>());
 
 				if (!ControlChangerBase.nestingMap[type].ContainsKey(this.baseControl))
-					ControlHelper.Invoke(control,delegate
+					ControlHelper.InvokeAsync(control,delegate
 					{
 						this.EnableChanger(this.baseControl);
 						ControlChangerBase.nestingMap[type].Add(this.baseControl,1);
@@ -58,7 +58,7 @@ namespace KaupischITC.Shared
 			lock (ControlChangerBase.lockingObject)
 				if (!this.isDisposed)
 					if (--ControlChangerBase.nestingMap[type][this.baseControl]==0)
-						ControlHelper.Invoke(this.baseControl,delegate
+						ControlHelper.InvokeAsync(this.baseControl,delegate
 						{
 							this.DisableChanger(baseControl);
 							ControlChangerBase.nestingMap[type].Remove(this.baseControl);
