@@ -95,6 +95,7 @@
     <EmbeddedResource Include="PrintUltraGridDialog.resx">
       <DependentUpon>PrintUltraGridDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KaupischITC.Charting\KaupischITC.Charting.csproj">

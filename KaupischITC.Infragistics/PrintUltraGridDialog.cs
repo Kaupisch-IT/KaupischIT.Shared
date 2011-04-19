@@ -26,6 +26,8 @@ namespace KaupischITC.InfragisticsControls
 			this.ultraPrintDocument.DocumentName = title;
 			this.ultraPrintDocument.Header.TextCenter = title;
 			this.ultraPrintDocument.Header.TextLeft = "\r\n\r\n"+description;
+
+			
 		}
 
 		private void PrintUltraGridDialog_Shown(object sender,EventArgs e)
@@ -40,17 +42,13 @@ namespace KaupischITC.InfragisticsControls
 			this.comboBoxPrinter.SelectedItem = new PrinterSettings().PrinterName;
 
 			//Laden der Kopf- und Fußzeile
-			radioButtonColumnAutoFitPages.Checked = true;
-			numericUpDownAutoFitPageCount.Value = 1;
-
-			ultraPrintDocument.PageBody.BorderStyle = UIElementBorderStyle.None;
-			ultraPrintDocument.Page.BorderStyle = UIElementBorderStyle.None;
-
-			ultraPrintDocument.PrintColorStyle = ColorRenderMode.Monochrome;
-			ultraPrintDocument.Header.Margins.Bottom = 10;
-			
-			ultraPrintDocument.Footer.TextLeft = "[Date Printed] [Time Printed]";
-			ultraPrintDocument.Footer.TextRight = "Seite <#> von <##>";
+			this.radioButtonColumnAutoFitPages.Checked = true;
+			this.numericUpDownAutoFitPageCount.Value = 1;
+			this.ultraPrintDocument.PageBody.BorderStyle = UIElementBorderStyle.None;
+			this.ultraPrintDocument.Page.BorderStyle = UIElementBorderStyle.None;
+			this.ultraPrintDocument.Header.Margins.Bottom = 10;
+			this.ultraPrintDocument.Footer.TextLeft = "[Date Printed] [Time Printed]";
+			this.ultraPrintDocument.Footer.TextRight = "Seite <#> von <##>";
 
 			this.preventRefreshFlag = false;
 			this.RefreshPreview();
@@ -73,6 +71,8 @@ namespace KaupischITC.InfragisticsControls
 		{
 			this.ultraPrintDocument.PrinterSettings.PrinterName = (string)this.comboBoxPrinter.SelectedItem;
 			this.ultraPrintDocument.PrinterSettings.Duplex = (this.checkBoxDuplex.Checked) ? Duplex.Default : Duplex.Simplex;
+			this.ultraPrintDocument.PrinterSettings.Copies = (short)this.numericUpDownCopies.Value;
+			this.ultraPrintDocument.PrintColorStyle = (ColorRenderMode)comboBoxColorStyle.SelectedValue;
 			this.ultraPrintDocument.DefaultPageSettings.PaperSize = (PaperSize)this.comboBoxPapersize.SelectedItem;
 			this.ultraPrintDocument.DefaultPageSettings.Margins.Top = CmToPrintInch(numericUpDownTop.Value);
 			this.ultraPrintDocument.DefaultPageSettings.Margins.Bottom = CmToPrintInch(numericUpDownBottom.Value);
@@ -82,8 +82,6 @@ namespace KaupischITC.InfragisticsControls
 			this.ultraPrintDocument.FitWidthToPages = (this.radioButtonColumnDefaultSize.Checked) ? 0 : (int)this.numericUpDownAutoFitPageCount.Value;
 		}
 
-		
-
 		private void comboBoxPrinter_SelectedIndexChanged(object sender,EventArgs e)
 		{
 			PrintDocument printDocument = new PrintDocument();
@@ -92,9 +90,24 @@ namespace KaupischITC.InfragisticsControls
 			this.comboBoxPapersize.DataSource =  paperSizes;
 			this.comboBoxPapersize.DisplayMember = "PaperName";
 			this.comboBoxPapersize.SelectedItem = paperSizes.FirstOrDefault(ps => ps.PaperName==printDocument.DefaultPageSettings.PaperSize.PaperName);
-			this.checkBoxDuplex.Enabled = printDocument.PrinterSettings.CanDuplex;
-			if (!this.checkBoxDuplex.Enabled)
+			this.checkBoxDuplex.Visible = printDocument.PrinterSettings.CanDuplex;
+			if (!this.checkBoxDuplex.Visible)
 				this.checkBoxDuplex.Checked = false;
+
+			var colorStyles = new[]
+			{
+				new { Value = ColorRenderMode.GrayScale,Display = "Graustufen" },
+				new { Value = ColorRenderMode.Monochrome,Display = "Schwarzweiß" }
+			};
+			if (printDocument.PrinterSettings.SupportsColor)
+				colorStyles = new[] { new { Value = ColorRenderMode.Color,Display = "Farbdruck" } }.Concat(colorStyles).ToArray();
+
+			string selectedText = this.comboBoxColorStyle.Text;
+			this.comboBoxColorStyle.DataSource = colorStyles;
+			this.comboBoxColorStyle.DisplayMember = "Display";
+			this.comboBoxColorStyle.ValueMember = "Value";
+			this.comboBoxColorStyle.Text = selectedText;
+
 			this.RefreshPreview();
 		}
 
@@ -140,6 +153,11 @@ namespace KaupischITC.InfragisticsControls
 		{
 			if (((RadioButton)sender).Checked)
 				this.RefreshPreview();
+		}
+
+		private void comboBoxColorStyle_SelectionChangeCommitted(object sender,EventArgs e)
+		{
+			this.RefreshPreview();
 		}
 	}
 }
