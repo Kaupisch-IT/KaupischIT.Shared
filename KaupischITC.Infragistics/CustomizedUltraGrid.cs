@@ -259,7 +259,7 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.Override.CellAppearance.TextTrimming = TextTrimming.EllipsisCharacter;
 				this.DisplayLayout.Override.RowSelectorNumberStyle = RowSelectorNumberStyle.RowIndex;
 				this.DisplayLayout.Override.RowSelectorHeaderStyle = RowSelectorHeaderStyle.ColumnChooserButton;
-				this.DisplayLayout.Override.AllowColSizing = AllowColSizing.Synchronized;
+				this.DisplayLayout.Override.AllowColSizing = AllowColSizing.Free;
 				this.DisplayLayout.Override.RowSizing = RowSizing.AutoFree;
 				this.DisplayLayout.Override.AllowColMoving = AllowColMoving.WithinBand;
 				this.DisplayLayout.Override.CellMultiLine = DefaultableBoolean.False;
@@ -278,7 +278,7 @@ namespace KaupischITC.InfragisticsControls
 				{
 					ultraGridBand.HeaderVisible = (ultraGridBand.Index!=0 && ultraGridBand.Key!="Elements");
 					ultraGridBand.Header.Appearance.TextHAlign = HAlign.Left;
-					ultraGridBand.RowLayoutStyle = RowLayoutStyle.GroupLayout;
+					ultraGridBand.RowLayoutStyle = RowLayoutStyle.None;
 
 					foreach (UltraGridColumn ultraGridColumn in ultraGridBand.Columns)
 					{
@@ -332,6 +332,15 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
+		protected override void OnBeforeColumnChooserDisplayed(BeforeColumnChooserDisplayedEventArgs e)
+		{
+			e.Dialog.Text = "Spaltenauswahl";
+			e.Dialog.ColumnChooserControl.MultipleBandSupport = MultipleBandSupport.DisplayColumnsFromAllBands;
+			e.Dialog.ColumnChooserControl.Style = ColumnChooserStyle.AllColumnsAndChildBandsWithCheckBoxes;
+			base.OnBeforeColumnChooserDisplayed(e);
+		}
+
+
 		protected override void OnBeforeSortChange(BeforeSortChangeEventArgs e)
 		{
 			// wenn Sortierung von aufsteigend nach absteigend geändert wird...
@@ -363,8 +372,9 @@ namespace KaupischITC.InfragisticsControls
 		protected override void OnClickCellButton(CellEventArgs e)
 		{
 			using (new WaitCursorChanger(this))
+			using (FormDetails formDetails = new FormDetails(e.Cell.Value))
 			{
-				new FormDetails(e.Cell.Value).ShowDialog(this);
+				formDetails.ShowDialog(this);
 				base.OnClickCellButton(e);
 			}
 		}
