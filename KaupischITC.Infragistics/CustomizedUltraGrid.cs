@@ -254,10 +254,14 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.MaxBandDepth = 5; // TODO
 				this.DisplayLayout.LoadStyle = LoadStyle.LoadOnDemand;
 
+				this.DisplayLayout.GroupByBox.Prompt = "Ziehen Sie einen Spaltenkopf hierher, um nach diesem zu gruppieren.";
+				this.DisplayLayout.Override.CellClickAction = CellClickAction.EditAndSelectText;
+				this.DisplayLayout.Override.HeaderClickAction = HeaderClickAction.SortMulti;
+				this.DisplayLayout.ScrollStyle = Infragistics.Win.UltraWinGrid.ScrollStyle.Immediate;
+				this.DisplayLayout.ViewStyleBand = Infragistics.Win.UltraWinGrid.ViewStyleBand.OutlookGroupBy;
 				this.DisplayLayout.Override.RowSelectorNumberStyle = RowSelectorNumberStyle.RowIndex;
 				this.DisplayLayout.Override.ExpansionIndicator = ShowExpansionIndicator.CheckOnDisplay;
 				this.DisplayLayout.Override.CellAppearance.TextTrimming = TextTrimming.EllipsisCharacter;
-				this.DisplayLayout.Override.RowSelectorNumberStyle = RowSelectorNumberStyle.RowIndex;
 				this.DisplayLayout.Override.RowSelectorHeaderStyle = RowSelectorHeaderStyle.ColumnChooserButton;
 				this.DisplayLayout.Override.AllowColSizing = AllowColSizing.Free;
 				this.DisplayLayout.Override.RowSizing = RowSizing.AutoFree;
