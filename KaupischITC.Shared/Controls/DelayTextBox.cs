@@ -26,22 +26,19 @@ namespace KaupischITC.Shared
 		/// </summary>
 		public DelayTextBox()
 		{
-			this.timer.Tick += new EventHandler(timer_Tick);
+			this.timer.Tick += this.OnTimerTick;
 		}
-
-
 
 		/// <summary>
 		/// Timerablauf, der das OnTextChanged-Event auslöst
 		/// </summary>
-		private void timer_Tick(object sender,EventArgs e)
+		private void OnTimerTick(object sender,EventArgs e)
 		{
 			this.timer.Enabled = false;
 			base.OnTextChanged(new EventArgs());
 		}
 
-
-
+		
 		/// <summary>
 		/// OnTextChanged abfangen und Timer (neu)starten
 		/// </summary>
@@ -49,6 +46,17 @@ namespace KaupischITC.Shared
 		{
 			this.timer.Enabled = false;
 			this.timer.Enabled = true;
+		}
+
+
+		/// <summary>
+		/// Vor dem Leave ggf. ein ausstehendes TextChanged auslösen
+		/// </summary>
+		protected override void OnLeave(EventArgs e)
+		{
+			if (this.timer.Enabled)
+				this.OnTimerTick(this,e);			
+			base.OnLeave(e);
 		}
 	}
 }
