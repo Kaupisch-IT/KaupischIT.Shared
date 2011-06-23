@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
+
 
 namespace KaupischITC.InfragisticsControls
 {
@@ -27,7 +29,7 @@ namespace KaupischITC.InfragisticsControls
 			this.ultraPrintDocument.Header.TextCenter = title;
 			this.ultraPrintDocument.Header.TextLeft = "\r\n\r\n"+description;
 
-			
+
 		}
 
 		private void PrintUltraGridDialog_Shown(object sender,EventArgs e)
@@ -96,19 +98,27 @@ namespace KaupischITC.InfragisticsControls
 
 			var colorStyles = new[]
 			{
-				new { Value = ColorRenderMode.GrayScale,Display = "Graustufen" },
-				new { Value = ColorRenderMode.Monochrome,Display = "Schwarzweiß" }
+				new ColorStyle { ColorRenderMode = ColorRenderMode.GrayScale, Name = "Graustufen" },
+				new ColorStyle { ColorRenderMode = ColorRenderMode.Monochrome,Name = "Schwarzweiß" }
 			};
 			if (printDocument.PrinterSettings.SupportsColor)
-				colorStyles = new[] { new { Value = ColorRenderMode.Color,Display = "Farbdruck" } }.Concat(colorStyles).ToArray();
+				colorStyles = new[] { new ColorStyle { ColorRenderMode = ColorRenderMode.Color,Name = "Farbdruck" } }.Concat(colorStyles).ToArray();
 
 			string selectedText = this.comboBoxColorStyle.Text;
 			this.comboBoxColorStyle.DataSource = colorStyles;
-			this.comboBoxColorStyle.DisplayMember = "Display";
-			this.comboBoxColorStyle.ValueMember = "Value";
+			this.comboBoxColorStyle.DisplayMember = "Name";
+			this.comboBoxColorStyle.ValueMember = "ColorRenderMode";
 			this.comboBoxColorStyle.Text = selectedText;
 
 			this.RefreshPreview();
+		}
+
+
+		[Obfuscation(Feature = "renaming",ApplyToMembers=true,Exclude=true)]
+		private class ColorStyle
+		{
+			public string Name { get; set; }
+			public ColorRenderMode ColorRenderMode { get; set; }
 		}
 
 
