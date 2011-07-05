@@ -36,17 +36,17 @@ namespace KaupischITC.Shared
 				{
 					this.BeginUpdate();
 					this.isUpdating = true;
-
+					
 					foreach (TreeNode treeNode in this.Nodes.OfType<TreeNode>().SelectMany(node => node.Flatten(tn => tn.Nodes.Cast<TreeNode>())).Where(tn => tn.Checked))
 						treeNode.Checked = false;
 
-					if (value!=null)
+					if (value!=null && value.Any())
 						foreach (string nodeName in value)
 							if (!String.IsNullOrEmpty(nodeName))
 							{
 								TreeNode treeNode = this.GetNode(this.Nodes[0],nodeName);
 								treeNode.Checked = true;
-								this.SelectedNode = treeNode; // TODO
+								this.SelectedNode = treeNode;
 							}
 
 					this.EndUpdate();
@@ -60,23 +60,27 @@ namespace KaupischITC.Shared
 			if (nodeName.StartsWith("#"))
 				return parentTreeNode;
 
-			char separator = '.';
-			if (nodeName.Contains(separator))
+			if (nodeName.Contains('.'))
 			{
-				string childNodeName = (parentTreeNode.Name+"."+nodeName.Substring(0,nodeName.IndexOf(separator))).Trim('.');
-				TreeNode childNode = parentTreeNode.Nodes[childNodeName];
+				string childNodeName = nodeName.Substring(0,nodeName.IndexOf('.')).Trim('.');
+				string childNodeKey = (parentTreeNode.Name+"."+childNodeName).Trim('.');
+
+				TreeNode childNode = parentTreeNode.Nodes[childNodeKey];
 				if (childNode==null)
-					childNode = parentTreeNode.Nodes.Add(childNodeName,childNodeName,"QuestionMark","QuestionMark");
+					childNode = parentTreeNode.Nodes.Add(childNodeKey,childNodeName.Trim('+'),"QuestionMark","QuestionMark");
 				else
 				{
 					this.OnBeforeExpand(new TreeViewCancelEventArgs(childNode,false,TreeViewAction.Expand));
 					childNode.Expand();
 				}
 
-				return this.GetNode(childNode,nodeName.Substring(nodeName.IndexOf(separator)+1));
+				return this.GetNode(childNode,nodeName.Substring(nodeName.IndexOf('.')+1));
 			}
 			else
-				return parentTreeNode.Nodes[(parentTreeNode.Name+"."+nodeName).Trim('.')] ?? parentTreeNode.Nodes.Add(nodeName,nodeName,"QuestionMark","QuestionMark");
+			{
+				string nodeKey = (parentTreeNode.Name+'.'+nodeName).Trim('.');
+				return parentTreeNode.Nodes[nodeKey] ?? parentTreeNode.Nodes.Add(nodeKey,nodeName.Trim('+'),"QuestionMark","QuestionMark");
+			}
 		}
 
 
