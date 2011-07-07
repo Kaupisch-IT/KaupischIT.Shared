@@ -21,9 +21,9 @@ namespace KaupischITC.Shared
 		/// Erstellt ein neues ControlChanger-Objekt
 		/// </summary>
 		/// <param name="control">das betroffene Control</param>
-		public ControlChangerBase(Control control)
+		public ControlChangerBase(Control control,bool useRootControl)
 		{
-			this.baseControl = getRootControl(control);
+			this.baseControl = (useRootControl) ? ControlChangerBase.GetRootControl(control) : control;
 			Type type = this.GetType();
 			lock (ControlChangerBase.lockingObject)
 			{
@@ -31,13 +31,14 @@ namespace KaupischITC.Shared
 					ControlChangerBase.nestingMap.Add(type,new Dictionary<Control,int>());
 
 				if (!ControlChangerBase.nestingMap[type].ContainsKey(this.baseControl))
+					ControlChangerBase.nestingMap[type].Add(this.baseControl,0);
+
+				ControlChangerBase.nestingMap[type][this.baseControl]++;
+				if (ControlChangerBase.nestingMap[type][this.baseControl]==1)
 					ControlHelper.InvokeAsync(control,delegate
 					{
 						this.EnableChanger(this.baseControl);
-						ControlChangerBase.nestingMap[type].Add(this.baseControl,1);
 					});
-				else
-					ControlChangerBase.nestingMap[type][this.baseControl]++;
 			}
 		}
 
@@ -56,14 +57,22 @@ namespace KaupischITC.Shared
 		{
 			Type type = this.GetType();
 			lock (ControlChangerBase.lockingObject)
-				if (!this.isDisposed)
-					if (--ControlChangerBase.nestingMap[type][this.baseControl]==0)
-						ControlHelper.InvokeAsync(this.baseControl,delegate
+			{
+				ControlChangerBase.nestingMap[type][this.baseControl]--;
+
+				if (ControlChangerBase.nestingMap[type][this.baseControl]==0 && !this.isDisposed)
+					ControlHelper.InvokeAsync(this.baseControl,delegate
+					{
+						try { this.DisableChanger(baseControl); }
+						catch (ObjectDisposedException)
 						{
-							this.DisableChanger(baseControl);
-							ControlChangerBase.nestingMap[type].Remove(this.baseControl);
-							this.isDisposed = true;
-						});
+						}
+						this.isDisposed = true;
+					});
+
+				if (ControlChangerBase.nestingMap[type][this.baseControl]<0)
+					throw new Exception("CursorChanger-Index ist negativ");
+			}
 		}
 
 
@@ -79,9 +88,9 @@ namespace KaupischITC.Shared
 		/// </summary>
 		/// <param name="control">Control, dessen Root-Control ermittelt werden soll</param>
 		/// <returns>das Root-Control des übergebenen Controls</returns>
-		private Control getRootControl(Control control)
+		private static Control GetRootControl(Control control)
 		{
-			return (control.Parent==null) ? control : getRootControl(control.Parent);
+			return (control.Parent==null) ? control : GetRootControl(control.Parent);
 		}
 	}
 }

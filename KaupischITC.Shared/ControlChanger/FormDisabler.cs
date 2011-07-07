@@ -19,7 +19,11 @@ namespace KaupischITC.Shared
 		/// </summary>
 		/// <param name="control"></param>
 		public FormDisabler(Control control)
-			: base(control)
+			: this(control,true)
+		{}
+
+		public FormDisabler(Control control,bool useRootControl)
+			: base(control,useRootControl)
 		{}
 
 		
