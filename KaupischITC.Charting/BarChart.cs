@@ -80,9 +80,9 @@ namespace KaupischITC.Charting
 				double maxPositiveValue = Math.Max(0,bars.Max(ps => ps.Value));
 				double maxNegativeValue = Math.Abs(Math.Min(0,bars.Min(ps => ps.Value)));
 				double range = maxPositiveValue + maxNegativeValue;
-				int maxDisplayTextWidth = bars.Max(bar => (int)graphics.MeasureString(bar.DisplayText,this.LegendFont).Width);
-				int maxValueTextWidth = bars.Max(bar => (int)graphics.MeasureString(bar.ValueText,this.LegendFont).Width);
-				int availableBarWidth = bitmap.Width-maxDisplayTextWidth-maxValueTextWidth-2*this.BarPadding;
+				int maxDisplayTextWidth = bars.Max(bar => (int)graphics.MeasureText(bar.DisplayText,this.LegendFont).Width)+1;
+				int maxValueTextWidth = bars.Max(bar => (int)graphics.MeasureText(bar.ValueText,this.LegendFont).Width)+1;
+				int availableBarWidth = bitmap.Width-1 - (maxDisplayTextWidth+maxValueTextWidth+2*this.BarPadding);
 				int baseLine = (int)(maxDisplayTextWidth + this.BarPadding + (maxNegativeValue/range)*availableBarWidth);
 
 				// gepunktete Null-Linie zeichnen
@@ -106,13 +106,18 @@ namespace KaupischITC.Charting
 						{
 							X = (bar.Value>=0) ? baseLine : baseLine-barWidth,
 							Y = top+this.BarPadding,
-							Width = Math.Max(1,barWidth),
+							Width = Math.Max(0,barWidth),
 							Height = this.LineHeight-2*this.BarPadding
 						};
-						Color backColor = Color.FromArgb(this.Opacity,bar.Color);
-						using (LinearGradientBrush linearGradientBrush = new LinearGradientBrush(rectangle,backColor.ChangeBrightness(0.6f),backColor,0f))
-							graphics.FillRectangle(linearGradientBrush,rectangle);	// Hintergrund mit Farbverlauf
-						graphics.DrawRectangle(pen,rectangle);						// Rahmen
+						if (rectangle.Width==0)
+							graphics.DrawLine(pen,rectangle.Left,rectangle.Top,rectangle.Left,rectangle.Bottom);
+						else
+						{
+							Color backColor = Color.FromArgb(this.Opacity,bar.Color);
+							using (LinearGradientBrush linearGradientBrush = new LinearGradientBrush(rectangle,backColor.ChangeBrightness(0.6f),backColor,0f))
+								graphics.FillRectangle(linearGradientBrush,rectangle);	// Hintergrund mit Farbverlauf
+							graphics.DrawRectangle(pen,rectangle);						// Rahmen
+						}
 
 						// Text für Bezeichnung 
 						using (StringFormat stringFormat = new StringFormat { Alignment = StringAlignment.Far,LineAlignment = StringAlignment.Center })
@@ -120,7 +125,7 @@ namespace KaupischITC.Charting
 						// Text für Werte
 						using (StringFormat stringFormat = new StringFormat { Alignment = StringAlignment.Near,LineAlignment = StringAlignment.Center })
 						{
-							int left = (bar.Value>=0) ? baseLine+barWidth+2*this.BarPadding : baseLine+this.BarPadding;
+							int left = (bar.Value>=0) ? baseLine+barWidth+this.BarPadding : baseLine+this.BarPadding;
 							graphics.DrawString(bar.ValueText,this.LegendFont,brush,new PointF(left,top+this.LineHeight/2),stringFormat);
 						}
 					}

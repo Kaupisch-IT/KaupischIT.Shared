@@ -90,8 +90,8 @@ namespace KaupischITC.Charting
 			if (pieSlices.Count==0)
 				return bitmap;
 			// Höhe und Breite des Bitmaps anhand der Texte der Kuchenstücke, der Offsets und der Entfernung der Beschriftungen ermitteln
-			int maxWidthOffset = pieSlices.Max(ps => ps.Offset) + this.LegendDistance + pieSlices.Max(ps => (int)graphics.MeasureString(ps.Text,this.LegendFont).Width);
-			int maxHeightOffset = pieSlices.Max(ps => ps.Offset) + this.LegendDistance + pieSlices.Max(ps => (int)graphics.MeasureString(ps.Text,this.LegendFont).Height);
+			int maxWidthOffset = pieSlices.Max(ps => ps.Offset) + this.LegendDistance + pieSlices.Max(ps => (int)graphics.MeasureText(ps.Text,this.LegendFont).Width)+1;
+			int maxHeightOffset = pieSlices.Max(ps => ps.Offset) + this.LegendDistance + pieSlices.Max(ps => (int)graphics.MeasureText(ps.Text,this.LegendFont).Height)+1;
 			this.Width = this.EllipseWidth + 2*maxWidthOffset + 1;
 			this.Height = this.EllipseHeight + 2*maxHeightOffset + this.PieHeight + 1;
 

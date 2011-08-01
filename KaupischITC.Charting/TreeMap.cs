@@ -118,7 +118,7 @@ namespace KaupischITC.Charting
 					using (StringFormat stringFormat = new StringFormat { Alignment = StringAlignment.Center,LineAlignment = StringAlignment.Center })
 					{
 						string text = treeItem.DisplayText+"\r\n"+treeItem.ValueText;
-						if (rectangle.Height>rectangle.Width && graphics.MeasureString(text,this.LegendFont).Width>rectangle.Width)
+						if (rectangle.Height>rectangle.Width && graphics.MeasureText(text,this.LegendFont).Width>rectangle.Width)
 							stringFormat.FormatFlags = StringFormatFlags.DirectionVertical;
 						graphics.DrawString(text,this.LegendFont,foreBrush,rectangle,stringFormat);
 					}

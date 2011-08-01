@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using KaupischITC.Extensions;
 using KaupischITC.Shared;
+using System.Drawing.Drawing2D;
 
 namespace KaupischITC.Charting
 {
@@ -17,7 +18,7 @@ namespace KaupischITC.Charting
 		/// Gibt an, ob die Elemente sortiert werden sollen.
 		/// </summary>
 		protected bool SortItems { get; set; }
-		
+
 		/// <summary>
 		/// Gibt an, ob negative Werte dargestellt werden können.
 		/// </summary>
@@ -100,77 +101,96 @@ namespace KaupischITC.Charting
 		private void PrintChart()
 		{
 			using (new WaitCursorChanger(this))
-				if (!String.IsNullOrEmpty(this.propertyBrowserValue.SelectedProperty))
+				if (this.Elements!=null)
 				{
 					// Delegaten zum Ermitteln des Anzeigetexts und des Wertes
 					Func<object,object> getDisplay = (item) => this.propertyBrowserDisplay.GetSelectedPropertyValue(item);
 					Func<object,double?> getValue = (item) =>
 					{
-						object rawValue = this.propertyBrowserValue.GetSelectedPropertyValue(item);
-						double result;
-						return (rawValue!=null && Double.TryParse(rawValue.ToString(),out result)) ? result : (double?)null;
+						double result = 1;
+						if (String.IsNullOrEmpty(this.propertyBrowserValue.SelectedProperty))
+							return result;
+						else
+						{
+							object rawValue = this.propertyBrowserValue.GetSelectedPropertyValue(item);
+							return (rawValue!=null && Double.TryParse(rawValue.ToString(),out result)) ? result : (double?)null;
+						}
 					};
 
 					// Delegaten zum Ermitteln der Anzeigetexte
 					Func<object,string,string> getFormattedText = (value,formatString) => (value is IFormattable) ? ((IFormattable)value).ToString(formatString,null).Trim() : (value??"").ToString().Trim();
 					Func<object,string> getDisplayText = (value) => getFormattedText(value,this.GetFormatString(this.propertyBrowserDisplay.SelectedProperty));
-					Func<object,string> getValueText = (value) => getFormattedText(value,this.GetFormatString(this.propertyBrowserValue.SelectedProperty));
+					Func<object,string> getValueText = (value) => (String.IsNullOrEmpty(this.propertyBrowserValue.SelectedProperty)) ? "#:"+value : getFormattedText(value,this.GetFormatString(this.propertyBrowserValue.SelectedProperty));
 
 					// Elemente entsprechend des Beschreibungstextes gruppieren und die Werte zusammenfassen
 					var values = this.Elements
-						.Select(item => new 
-						{ 
+						.Select(item => new
+						{
 							DisplayText = getDisplayText(getDisplay(item)),
 							Value = getValue(item),
-							IsEmphasized = (this.EmphasizedElements!=null && this.EmphasizedElements.Contains(item)) 
+							IsEmphasized = (this.EmphasizedElements!=null && this.EmphasizedElements.Contains(item))
 						})
 						.Where(item => item.Value!=null)
 						.GroupBy(item => item.DisplayText)
-						.Select(group => new 
+						.Select(group => new
 						{
 							DisplayText = group.Key,
 							Value = (double)group.Sum(item => item.Value),
-							IsEmphasized = group.Any(item => item.IsEmphasized) 
+							IsEmphasized = group.Any(item => item.IsEmphasized)
 						})
 						.ToList();
 
-					if (!this.SupportsNegativeValues && values.Any(v => v.Value<0))
-					{
-						this.pictureBoxPie.Image = null;
-						MessageBox.Show("Die Darstellung von negativen Werten wird vom aktuellen Diagrammtyp nicht unterstützt.","Diagramm",MessageBoxButtons.OK,MessageBoxIcon.Information);
-					}
-					else
-					{
-						// aggregierte Elemente zeichnen
-						Bitmap bitmap = this.DrawPercent(
-							values,
-							item => item.Value,
-							(item) => item.DisplayText,
-							(value) => getValueText(value),
-							(items,percentage) => items.Count()+" sonstige",
-							(float)this.numericUpDownPercentageThreshold.Value,
-							values.Where(item => item.IsEmphasized).ToList());
 
-						this.pictureBoxPie.Image = bitmap;
-						this.pictureBoxPie.Size = bitmap.Size;
-					}
+					// aggregierte Elemente erstellen
+					IEnumerable<ChartItem> chartItems = this.CreateChartItems(
+						elements: values,
+						getValue: item => item.Value,
+						getDisplayText: (item) => item.DisplayText,
+						getValueText: (value) => getValueText(value),
+						getMergedText: (items,percentage) => items.Count()+" sonstige",
+						percentageThreshold: (float)this.numericUpDownPercentageThreshold.Value,
+						emphasizedElements: values.Where(item => item.IsEmphasized).ToList());
+
+					// die Diagrammelemente zeichnen
+					Bitmap bitmap = (this.SupportsNegativeValues || chartItems.All(v => v.Percent>=0)) ? this.DrawChart(chartItems) : this.CreateErrorImage("Die Darstellung von negativen Werten wird vom aktuellen Diagrammtyp nicht unterstützt.");
+					this.pictureBoxPie.Image = bitmap;
+					this.pictureBoxPie.Size = bitmap.Size;
 				}
 		}
 
 		
 		/// <summary>
-		/// Erstellt ein Kreisdiagramm für die übergebenen Elemente, die mit dem jeweiligen prozentualen Anteil beschriftet sind
+		/// Erzeugt ein Bild mit einer Fehlermeldung 
+		/// </summary>
+		/// <param name="errorText">der Text der Fehlermeldung</param>
+		/// <returns>ein Bild, dass die angegebene Fehlermeldung enthält</returns>
+		private Bitmap CreateErrorImage(string errorText)
+		{
+			Bitmap bitmap = new Bitmap(500,200);
+			using (Graphics graphics = Graphics.FromImage(bitmap))
+			{
+				graphics.SmoothingMode = SmoothingMode.AntiAlias;
+				graphics.FillRectangle(Brushes.White,0,0,bitmap.Width,bitmap.Height);
+				using (StringFormat stringFormat = new StringFormat { Alignment = StringAlignment.Center,LineAlignment = StringAlignment.Center })
+					graphics.DrawString(errorText,SystemFonts.MessageBoxFont,Brushes.Red,new Rectangle(0,0,bitmap.Width,bitmap.Height),stringFormat);
+			}
+			return bitmap;
+		}
+
+
+		/// <summary>
+		/// Erstellt für ein Diagramm die aggregierten Anzeigeelemente
 		/// </summary>
 		/// <typeparam name="T">Der Typ der Elemente, die visualisiert werden sollen.</typeparam>
-		/// <param name="pieChart">Komponente zum Zeichnen von Kreisdiagrammen</param>
-		/// <param name="elements">Auflistung mit den Elementen, die als Kuchenstücke visualisiert werden sollen.</param>
+		/// <param name="elements">Auflistung mit den Elementen, die aggregiert/visualisiert werden sollen.</param>
 		/// <param name="getValue">Delegat zur Ermittlung der Größe, anhand der der prozentuale Anteil bestimmt wird. </param>
-		/// <param name="getText">Delegat zur Ermittlung der Beschriftung eines Elements. (Der prozentuale Anteil dieses Elements wird mit übergeben.) </param>
-		/// <param name="getMergedText">Delegate zur Ermitllung der Beschriftung der zusammengefassten Elemente. (Der prozentuale Anteil dieser Elemente wird mit übergeben.) </param>
+		/// <param name="getDisplayText">Delegat zur Ermittlung der Beschriftung des Namens eines Elements. </param>
+		/// <param name="getValueText">Delegat zur Ermittlung der Beschriftung des Wertes eines Elements. </param>
+		/// <param name="getMergedText">Delegat zur Ermittlung der Beschriftung der zusammengefassten Elemente. </param>
 		/// <param name="percentageThreshold">Prozent-Schwellwert, ab dem ein Element unter "sonstiges" verbucht wird.</param>
-		/// <param name="emphasizedElements">Auflistung der Elemente, die durch weiteres Herausschieben aus der Mitte des Kreisdiagramms hervorgehoben werden sollen.</param>
-		/// <returns>Bitmap-Objekt, auf das das Kreisdiagramm gezeichnet wurde.</returns>
-		private Bitmap DrawPercent<T>(IEnumerable<T> elements,Func<T,double> getValue,Func<T,string> getDisplayText,Func<double,string> getValueText,Func<IEnumerable<T>,double,string> getMergedText,float percentageThreshold,IEnumerable<T> emphasizedElements)
+		/// <param name="emphasizedElements">Auflistung der Elemente, hervorgehoben werden sollen.</param>
+		/// <returns>Eine Auflistung der darzustellenden Diagrammelemente.</returns>
+		private IEnumerable<ChartItem> CreateChartItems<T>(IEnumerable<T> elements,Func<T,double> getValue,Func<T,string> getDisplayText,Func<double,string> getValueText,Func<IEnumerable<T>,double,string> getMergedText,float percentageThreshold,IEnumerable<T> emphasizedElements)
 		{
 			// prozentuale Anteile ermitteln
 			double sum = elements.Sum(element => getValue(element));
@@ -181,11 +201,11 @@ namespace KaupischITC.Charting
 			var slices =
 				items.Where(item => slicesToMerge.Count()<=1 || !slicesToMerge.Contains(item))
 				.Select(item => new ChartItem
-				{ 
+				{
 					DisplayText = getDisplayText(item.Key),
 					ValueText = getValueText(getValue(item.Key)),
 					Percent = item.Percent,
-					IsEmphasized = emphasizedElements.Contains(item.Key) 
+					IsEmphasized = emphasizedElements.Contains(item.Key)
 				});
 			// wenn gewünscht, sortieren
 			if (this.SortItems)
@@ -199,11 +219,10 @@ namespace KaupischITC.Charting
 					DisplayText = getMergedText(slicesToMerge.Select(i => i.Key),slicesToMerge.Sum(i => i.Percent)),
 					ValueText = "Σ:"+getValueText(slicesToMerge.Sum(i => getValue(i.Key))), // ∑Σ
 					Percent = slicesToMerge.Sum(i => i.Percent),
-					IsEmphasized = emphasizedElements.Contains(item.Key) 
+					IsEmphasized = emphasizedElements.Contains(item.Key)
 				}));
 
-			// das eigentliche Diagramm erstellen
-			return this.DrawChart(slices);
+			return slices;
 		}
 
 
@@ -230,8 +249,8 @@ namespace KaupischITC.Charting
 			float angle = (index/(float)count) * 360;
 			return ColorExtensions.GetColorFromHSB(angle,1,1);
 		}
-			
-	
+
+
 		/// <summary>
 		/// Das aktuelle Bild in die Zwischenablage einfügen
 		/// </summary>
@@ -251,6 +270,6 @@ namespace KaupischITC.Charting
 		{
 			if (!this.pictureBoxPie.Bounds.Contains(this.PointToClient(Control.MousePosition)))
 				this.buttonToClipboard.Visible = false;
-		}		
+		}
 	}
 }
