@@ -140,12 +140,14 @@ namespace KaupischITC.Shared
 
 		private void AddMemberNodes(TreeNodeCollection targetTreeNodeCollection,Type type,string parentKey,IEnumerable<string> checkedNodeNames,bool deferredLoading)
 		{
+			string[] hiddenPostfixes = { "ID","Id","Key" };
+
 			IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Instance|BindingFlags.Public);
 			if (!type.IsCompilerGenerated())
 				properties = properties.OrderBy(pi => pi.Name);
 			foreach (PropertyInfo propertyInfo in properties)
 				if (propertyInfo.DeclaringType!=typeof(object))
-					if (!propertyInfo.Name.EndsWith("ID") && !propertyInfo.Name.EndsWith("Id") && !propertyInfo.GetCustomAttributes(true).OfType<BrowsableAttribute>().Any(ba => !ba.Browsable))
+					if (!hiddenPostfixes.Any(pf => propertyInfo.Name.EndsWith(pf)) && !propertyInfo.GetCustomAttributes(true).OfType<BrowsableAttribute>().Any(ba => !ba.Browsable))
 						if (!propertyInfo.DeclaringType.FullName.StartsWith("System"))
 							if (this.TypeFilter==null || this.TypeFilter(propertyInfo.PropertyType))
 							{

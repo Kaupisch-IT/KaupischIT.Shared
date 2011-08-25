@@ -300,7 +300,8 @@ namespace KaupischITC.InfragisticsControls
 								ultraGridColumn.Format = "P";
 						}
 
-						if (ultraGridColumn.Key.EndsWith("ID") || ultraGridColumn.Key.EndsWith("Id") || ultraGridColumn.PropertyDescriptor.Attributes.OfType<BrowsableAttribute>().Any(ba => !ba.Browsable))
+						string[] hiddenPostfixes = { "ID","Id","Key" };
+						if (hiddenPostfixes.Any(pf => ultraGridColumn.Key.EndsWith(pf)) || ultraGridColumn.PropertyDescriptor.Attributes.OfType<BrowsableAttribute>().Any(ba => !ba.Browsable))
 							ultraGridColumn.Hidden = true;
 						else if (ultraGridColumn.DataType!=typeof(string) && !ultraGridColumn.DataType.IsValueType)
 						{

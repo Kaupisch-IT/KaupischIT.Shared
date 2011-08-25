@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
 
 namespace KaupischITC.Extensions
 {
@@ -14,7 +15,8 @@ namespace KaupischITC.Extensions
 		/// <typeparam name="T">der Rückgabetyp, in den der Wert der Spalte gecastet werden soll</typeparam>
 		/// <param name="dataRecord">die Datenzeile, die die Werte enhält</param>
 		/// <param name="columnName">der Name der Spalte, deren Wert ermittelt werden soll</param>
-		/// <returns></returns>
+		/// <returns>der Wert der Spalte</returns>
+		[DebuggerStepThrough]
 		public static T GetColumnValue<T>(this IDataRecord dataRecord,string columnName)
 		{
 			object value = dataRecord[columnName];

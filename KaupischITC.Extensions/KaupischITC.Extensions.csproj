@@ -51,7 +51,8 @@
     <Compile Include="ControlExtensions.cs" />
     <Compile Include="CustomAttributeProviderExtensions.cs" />
     <Compile Include="DataRecordExtensions.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />    
+    <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="FontExtensions.cs" />
     <Compile Include="GraphicsExtensions.cs" />
