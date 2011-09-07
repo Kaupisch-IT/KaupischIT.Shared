@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
+using KaupischITC.Charting;
 using KaupischITC.Extensions;
 using KaupischITC.Shared;
-using KaupischITC.Charting;
 
 namespace KaupischITC.InfragisticsControls
 {
-	public partial class CustomizedUltraGrid : UltraGrid,IUIElementCreationFilter
+	public partial class CustomizedUltraGrid : UltraGrid,IUIElementCreationFilter,IUIElementDrawFilter
 	{
 		private static ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
 		private Timer timer = new Timer();
@@ -28,6 +29,8 @@ namespace KaupischITC.InfragisticsControls
 		public HeaderUIElement ContextHeaderUIElement { get; private set; }
 		public UltraGridColumn ContextUltraGridColumn { get; private set; }
 		public SummaryFooterUIElement ContextSummaryFooterUIElement { get; private set; }
+		public Image SortIndicatorImageAscending { get; set; }
+		public Image SortIndicatorImageDescending { get; set; }
 
 
 		private Dictionary<SummaryType,string[]> availableSummaries = new Dictionary<SummaryType,string[]>()
@@ -68,6 +71,7 @@ namespace KaupischITC.InfragisticsControls
 		public CustomizedUltraGrid()
 		{
 			this.CreationFilter = this;
+			this.DrawFilter = this;
 
 			this.InitializeComponent();
 
@@ -110,6 +114,10 @@ namespace KaupischITC.InfragisticsControls
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate { this.ShowChartForm(new BarChartForm()); });
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate { this.ShowChartForm(new TreeMapForm()); });
+
+			ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
+			this.SortIndicatorImageAscending = (Image)resources.GetObject("Up");
+			this.SortIndicatorImageDescending = (Image)resources.GetObject("Down");
 		}
 
 		private void SummaryMenuItem_Click(object sender,EventArgs e)
@@ -262,6 +270,7 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.Override.RowSelectorNumberStyle = RowSelectorNumberStyle.RowIndex;
 				this.DisplayLayout.Override.ExpansionIndicator = ShowExpansionIndicator.CheckOnDisplay;
 				this.DisplayLayout.Override.CellAppearance.TextTrimming = TextTrimming.EllipsisCharacter;
+				this.DisplayLayout.Override.HeaderAppearance.TextTrimming = TextTrimming.EllipsisCharacter;
 				this.DisplayLayout.Override.RowSelectorHeaderStyle = RowSelectorHeaderStyle.ColumnChooserButton;
 				this.DisplayLayout.Override.AllowColSizing = AllowColSizing.Free;
 				this.DisplayLayout.Override.RowSizing = RowSizing.AutoFree;
@@ -275,6 +284,39 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.Override.FilterOperatorDefaultValue = FilterOperatorDefaultValue.Contains;
 				this.DisplayLayout.Override.FilterUIType = FilterUIType.FilterRow;
 				this.DisplayLayout.Override.RowFilterMode = RowFilterMode.AllRowsInBand;
+
+				Color borderColor = Color.FromArgb(202,203,211);
+				Color selectedBackColor = Color.FromArgb(226,234,253);
+				Color selectedForeColor = SystemColors.ControlText;
+				Color groupByBoxBackColor = Color.FromArgb(235,236,239);
+				Color groupByBoxForeColor = Color.FromArgb(192,192,202);
+				Color headerBackColor1 = Color.FromArgb(248,248,248);
+				Color headerBackColor2 = Color.FromArgb(242,242,242);
+				Color summaryBackColor = Color.FromArgb(242,246,251);
+
+				this.DisplayLayout.DefaultSelectedBackColor = selectedBackColor;
+				this.DisplayLayout.DefaultSelectedForeColor = selectedForeColor;
+				this.DisplayLayout.GroupByBox.Style = GroupByBoxStyle.Compact;
+				this.DisplayLayout.GroupByBox.Appearance.BackColor = groupByBoxBackColor;
+				this.DisplayLayout.GroupByBox.PromptAppearance.BackColor = groupByBoxBackColor;
+				this.DisplayLayout.GroupByBox.PromptAppearance.ForeColor = groupByBoxForeColor;
+				this.DisplayLayout.GroupByBox.PromptAppearance.FontData.Name = this.Font.Name;
+				this.DisplayLayout.GroupByBox.PromptAppearance.FontData.SizeInPoints = this.Font.SizeInPoints;
+				this.DisplayLayout.GroupByBox.ButtonBorderStyle = UIElementBorderStyle.Solid;
+				this.DisplayLayout.Override.HeaderAppearance.BorderColor = borderColor;
+				this.DisplayLayout.Override.HeaderAppearance.BackColor = headerBackColor1;
+				this.DisplayLayout.Override.HeaderAppearance.BackColor2 = headerBackColor2;
+				this.DisplayLayout.Override.HeaderAppearance.BackGradientStyle = GradientStyle.Vertical;
+				this.DisplayLayout.Override.BorderStyleRowSelector = UIElementBorderStyle.Solid;
+				this.DisplayLayout.Override.RowSelectorAppearance.BorderColor = borderColor;
+				this.DisplayLayout.Override.RowSelectorAppearance.BackColor = headerBackColor1;
+				this.DisplayLayout.Override.RowSelectorAppearance.BackColor2 = headerBackColor2;
+				this.DisplayLayout.Override.RowSelectorAppearance.BackGradientStyle = GradientStyle.Vertical;
+				this.DisplayLayout.Override.RowAppearance.BorderColor = borderColor;
+				//this.DisplayLayout.Appearance.BackColor = groupByBoxBackColor;
+				this.DisplayLayout.Override.BorderStyleSummaryFooter = UIElementBorderStyle.None;
+				this.DisplayLayout.Override.SummaryValueAppearance.BackColor = summaryBackColor;
+				this.DisplayLayout.Override.SummaryValueAppearance.BorderColor = borderColor;
 
 				this.SuspendRowSynchronization();
 
@@ -351,7 +393,7 @@ namespace KaupischITC.InfragisticsControls
 			// wenn Sortierung von aufsteigend nach absteigend geändert wird...
 			foreach (UltraGridColumn column in e.SortedColumns)
 				if (e.Band.SortedColumns.Exists(column.Key))
-					if (column.SortIndicator == SortIndicator.Ascending && e.Band.SortedColumns[column.Key].SortIndicator == SortIndicator.Descending)
+					if (column.SortIndicator==SortIndicator.Ascending && e.Band.SortedColumns[column.Key].SortIndicator==SortIndicator.Descending)
 					{
 						// ...dies abbrechen und die Sortierung entfernen
 						e.Cancel = true;
@@ -483,6 +525,66 @@ namespace KaupischITC.InfragisticsControls
 			{
 				return this.MemberwiseClone();
 			}
+		}
+
+
+
+		public bool DrawElement(DrawPhase drawPhase,ref UIElementDrawParams drawParams)
+		{
+			Rectangle rectangle = drawParams.Element.Rect;
+			rectangle.Inflate(0,-1);
+			rectangle.Offset(-1,-1);
+
+			if (drawParams.Element is HeaderUIElement)
+			{
+				bool isMouseOver = this.RectangleToScreen(drawParams.InvalidRect).Contains(Control.MousePosition);
+				Color color1 = (isMouseOver) ? Color.FromArgb(254,254,254) : Color.FromArgb(248,248,248);
+				Color color2 = (isMouseOver) ? Color.FromArgb(248,248,248) : Color.FromArgb(242,242,242);
+
+				using (LinearGradientBrush brush = new LinearGradientBrush(rectangle,color1,color2,LinearGradientMode.Vertical))
+					drawParams.Graphics.FillRectangle(brush,rectangle);
+				using (Pen pen = new Pen(Color.FromArgb(202,203,211)))
+					drawParams.Graphics.DrawRectangle(pen,rectangle);
+
+				return true;
+			}
+
+			if (drawParams.Element is SortIndicatorUIElement)
+			{
+				UltraGridColumn column = drawParams.Element.GetContext(typeof(UltraGridColumn)) as UltraGridColumn;
+				if (column!=null)
+				{
+					Image image = (column.SortIndicator==SortIndicator.Ascending) ? this.SortIndicatorImageAscending : this.SortIndicatorImageDescending;
+
+					Point point = new Point((rectangle.Left+rectangle.Right-image.Width)/2,(rectangle.Top+rectangle.Bottom)/2);
+					if (column.Band.SortedColumns.Count>1)
+						point.Offset(0,-image.Height);
+
+					drawParams.Graphics.DrawImageUnscaled(image,point);
+
+					if (column.Band.SortedColumns.Count>1)
+					{
+						int index = column.Band.SortedColumns.IndexOf(column)+1;
+
+						using (Font font = new Font("Verdana",6.25f,FontStyle.Regular))
+						using (StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Center,LineAlignment = StringAlignment.Far })
+							drawParams.Graphics.DrawString(index.ToString(),font,Brushes.Gray,rectangle,stringFormat);
+					}
+
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public DrawPhase GetPhasesToFilter(ref UIElementDrawParams drawParams)
+		{
+			if (drawParams.Element is HeaderUIElement)
+				return DrawPhase.AfterDrawTheme;
+			if (drawParams.Element is SortIndicatorUIElement)
+				return DrawPhase.BeforeDrawElement;
+			return DrawPhase.None;
 		}
 	}
 }
