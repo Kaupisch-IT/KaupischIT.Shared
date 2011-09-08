@@ -307,16 +307,10 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.Override.HeaderAppearance.BackColor = headerBackColor1;
 				this.DisplayLayout.Override.HeaderAppearance.BackColor2 = headerBackColor2;
 				this.DisplayLayout.Override.HeaderAppearance.BackGradientStyle = GradientStyle.Vertical;
-				this.DisplayLayout.Override.BorderStyleRowSelector = UIElementBorderStyle.Solid;
-				this.DisplayLayout.Override.RowSelectorAppearance.BorderColor = borderColor;
-				this.DisplayLayout.Override.RowSelectorAppearance.BackColor = headerBackColor1;
-				this.DisplayLayout.Override.RowSelectorAppearance.BackColor2 = headerBackColor2;
-				this.DisplayLayout.Override.RowSelectorAppearance.BackGradientStyle = GradientStyle.Vertical;
-				this.DisplayLayout.Override.RowAppearance.BorderColor = borderColor;
-				//this.DisplayLayout.Appearance.BackColor = groupByBoxBackColor;
 				this.DisplayLayout.Override.BorderStyleSummaryFooter = UIElementBorderStyle.None;
 				this.DisplayLayout.Override.SummaryValueAppearance.BackColor = summaryBackColor;
 				this.DisplayLayout.Override.SummaryValueAppearance.BorderColor = borderColor;
+				this.DisplayLayout.Override.RowAppearance.BorderColor = borderColor;
 
 				this.SuspendRowSynchronization();
 
@@ -531,22 +525,21 @@ namespace KaupischITC.InfragisticsControls
 
 		public bool DrawElement(DrawPhase drawPhase,ref UIElementDrawParams drawParams)
 		{
-			Rectangle rectangle = drawParams.Element.Rect;
-			rectangle.Inflate(0,-1);
-			rectangle.Offset(-1,-1);
-
-			if (drawParams.Element is HeaderUIElement)
+			if (drawParams.Element is HeaderUIElement || drawParams.Element is RowSelectorUIElement)
 			{
-				bool isMouseOver = this.RectangleToScreen(drawParams.InvalidRect).Contains(Control.MousePosition);
-				Color color1 = (isMouseOver) ? Color.FromArgb(254,254,254) : Color.FromArgb(248,248,248);
-				Color color2 = (isMouseOver) ? Color.FromArgb(248,248,248) : Color.FromArgb(242,242,242);
+				bool isHighlight = (drawParams.Element is HeaderUIElement) && this.RectangleToScreen(drawParams.InvalidRect).Contains(Control.MousePosition);
+
+				Color color1 = (isHighlight) ? Color.FromArgb(254,254,254) : Color.FromArgb(248,248,248);
+				Color color2 = (isHighlight) ? Color.FromArgb(248,248,248) : Color.FromArgb(242,242,242);
+
+				Rectangle rectangle = (drawParams.Element is HeaderUIElement)
+					? new Rectangle(x: drawParams.Element.Rect.X-1,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width,height: drawParams.Element.Rect.Height-1)
+					: new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y-1,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height);
 
 				using (LinearGradientBrush brush = new LinearGradientBrush(rectangle,color1,color2,LinearGradientMode.Vertical))
 					drawParams.Graphics.FillRectangle(brush,rectangle);
 				using (Pen pen = new Pen(Color.FromArgb(202,203,211)))
 					drawParams.Graphics.DrawRectangle(pen,rectangle);
-
-				return true;
 			}
 
 			if (drawParams.Element is SortIndicatorUIElement)
@@ -554,6 +547,7 @@ namespace KaupischITC.InfragisticsControls
 				UltraGridColumn column = drawParams.Element.GetContext(typeof(UltraGridColumn)) as UltraGridColumn;
 				if (column!=null)
 				{
+					Rectangle rectangle = new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height-1);
 					Image image = (column.SortIndicator==SortIndicator.Ascending) ? this.SortIndicatorImageAscending : this.SortIndicatorImageDescending;
 
 					Point point = new Point((rectangle.Left+rectangle.Right-image.Width)/2,(rectangle.Top+rectangle.Bottom)/2);
@@ -570,12 +564,10 @@ namespace KaupischITC.InfragisticsControls
 						using (StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Center,LineAlignment = StringAlignment.Far })
 							drawParams.Graphics.DrawString(index.ToString(),font,Brushes.Gray,rectangle,stringFormat);
 					}
-
-					return true;
 				}
 			}
 
-			return false;
+			return true;
 		}
 
 		public DrawPhase GetPhasesToFilter(ref UIElementDrawParams drawParams)
@@ -584,6 +576,9 @@ namespace KaupischITC.InfragisticsControls
 				return DrawPhase.AfterDrawTheme;
 			if (drawParams.Element is SortIndicatorUIElement)
 				return DrawPhase.BeforeDrawElement;
+			if (drawParams.Element is RowSelectorUIElement)
+				return DrawPhase.BeforeDrawBorders;
+
 			return DrawPhase.None;
 		}
 	}
