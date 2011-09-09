@@ -32,6 +32,9 @@ namespace KaupischITC.InfragisticsControls
 		public Image SortIndicatorImageAscending { get; set; }
 		public Image SortIndicatorImageDescending { get; set; }
 
+		public class UltraGridColumnEventArgs : EventArgs { public UltraGridColumn Column { get; set; } }
+		public event EventHandler<UltraGridColumnEventArgs> ColumnFormatChanged;
+		public event EventHandler<UltraGridColumnEventArgs> ColumnCaptionChanged;
 
 		private Dictionary<SummaryType,string[]> availableSummaries = new Dictionary<SummaryType,string[]>()
 		{
@@ -82,6 +85,9 @@ namespace KaupischITC.InfragisticsControls
 			{
 				if (this.ContextUltraGridColumn!=null)
 					this.ContextUltraGridColumn.Header.Caption = toolStripTextBoxCaption.Text;
+
+				if (this.ColumnCaptionChanged!=null)
+					this.ColumnCaptionChanged(this,new UltraGridColumnEventArgs { Column = this.ContextUltraGridColumn });
 			};
 			this.ContextMenuStrip.Items.Add(toolStripTextBoxCaption);
 
@@ -146,6 +152,9 @@ namespace KaupischITC.InfragisticsControls
 
 			foreach (SummarySettings summarySettings in this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SourceColumn==this.ContextUltraGridColumn))
 				summarySettings.DisplayFormat = this.GetSummaryFormat(summarySettings.SummaryType);
+
+			if (this.ColumnFormatChanged!=null)
+				this.ColumnFormatChanged(this,new UltraGridColumnEventArgs { Column = this.ContextUltraGridColumn });
 		}
 
 
