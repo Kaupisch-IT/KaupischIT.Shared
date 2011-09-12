@@ -55,6 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColumnChooser.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CustomizedUltraGrid.cs">
       <SubType>Component</SubType>
     </Compile>

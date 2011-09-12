@@ -11,6 +11,7 @@ using Infragistics.Win.UltraWinGrid;
 using KaupischITC.Charting;
 using KaupischITC.Extensions;
 using KaupischITC.Shared;
+using Infragistics.Shared;
 
 namespace KaupischITC.InfragisticsControls
 {
@@ -76,6 +77,7 @@ namespace KaupischITC.InfragisticsControls
 			this.CreationFilter = this;
 			this.DrawFilter = this;
 
+			this.Font = SystemFonts.MessageBoxFont;
 			this.InitializeComponent();
 
 			this.ContextMenuStrip = new ContextMenuStrip();
@@ -124,7 +126,13 @@ namespace KaupischITC.InfragisticsControls
 			ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
 			this.SortIndicatorImageAscending = (Image)resources.GetObject("Up");
 			this.SortIndicatorImageDescending = (Image)resources.GetObject("Down");
+
+			this.OnInitializeLayout(new InitializeLayoutEventArgs(this.DisplayLayout));
+
+			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("ColumnChooserButtonToolTip", "Spalten auswählen");
 		}
+
+		
 
 		private void SummaryMenuItem_Click(object sender,EventArgs e)
 		{
@@ -274,8 +282,9 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.GroupByBox.Prompt = "Ziehen Sie einen Spaltenkopf hierher, um nach diesem zu gruppieren.";
 				this.DisplayLayout.Override.CellClickAction = CellClickAction.EditAndSelectText;
 				this.DisplayLayout.Override.HeaderClickAction = HeaderClickAction.SortMulti;
-				this.DisplayLayout.ScrollStyle = Infragistics.Win.UltraWinGrid.ScrollStyle.Immediate;
-				this.DisplayLayout.ViewStyleBand = Infragistics.Win.UltraWinGrid.ViewStyleBand.OutlookGroupBy;
+				this.DisplayLayout.ScrollStyle = ScrollStyle.Immediate;
+				this.DisplayLayout.ViewStyleBand = ViewStyleBand.OutlookGroupBy;
+				this.DisplayLayout.ViewStyle = ViewStyle.MultiBand;
 				this.DisplayLayout.Override.RowSelectorNumberStyle = RowSelectorNumberStyle.RowIndex;
 				this.DisplayLayout.Override.ExpansionIndicator = ShowExpansionIndicator.CheckOnDisplay;
 				this.DisplayLayout.Override.CellAppearance.TextTrimming = TextTrimming.EllipsisCharacter;
@@ -384,10 +393,15 @@ namespace KaupischITC.InfragisticsControls
 
 		protected override void OnBeforeColumnChooserDisplayed(BeforeColumnChooserDisplayedEventArgs e)
 		{
-			e.Dialog.Text = "Spaltenauswahl";
-			e.Dialog.ColumnChooserControl.MultipleBandSupport = MultipleBandSupport.DisplayColumnsFromAllBands;
-			e.Dialog.ColumnChooserControl.Style = ColumnChooserStyle.AllColumnsAndChildBandsWithCheckBoxes;
-			base.OnBeforeColumnChooserDisplayed(e);
+			e.Cancel = true;
+
+			ColumnChooser columnChooser = new ColumnChooser(e.Dialog.ColumnChooserControl.CurrentBand) { BorderStyle = BorderStyle.None };
+			ToolStripControlHost toolStripControlHost = new ToolStripControlHost(columnChooser) { Margin = new Padding(3) };
+			ToolStripDropDown toolStripDropDown = new ToolStripDropDown();
+			toolStripDropDown.Items.Add(toolStripControlHost);
+
+			UIElement uiElement = this.DisplayLayout.UIElement.ElementFromPoint(this.DisplayLayout.UIElement.CurrentMousePosition);
+			toolStripDropDown.Show(this,uiElement.Rect.X-1,uiElement.Rect.Bottom+1);
 		}
 
 
@@ -536,13 +550,14 @@ namespace KaupischITC.InfragisticsControls
 		{
 			if (drawParams.Element is HeaderUIElement || drawParams.Element is RowSelectorUIElement)
 			{
-				bool isHighlight = (drawParams.Element is HeaderUIElement) && this.RectangleToScreen(drawParams.InvalidRect).Contains(Control.MousePosition);
+				HeaderUIElement headerUIElement = drawParams.Element as HeaderUIElement;
+				bool isHighlight = (headerUIElement!=null) && this.RectangleToScreen(drawParams.InvalidRect).Contains(Control.MousePosition);
 
 				Color color1 = (isHighlight) ? Color.FromArgb(254,254,254) : Color.FromArgb(248,248,248);
 				Color color2 = (isHighlight) ? Color.FromArgb(248,248,248) : Color.FromArgb(242,242,242);
 
-				Rectangle rectangle = (drawParams.Element is HeaderUIElement)
-					? new Rectangle(x: drawParams.Element.Rect.X-1,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width,height: drawParams.Element.Rect.Height-1)
+				Rectangle rectangle = (headerUIElement!=null)
+					? new Rectangle(x: drawParams.Element.Rect.X-1,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width,height: drawParams.Element.Rect.Height-((headerUIElement.Header.Column!=null)?1:0))
 					: new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y-1,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height);
 
 				using (LinearGradientBrush brush = new LinearGradientBrush(rectangle,color1,color2,LinearGradientMode.Vertical))
