@@ -11,7 +11,6 @@ using Infragistics.Win.UltraWinGrid;
 using KaupischITC.Charting;
 using KaupischITC.Extensions;
 using KaupischITC.Shared;
-using Infragistics.Shared;
 
 namespace KaupischITC.InfragisticsControls
 {
@@ -88,7 +87,7 @@ namespace KaupischITC.InfragisticsControls
 				if (this.ContextUltraGridColumn!=null)
 					this.ContextUltraGridColumn.Header.Caption = toolStripTextBoxCaption.Text;
 
-				if (this.ColumnCaptionChanged!=null)
+				if (this.ColumnCaptionChanged!=null && this.ContextUltraGridColumn!=null)
 					this.ColumnCaptionChanged(this,new UltraGridColumnEventArgs { Column = this.ContextUltraGridColumn });
 			};
 			this.ContextMenuStrip.Items.Add(toolStripTextBoxCaption);
@@ -499,7 +498,7 @@ namespace KaupischITC.InfragisticsControls
 			private static readonly Infragistics.Win.Appearance positiveAppearance = new Infragistics.Win.Appearance() { Image = "up" };
 			private static readonly Infragistics.Win.Appearance neutralAppearance = new Infragistics.Win.Appearance() { Image = "right" };
 
-			public event EventHandler PropertyChanged;
+			public event EventHandler PropertyChanged { add { } remove { } }
 
 			public void ResolveAppearance(ref AppearanceData appData,ref AppearancePropFlags flags,object dataValue,IConditionContextProvider context)
 			{
@@ -528,7 +527,7 @@ namespace KaupischITC.InfragisticsControls
 		{
 			private static readonly Infragistics.Win.Appearance negativeAppearance = new Infragistics.Win.Appearance() { ForeColor = Color.Red };
 
-			public event EventHandler PropertyChanged;
+			public event EventHandler PropertyChanged { add { } remove { } }
 
 			public void ResolveAppearance(ref AppearanceData appData,ref AppearancePropFlags flags,object dataValue,IConditionContextProvider context)
 			{

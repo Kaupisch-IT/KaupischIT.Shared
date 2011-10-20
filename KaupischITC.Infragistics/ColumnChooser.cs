@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Infragistics.Win.UltraWinGrid;
 
 namespace KaupischITC.InfragisticsControls
@@ -27,7 +28,7 @@ namespace KaupischITC.InfragisticsControls
 			this.IntegralHeight = false;
 			this.CheckOnClick = true;
 
-			foreach (UltraGridColumn column in this.currentBand.Columns.OfType<UltraGridColumn>().OrderBy(c => c.IsChaptered).ThenBy(c => c.Header.Caption))
+			foreach (UltraGridColumn column in this.currentBand.Columns.OfType<UltraGridColumn>().OrderBy(c => c.Header.Caption))
 			{
 				bool isHidden = (column.IsChaptered) ? this.currentBand.Layout.Bands[column.Key].Hidden : column.Hidden;
 				this.Items.Add(new ColumnItem { Column = column },!isHidden);
@@ -47,11 +48,24 @@ namespace KaupischITC.InfragisticsControls
 		protected override void OnDrawItem(DrawItemEventArgs e)
 		{
 			UltraGridColumn column = ((ColumnItem)this.Items[e.Index]).Column;
-
-			Color foreColor = (this.GetItemChecked(e.Index)) ? e.ForeColor : SystemColors.GrayText;
 			Color backColor = (column.IsChaptered) ? Color.FromArgb(240,241,242) : e.BackColor;
+			Color foreColor = (this.GetItemChecked(e.Index)) ? e.ForeColor : SystemColors.InactiveCaptionText;
 
-			base.OnDrawItem(new DrawItemEventArgs(e.Graphics,e.Font,e.Bounds,e.Index,e.State,foreColor,backColor));
+			base.OnDrawItem(new DrawItemEventArgs(e.Graphics,e.Font,e.Bounds,e.Index,e.State,foreColor,e.BackColor));
+			if (column.IsChaptered)
+			{
+				Font font = new Font(e.Font,FontStyle.Bold);
+				Rectangle rect = e.Bounds;
+
+				Size glyphSize = CheckBoxRenderer.GetGlyphSize(e.Graphics,CheckBoxState.CheckedNormal);
+				rect.Offset(glyphSize.Width+4,0);
+				
+				using (Brush brush = new SolidBrush(e.BackColor))
+					e.Graphics.FillRectangle(brush,rect);
+				using (Brush brush = new SolidBrush(e.ForeColor))
+					e.Graphics.DrawString(column.Header.Caption,font,brush,rect);
+			}
 		}
+
 	}
 }
