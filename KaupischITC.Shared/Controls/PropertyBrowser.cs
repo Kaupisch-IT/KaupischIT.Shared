@@ -1,8 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
-using System.ComponentModel;
 
 namespace KaupischITC.Shared
 {
@@ -41,7 +41,7 @@ namespace KaupischITC.Shared
 			}
 		}
 
-		
+
 		public Func<Type,bool> TypeFilter
 		{
 			get { return this.objectBrowser.TypeFilter; }
@@ -60,9 +60,9 @@ namespace KaupischITC.Shared
 			this.objectBrowser.FullRowSelect = true;
 			this.objectBrowser.BorderStyle = BorderStyle.None;
 			this.objectBrowser.CheckBoxes = false;
-			this.objectBrowser.VisibleChanged += new EventHandler(objectBrowser_VisibleChanged);
-			this.objectBrowser.AfterSelect += new TreeViewEventHandler(objectBrowser_AfterSelect);
-			this.SelectedValueChanged += new EventHandler(PropertyBrowser_SelectedValueChanged);
+			this.objectBrowser.VisibleChanged += objectBrowser_VisibleChanged;
+			this.objectBrowser.AfterSelect += objectBrowser_AfterSelect;
+			this.SelectedValueChanged += PropertyBrowser_SelectedValueChanged;
 
 			this.HostedControl = objectBrowser;
 		}
@@ -87,7 +87,22 @@ namespace KaupischITC.Shared
 		private void objectBrowser_VisibleChanged(object sender,EventArgs e)
 		{
 			if (!this.objectBrowser.Visible)
-				this.objectBrowser.Focus();
+				this.objectBrowser.Focus(); // TODO: Warum? Wegen Focus und so!?
+		}
+
+
+		public PropertyInfo GetSelectedPropertyInfo(Type type)
+		{
+			PropertyInfo result = null;
+			foreach (string propertyName in this.SelectedProperty.Split('.'))
+			{
+				result = type.GetProperty(propertyName);
+				if (result==null)
+					return null;
+				else
+					type = result.PropertyType;
+			}
+			return result;
 		}
 
 

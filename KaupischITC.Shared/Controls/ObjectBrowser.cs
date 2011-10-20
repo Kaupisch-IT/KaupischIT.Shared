@@ -19,7 +19,7 @@ namespace KaupischITC.Shared
 		public bool RemoveEmptyTypes { get; set; }
 
 		public Func<Type,bool> TypeFilter { get; set; }
-		
+
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public IEnumerable<string> CheckedNodes
 		{
@@ -36,7 +36,7 @@ namespace KaupischITC.Shared
 				{
 					this.BeginUpdate();
 					this.isUpdating = true;
-					
+
 					foreach (TreeNode treeNode in this.Nodes.OfType<TreeNode>().SelectMany(node => node.Flatten(tn => tn.Nodes.Cast<TreeNode>())).Where(tn => tn.Checked))
 						treeNode.Checked = false;
 
@@ -95,10 +95,10 @@ namespace KaupischITC.Shared
 			this.ShowRootLines = false;
 			this.displayedType = this.GetType(); // HACK
 			this.DisplayedType = null;
+			this.DrawMode = TreeViewDrawMode.OwnerDrawText;
 		}
 
-
-
+		
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Type DisplayedType
 		{
@@ -220,6 +220,37 @@ namespace KaupischITC.Shared
 				};
 				this.BeforeExpand += treeViewCancelEventHandler;
 			}
+		}
+
+
+		// TODO
+		public int HeightResolved
+		{
+			get { return this.ResolveHeight(this.Nodes) + this.Margin.Top+this.Margin.Bottom; }
+		}
+
+
+		// TODO
+		private int ResolveHeight(TreeNodeCollection treeNodeCollection)
+		{
+			int result = 0;
+			foreach (TreeNode treeNode in treeNodeCollection)
+			{
+				result += this.ItemHeight;
+				if (treeNode.IsExpanded)
+					result += this.ResolveHeight(treeNode.Nodes);
+			}
+			return result;
+		}
+
+
+		protected override void OnDrawNode(DrawTreeNodeEventArgs e)
+		{
+			if (this.CheckBoxes)
+				e.Node.ForeColor = (e.Node.Checked) ? SystemColors.ControlText : SystemColors.InactiveCaptionText;
+
+			e.DrawDefault = true;
+			base.OnDrawNode(e);
 		}
 	}
 }
