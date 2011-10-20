@@ -12,12 +12,12 @@ namespace KaupischITC.Extensions
 		/// <param name="text">Der zu bemessende Text.</param>
 		/// <param name="font">Der Font, der auf den bemessenen Text angewendet werden soll.</param>
 		/// <returns>Den Bereich, der die Zeichenfolge umschließt. </returns>
-		public static RectangleF MeasureText(this Graphics graphics,string text,Font font)
+		public static RectangleF MeasureText(this Graphics graphics,string text,Font font,int maxWidth=0)
 		{
 			CharacterRange[] characterRange = { new CharacterRange(0,text.Length) };
 			StringFormat stringFormat = new StringFormat(StringFormat.GenericTypographic);
 			stringFormat.SetMeasurableCharacterRanges(characterRange);
-			Region[] regions = graphics.MeasureCharacterRanges(text,font,Rectangle.Empty,stringFormat);
+			Region[] regions = graphics.MeasureCharacterRanges(text,font,new Rectangle(0,0,maxWidth,0),stringFormat);
 			return regions.First().GetBounds(graphics);
 		}
 	}

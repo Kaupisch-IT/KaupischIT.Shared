@@ -38,5 +38,34 @@ namespace KaupischITC.Extensions
 				.Where(method => parameterTypes.SequenceEqual(method.GetParameters().Select(p => (p.ParameterType.IsGenericType) ? p.ParameterType.GetGenericTypeDefinition() : p.ParameterType)))
 				.SingleOrDefault();
 		}
+
+		
+		/// <summary>
+		/// Prüft, ob der angegebene Typ ein generischer Nullable-Typ ist
+		/// </summary>
+		/// <param name="type">der Typ, der geprüft werden soll</param>
+		/// <returns>True, wenn der Typ ein generischer Nullable-Typ ist; andernfalls false</returns>
+		public static bool IsNullable(this Type type)
+		{
+			return (type.IsGenericType && type.GetGenericTypeDefinition()==typeof(Nullable<>));
+		}
+
+		
+		/// <summary>
+		/// Ermittelt, ob der angegebene Typ eine bestimmte Schnittstelle implementiert
+		/// </summary>
+		/// <param name="type">der Typ, der geprüft werden soll</param>
+		/// <param name="interfaceType">der Typ der Schnittstelle</param>
+		/// <returns>True, wenn der angegebene Typ die angegebene Schnittstelle implementiert; andernfalls false</returns>
+		public static bool ImplementsInterface(this Type type,Type interfaceType)
+		{
+			if (!interfaceType.IsInterface)
+				throw new ArgumentException("Der Typ '"+interfaceType+"' ist keine Schnittstelle.");
+
+			if (interfaceType.IsGenericTypeDefinition)
+				return type.GetInterfaces().Concat(new[] { type }).Any(itype => itype.IsGenericType && itype.GetGenericTypeDefinition()==interfaceType);
+			else
+				return type.GetInterfaces().Concat(new[] { type }).Any(itype => itype==interfaceType);
+		}
 	}
 }

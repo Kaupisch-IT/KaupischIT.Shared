@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace KaupischITC.Extensions
@@ -25,7 +24,7 @@ namespace KaupischITC.Extensions
 		/// </summary>
 		/// <param name="customAttributeProvider">der ICustomAttributeProvider</param>
 		/// <returns>true, wenn der ICustomAttributeProvider ein ExtensionAttribute-Attribut besitzt; andernfalls false</returns>
-		public static bool IsExtensionMethod(this ICustomAttributeProvider customAttributeProvider)
+		public static bool IsExtension(this ICustomAttributeProvider customAttributeProvider)
 		{
 			return customAttributeProvider.IsDefined(typeof(ExtensionAttribute),false);
 		}
