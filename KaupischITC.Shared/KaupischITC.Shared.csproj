@@ -91,10 +91,14 @@
     <Compile Include="Controls\PropertyBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\RichTextBoxSelectionKeeper.cs" />
     <Compile Include="Controls\SeparatorLabel.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ControlChanger\FormDisabler.cs" />
+    <Compile Include="Controls\SyntaxRichTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Attributes\SubversionAttribute.cs" />
     <Compile Include="ControlChanger\WaitCursorChanger.cs" />
