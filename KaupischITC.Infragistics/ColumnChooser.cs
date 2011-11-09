@@ -1,71 +1,69 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using Infragistics.Win.UltraWinGrid;
 
 namespace KaupischITC.InfragisticsControls
 {
-	public partial class ColumnChooser : CheckedListBox
+	public partial class ColumnChooser : TreeView
 	{
 		private readonly UltraGridBand currentBand;
 
-		private class ColumnItem
+		public ColumnChooser(UltraGridBand currentBand)
 		{
-			public UltraGridColumn Column { get; set; }
-			public override string ToString() { return this.Column.Header.Caption; }
+			this.Font = SystemFonts.MessageBoxFont;
+
+			this.currentBand = currentBand;
+
+			this.ShowRootLines = false;
+			this.ShowPlusMinus = false;
+			this.ShowLines = false;
+			this.CheckBoxes = true;
+			
+			foreach (UltraGridColumn column in this.currentBand.Columns.OfType<UltraGridColumn>().OrderBy(c => c.Header.Caption))
+			{
+				bool isHidden = (column.IsChaptered) ? this.currentBand.Layout.Bands[column.Key].Hidden : column.Hidden;
+				TreeNode treeNode = new TreeNode(column.Header.Caption) { Checked = !isHidden,Tag = column };
+				this.Nodes.Add(treeNode);
+			}
+						
+			foreach (TreeNode treeNode in this.Nodes)
+			{
+				Rectangle bounds = treeNode.Bounds;
+				this.Width = Math.Max(bounds.X + bounds.Width + 20,this.Width);
+				this.Height = Math.Max(bounds.Y + bounds.Height,this.Height);
+			}
+
+			this.DrawMode = TreeViewDrawMode.OwnerDrawText;
+		}
+		
+
+		protected override void OnDrawNode(DrawTreeNodeEventArgs e)
+		{
+			FontStyle fontStyle = FontStyle.Regular;
+			if (!e.Node.Checked)
+				fontStyle |= FontStyle.Strikeout;
+			if (this.GetColumnAt(e.Node.Index).IsChaptered)
+				fontStyle |= FontStyle.Italic;
+
+			Color color = (e.Node.IsSelected) ? SystemColors.HighlightText : SystemColors.ControlText;
+			using (Font font = new Font(e.Node.NodeFont ?? this.Font,fontStyle))
+				TextRenderer.DrawText(e.Graphics,e.Node.Text,font,e.Bounds,color);
 		}
 
 		private UltraGridColumn GetColumnAt(int index)
 		{
-			return ((ColumnItem)this.Items[index]).Column;
+			return (UltraGridColumn)this.Nodes[index].Tag;
 		}
 
-		public ColumnChooser(UltraGridBand currentBand)
+		protected override void OnAfterCheck(TreeViewEventArgs e)
 		{
-			this.currentBand = currentBand;
-
-			this.IntegralHeight = false;
-			this.CheckOnClick = true;
-
-			foreach (UltraGridColumn column in this.currentBand.Columns.OfType<UltraGridColumn>().OrderBy(c => c.Header.Caption))
-			{
-				bool isHidden = (column.IsChaptered) ? this.currentBand.Layout.Bands[column.Key].Hidden : column.Hidden;
-				this.Items.Add(new ColumnItem { Column = column },!isHidden);
-			}
-		}
-
-		protected override void OnItemCheck(ItemCheckEventArgs e)
-		{
-			UltraGridColumn column = this.GetColumnAt(e.Index);
+			UltraGridColumn column = this.GetColumnAt(e.Node.Index);
 			if (column.IsChaptered)
-				this.currentBand.Layout.Bands[column.Key].Hidden = (e.NewValue==CheckState.Unchecked);
+				this.currentBand.Layout.Bands[column.Key].Hidden = !e.Node.Checked;
 			else
-				this.currentBand.Columns[column.Key].Hidden = (e.NewValue==CheckState.Unchecked);
+				this.currentBand.Columns[column.Key].Hidden = !e.Node.Checked;
 		}
-
-
-		protected override void OnDrawItem(DrawItemEventArgs e)
-		{
-			UltraGridColumn column = ((ColumnItem)this.Items[e.Index]).Column;
-			Color backColor = (column.IsChaptered) ? Color.FromArgb(240,241,242) : e.BackColor;
-			Color foreColor = (this.GetItemChecked(e.Index)) ? e.ForeColor : SystemColors.InactiveCaptionText;
-
-			base.OnDrawItem(new DrawItemEventArgs(e.Graphics,e.Font,e.Bounds,e.Index,e.State,foreColor,e.BackColor));
-			if (column.IsChaptered)
-			{
-				Font font = new Font(e.Font,FontStyle.Bold);
-				Rectangle rect = e.Bounds;
-
-				Size glyphSize = CheckBoxRenderer.GetGlyphSize(e.Graphics,CheckBoxState.CheckedNormal);
-				rect.Offset(glyphSize.Width+4,0);
-				
-				using (Brush brush = new SolidBrush(e.BackColor))
-					e.Graphics.FillRectangle(brush,rect);
-				using (Brush brush = new SolidBrush(e.ForeColor))
-					e.Graphics.DrawString(column.Header.Caption,font,brush,rect);
-			}
-		}
-
 	}
 }

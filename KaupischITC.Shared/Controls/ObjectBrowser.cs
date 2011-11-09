@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using KaupischITC.Extensions;
+using System.Diagnostics;
 
 namespace KaupischITC.Shared
 {
@@ -98,7 +99,7 @@ namespace KaupischITC.Shared
 			this.DrawMode = TreeViewDrawMode.OwnerDrawText;
 		}
 
-		
+
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Type DisplayedType
 		{
@@ -246,11 +247,25 @@ namespace KaupischITC.Shared
 
 		protected override void OnDrawNode(DrawTreeNodeEventArgs e)
 		{
-			if (this.CheckBoxes)
-				e.Node.ForeColor = (e.Node.Checked) ? SystemColors.ControlText : SystemColors.InactiveCaptionText;
+			Font regularFont = e.Node.NodeFont ?? this.Font;
+			
+			FontStyle fontStyle = (e.Node.Checked) ? FontStyle.Bold : FontStyle.Regular;
+			using (Font font = new Font(regularFont,fontStyle))
+			{
+				Color color = ((e.State & TreeNodeStates.Focused)==TreeNodeStates.Focused) ? SystemColors.HighlightText : SystemColors.ControlText;
+				TextRenderer.DrawText(e.Graphics,e.Node.Text,font,e.Bounds.Location,color,TextFormatFlags.GlyphOverhangPadding);
+			}
 
-			e.DrawDefault = true;
-			base.OnDrawNode(e);
+			if (!e.Node.Checked && !e.Node.IsExpanded)
+			{
+				int checkedChildsCount = e.Node.Flatten(n => n.Nodes.Cast<TreeNode>()).Count(n => n.Checked);
+				if (checkedChildsCount>0)
+				{
+					Size size = TextRenderer.MeasureText(e.Node.Text,regularFont);
+					using (Font font = new Font(regularFont,FontStyle.Bold))
+						TextRenderer.DrawText(e.Graphics,"["+checkedChildsCount+"]",font,new Point(e.Bounds.X+e.Bounds.Width,e.Bounds.Y),SystemColors.ControlText,TextFormatFlags.GlyphOverhangPadding);
+				}
+			}
 		}
 	}
 }
