@@ -64,12 +64,6 @@
     <Compile Include="CustomizedUltraGrid.Designer.cs">
       <DependentUpon>CustomizedUltraGrid.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDetails.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormDetails.designer.cs">
-      <DependentUpon>FormDetails.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormDiff.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,15 +77,16 @@
       <DependentUpon>PrintUltraGridDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CustomizedUltraGridExtensions.cs" />
     <Compile Include="UltraGridPrintSettings.cs" />
+    <Compile Include="ValueAppearances\IconValueAppearance.cs" />
+    <Compile Include="ValueAppearances\NegativeValueAppearance.cs" />
+    <Compile Include="ValueAppearances\ValueAppearance.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CustomizedUltraGrid.resx">
       <DependentUpon>CustomizedUltraGrid.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormDetails.resx">
-      <DependentUpon>FormDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDiff.resx">
       <DependentUpon>FormDiff.cs</DependentUpon>

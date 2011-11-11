@@ -10,6 +10,7 @@ using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
 using KaupischITC.Charting;
 using KaupischITC.Extensions;
+using KaupischITC.InfragisticsControls.ValueAppearances;
 using KaupischITC.Shared;
 
 namespace KaupischITC.InfragisticsControls
@@ -113,6 +114,7 @@ namespace KaupischITC.InfragisticsControls
 			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
 			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
 			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			
 			this.fontToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
 			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.ValueBasedAppearance = ((ToolStripMenuItem)sender).Checked ? null : new NegativeValueAppearance(); });
 			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.ValueBasedAppearance = ((ToolStripMenuItem)sender).Checked ? null : new IconValueAppearance(); });
@@ -128,10 +130,9 @@ namespace KaupischITC.InfragisticsControls
 
 			this.OnInitializeLayout(new InitializeLayoutEventArgs(this.DisplayLayout));
 
-			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("ColumnChooserButtonToolTip", "Spalten auswählen");
+			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("ColumnChooserButtonToolTip","Spalten auswählen");
 		}
 
-		
 
 		private void SummaryMenuItem_Click(object sender,EventArgs e)
 		{
@@ -139,15 +140,22 @@ namespace KaupischITC.InfragisticsControls
 			SummaryType summaryType = (SummaryType)menuItem.Tag;
 
 			if (!menuItem.Checked)
-			{
-				SummarySettings summarySettings = this.ContextUltraGridColumn.Band.Summaries.Add(summaryType,this.ContextUltraGridColumn);
-				summarySettings.DisplayFormat = this.GetSummaryFormat(summaryType);
-				summarySettings.Appearance.TextHAlign = HAlign.Right;
-			}
+				this.AddColumnSummary(this.ContextUltraGridColumn,summaryType);
 			else
-				foreach (SummarySettings summarySettings in this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SummaryType==summaryType && ss.SourceColumn==this.ContextUltraGridColumn))
-					this.ContextUltraGridColumn.Band.Summaries.Remove(summarySettings);
+				this.RemoveColumnSummary(this.ContextUltraGridColumn,summaryType);
 		}
+		public void AddColumnSummary(UltraGridColumn column,SummaryType summaryType)
+		{
+			SummarySettings summarySettings =column.Band.Summaries.Add(summaryType,column);
+			summarySettings.DisplayFormat = this.GetColumnSummaryFormat(column.Format,summaryType);
+			summarySettings.Appearance.TextHAlign = HAlign.Right;
+		}
+		public void RemoveColumnSummary(UltraGridColumn column,SummaryType summaryType)
+		{
+			foreach (SummarySettings summarySettings in column.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SummaryType==summaryType && ss.SourceColumn==column))
+				this.ContextUltraGridColumn.Band.Summaries.Remove(summarySettings);
+		}
+
 
 
 		private void FormatMenuItem_Click(object sender,EventArgs e)
@@ -155,19 +163,23 @@ namespace KaupischITC.InfragisticsControls
 			ToolStripItem menuItem = (ToolStripItem)sender;
 			string format = (string)menuItem.Tag;
 
-			this.ContextUltraGridColumn.Format = format;
+			this.SetColumnFormat(this.ContextUltraGridColumn,format);
+		}
+		public void SetColumnFormat(UltraGridColumn column,string format)
+		{
+			column.Format = format;
 
-			foreach (SummarySettings summarySettings in this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SourceColumn==this.ContextUltraGridColumn))
-				summarySettings.DisplayFormat = this.GetSummaryFormat(summarySettings.SummaryType);
+			foreach (SummarySettings summarySettings in column.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SourceColumn==column))
+				summarySettings.DisplayFormat = this.GetColumnSummaryFormat(format,summarySettings.SummaryType);
 
 			if (this.ColumnFormatChanged!=null)
-				this.ColumnFormatChanged(this,new UltraGridColumnEventArgs { Column = this.ContextUltraGridColumn });
+				this.ColumnFormatChanged(this,new UltraGridColumnEventArgs { Column = column });
 		}
 
 
-		private string GetSummaryFormat(SummaryType summaryType)
+		private string GetColumnSummaryFormat(string cellFormat,SummaryType summaryType)
 		{
-			return this.availableSummaries[summaryType][1]+": " + ((summaryType!=SummaryType.Count) ? "{0:"+this.ContextUltraGridColumn.Format+"}" : "{0}");
+			return this.availableSummaries[summaryType][1]+": " + ((summaryType!=SummaryType.Count) ? "{0:"+cellFormat+"}" : "{0}");
 		}
 
 
@@ -341,6 +353,7 @@ namespace KaupischITC.InfragisticsControls
 					{
 						ultraGridColumn.CellActivation = Activation.ActivateOnly;
 						ultraGridColumn.HiddenWhenGroupBy = DefaultableBoolean.True;
+						ultraGridColumn.ValueBasedAppearance = new ValueAppearance();
 
 						if (ultraGridColumn.DataType.IsNumeric())
 							ultraGridColumn.CellAppearance.TextHAlign = HAlign.Right;
@@ -348,20 +361,21 @@ namespace KaupischITC.InfragisticsControls
 						if (ultraGridColumn.Format==null)
 						{
 							if (ultraGridColumn.Key.EndsWith("Preis",StringComparison.InvariantCultureIgnoreCase))
-								ultraGridColumn.Format = "C";
+								this.SetColumnFormat(ultraGridColumn,"C");
 							else if (Regex.IsMatch(ultraGridColumn.Key,"[^A-Z]P$"))
-								ultraGridColumn.Format = "P";
+								this.SetColumnFormat(ultraGridColumn,"P");
 						}
 
 						string[] hiddenPostfixes = { "ID","Id","Key" };
 						if (hiddenPostfixes.Any(pf => ultraGridColumn.Key.EndsWith(pf)) || ultraGridColumn.PropertyDescriptor.Attributes.OfType<BrowsableAttribute>().Any(ba => !ba.Browsable))
 							ultraGridColumn.Hidden = true;
-						else if (ultraGridColumn.DataType!=typeof(string) && !ultraGridColumn.DataType.IsValueType)
-						{
-							ultraGridColumn.Style = Infragistics.Win.UltraWinGrid.ColumnStyle.EditButton;
-							ultraGridColumn.ButtonDisplayStyle = Infragistics.Win.UltraWinGrid.ButtonDisplayStyle.Always;
-							ultraGridColumn.CellButtonAppearance.Image = "searchGlyph";
-						}
+						// TODO
+						//else if (ultraGridColumn.DataType!=typeof(string) && !ultraGridColumn.DataType.IsValueType)
+						//{
+						//    ultraGridColumn.Style = Infragistics.Win.UltraWinGrid.ColumnStyle.EditButton;
+						//    ultraGridColumn.ButtonDisplayStyle = Infragistics.Win.UltraWinGrid.ButtonDisplayStyle.Always;
+						//    ultraGridColumn.CellButtonAppearance.Image = "searchGlyph";
+						//}
 						else
 							ultraGridColumn.Style = Infragistics.Win.UltraWinGrid.ColumnStyle.Default;
 					}
@@ -434,12 +448,8 @@ namespace KaupischITC.InfragisticsControls
 
 		protected override void OnClickCellButton(CellEventArgs e)
 		{
-			using (new WaitCursorChanger(this))
-			using (FormDetails formDetails = new FormDetails(e.Cell.Value))
-			{
-				formDetails.ShowDialog(this);
-				base.OnClickCellButton(e);
-			}
+			// TODO
+			base.OnClickCellButton(e);
 		}
 
 
@@ -491,57 +501,10 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
-		[Serializable]
-		private class IconValueAppearance : IValueAppearance
-		{
-			private static readonly Infragistics.Win.Appearance negativeAppearance = new Infragistics.Win.Appearance() { Image = "down" };
-			private static readonly Infragistics.Win.Appearance positiveAppearance = new Infragistics.Win.Appearance() { Image = "up" };
-			private static readonly Infragistics.Win.Appearance neutralAppearance = new Infragistics.Win.Appearance() { Image = "right" };
 
-			public event EventHandler PropertyChanged { add { } remove { } }
+		
 
-			public void ResolveAppearance(ref AppearanceData appData,ref AppearancePropFlags flags,object dataValue,IConditionContextProvider context)
-			{
-				double value;
-				if (Double.TryParse(Convert.ToString(dataValue),out value))
-				{
-					double threshold = 0.05;
-
-					if (value < -threshold)
-						IconValueAppearance.negativeAppearance.MergeData(ref appData,ref flags);
-					else if (value > threshold)
-						IconValueAppearance.positiveAppearance.MergeData(ref appData,ref flags);
-					else
-						IconValueAppearance.neutralAppearance.MergeData(ref appData,ref flags);
-				}
-			}
-
-			public object Clone()
-			{
-				return this.MemberwiseClone();
-			}
-		}
-
-		[Serializable]
-		private class NegativeValueAppearance : IValueAppearance
-		{
-			private static readonly Infragistics.Win.Appearance negativeAppearance = new Infragistics.Win.Appearance() { ForeColor = Color.Red };
-
-			public event EventHandler PropertyChanged { add { } remove { } }
-
-			public void ResolveAppearance(ref AppearanceData appData,ref AppearancePropFlags flags,object dataValue,IConditionContextProvider context)
-			{
-				double value;
-				if (Double.TryParse(Convert.ToString(dataValue),out value))
-					if (value<0)
-						NegativeValueAppearance.negativeAppearance.MergeData(ref appData,ref flags);
-			}
-
-			public object Clone()
-			{
-				return this.MemberwiseClone();
-			}
-		}
+		
 
 
 
