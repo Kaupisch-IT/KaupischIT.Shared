@@ -114,10 +114,10 @@ namespace KaupischITC.InfragisticsControls
 			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
 			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
 			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
-			
+
 			this.fontToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
-			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.ValueBasedAppearance = ((ToolStripMenuItem)sender).Checked ? null : new NegativeValueAppearance(); });
-			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.ValueBasedAppearance = ((ToolStripMenuItem)sender).Checked ? null : new IconValueAppearance(); });
+			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues = !((ToolStripMenuItem)sender).Checked; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators = !((ToolStripMenuItem)sender).Checked; });
 
 			this.visualizationToolStripMenuItem = (ToolStripMenuItem)this.ContextMenuStrip.Items.Add("Visualisierung");
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
@@ -240,8 +240,8 @@ namespace KaupischITC.InfragisticsControls
 						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[0]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Bold==DefaultableBoolean.True);
 						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[1]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Italic==DefaultableBoolean.True);
 						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[2]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Underline==DefaultableBoolean.True);
-						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[4]).Checked = (this.ContextUltraGridColumn.ValueBasedAppearance is NegativeValueAppearance);
-						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[5]).Checked = (this.ContextUltraGridColumn.ValueBasedAppearance is IconValueAppearance);
+						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[4]).Checked = ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues;
+						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[5]).Checked = ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators;
 					}
 
 					// "Kreisdiagramm anzeigen"
@@ -353,7 +353,8 @@ namespace KaupischITC.InfragisticsControls
 					{
 						ultraGridColumn.CellActivation = Activation.ActivateOnly;
 						ultraGridColumn.HiddenWhenGroupBy = DefaultableBoolean.True;
-						ultraGridColumn.ValueBasedAppearance = new ValueAppearance();
+						if (ultraGridColumn.ValueBasedAppearance==null)
+							ultraGridColumn.ValueBasedAppearance = new ValueAppearance { HighlightNegativeValues = ultraGridColumn.DataType.IsNumeric() };
 
 						if (ultraGridColumn.DataType.IsNumeric())
 							ultraGridColumn.CellAppearance.TextHAlign = HAlign.Right;
@@ -502,9 +503,9 @@ namespace KaupischITC.InfragisticsControls
 
 
 
-		
 
-		
+
+
 
 
 

@@ -89,6 +89,8 @@ namespace KaupischITC.InfragisticsControls
 						IsBold = column.CellAppearance.FontData.Bold==DefaultableBoolean.True,
 						IsItalic = column.CellAppearance.FontData.Italic==DefaultableBoolean.True,
 						IsUnderlined = column.CellAppearance.FontData.Underline==DefaultableBoolean.True,
+						HighlightNegativeValues = ((ValueAppearance)column.ValueBasedAppearance).HighlightNegativeValues,
+						ShowTrend = ((ValueAppearance)column.ValueBasedAppearance).ShowTrendIndicators,
 
 					}).ToArray(),
 
@@ -128,8 +130,6 @@ namespace KaupischITC.InfragisticsControls
 									column.CellAppearance.FontData.Italic = (columnLayout.IsItalic) ? DefaultableBoolean.True : DefaultableBoolean.False;
 									column.CellAppearance.FontData.Underline = (columnLayout.IsUnderlined) ? DefaultableBoolean.True : DefaultableBoolean.False;
 
-									// TODO
-									column.ValueBasedAppearance = new ValueAppearance();
 									ValueAppearance valueAppearance = (ValueAppearance)column.ValueBasedAppearance;
 									valueAppearance.HighlightNegativeValues = columnLayout.HighlightNegativeValues;
 									valueAppearance.ShowTrendIndicators = columnLayout.ShowTrend;
@@ -146,14 +146,14 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
-		public static void SaveLayoutToStream(this UltraGrid ultraGrid,XmlWriter xmlWriter)
+		public static void SaveLayoutToXml(this UltraGrid ultraGrid,XmlWriter xmlWriter)
 		{
 			GridLayout gridLayout = ultraGrid.GetLayout();
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(GridLayout));
 			xmlSerializer.Serialize(xmlWriter,gridLayout);
 		}
 
-		public static void RestoreLayoutFromStream(this CustomizedUltraGrid ultraGrid,XmlReader xmlReader)
+		public static void RestoreLayoutFromXml(this CustomizedUltraGrid ultraGrid,XmlReader xmlReader)
 		{
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(GridLayout));
 			GridLayout gridLayout = (GridLayout)xmlSerializer.Deserialize(xmlReader);
