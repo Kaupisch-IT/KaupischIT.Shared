@@ -20,6 +20,8 @@ namespace KaupischITC.InfragisticsControls
 		private static ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
 		private Timer timer = new Timer();
 
+		private readonly ContextMenuStrip ColumnContextMenuStrip = new ContextMenuStrip();
+		private readonly ContextMenuStrip RowContextMenuStrip = new ContextMenuStrip();
 		private readonly ToolStripMenuItem summaryToolStripMenuItem;
 		private readonly ToolStripMenuItem formatToolStripMenuItem;
 		private readonly ToolStripMenuItem fontToolStripMenuItem;
@@ -80,8 +82,6 @@ namespace KaupischITC.InfragisticsControls
 			this.Font = SystemFonts.MessageBoxFont;
 			this.InitializeComponent();
 
-			this.ContextMenuStrip = new ContextMenuStrip();
-
 			ToolStripTextBox toolStripTextBoxCaption = new ToolStripTextBox("HeaderCaption");
 			toolStripTextBoxCaption.TextChanged += delegate
 			{
@@ -91,9 +91,9 @@ namespace KaupischITC.InfragisticsControls
 				if (this.ColumnCaptionChanged!=null && this.ContextUltraGridColumn!=null)
 					this.ColumnCaptionChanged(this,new UltraGridColumnEventArgs { Column = this.ContextUltraGridColumn });
 			};
-			this.ContextMenuStrip.Items.Add(toolStripTextBoxCaption);
+			this.ColumnContextMenuStrip.Items.Add(toolStripTextBoxCaption);
 
-			this.formatToolStripMenuItem = (ToolStripMenuItem)this.ContextMenuStrip.Items.Add("Werte formatieren als");
+			this.formatToolStripMenuItem = (ToolStripMenuItem)this.ColumnContextMenuStrip.Items.Add("Werte formatieren als");
 			foreach (string formatString in availableFormats.Keys)
 				this.formatToolStripMenuItem.DropDownItems.Add(availableFormats[formatString],null,FormatMenuItem_Click).Tag = formatString;
 
@@ -106,11 +106,11 @@ namespace KaupischITC.InfragisticsControls
 			toolStripTextBox.Click += delegate { this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty); };
 			this.formatToolStripMenuItem.DropDownItems.Add(toolStripTextBox);
 
-			this.summaryToolStripMenuItem = (ToolStripMenuItem)this.ContextMenuStrip.Items.Add("Zusammenfassung hinzufügen");
+			this.summaryToolStripMenuItem = (ToolStripMenuItem)this.ColumnContextMenuStrip.Items.Add("Zusammenfassung hinzufügen");
 			foreach (SummaryType summaryType in availableSummaries.Keys)
 				this.summaryToolStripMenuItem.DropDownItems.Add(availableSummaries[summaryType][0],null,SummaryMenuItem_Click).Tag = summaryType;
 
-			this.fontToolStripMenuItem = (ToolStripMenuItem)this.ContextMenuStrip.Items.Add("Text formatieren");
+			this.fontToolStripMenuItem = (ToolStripMenuItem)this.ColumnContextMenuStrip.Items.Add("Text formatieren");
 			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
 			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
 			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
@@ -119,10 +119,16 @@ namespace KaupischITC.InfragisticsControls
 			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues = !((ToolStripMenuItem)sender).Checked; });
 			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators = !((ToolStripMenuItem)sender).Checked; });
 
-			this.visualizationToolStripMenuItem = (ToolStripMenuItem)this.ContextMenuStrip.Items.Add("Visualisierung");
+			this.visualizationToolStripMenuItem = (ToolStripMenuItem)this.ColumnContextMenuStrip.Items.Add("Visualisierung");
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate { this.ShowChartForm(new BarChartForm()); });
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate { this.ShowChartForm(new TreeMapForm()); });
+
+			this.RowContextMenuStrip.Items.Add("Erweitern",null,delegate { this.ContextUltraGridRow.Expanded = true; });
+			this.RowContextMenuStrip.Items.Add("Reduzieren",null,delegate { this.ContextUltraGridRow.Expanded = false; });
+			this.RowContextMenuStrip.Items.Add("-");
+			this.RowContextMenuStrip.Items.Add("Alles erweitern",null,delegate { this.ContextUltraGridRow.ParentCollection.ExpandAll(false); });
+			this.RowContextMenuStrip.Items.Add("Alles reduzieren",null,delegate { this.ContextUltraGridRow.ParentCollection.CollapseAll(false); });
 
 			ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
 			this.SortIndicatorImageAscending = (Image)resources.GetObject("Up");
@@ -215,39 +221,47 @@ namespace KaupischITC.InfragisticsControls
 					this.ContextUltraGridColumn = (UltraGridColumn)element.GetContext(typeof(UltraGridColumn));		// geklickte Spalte
 					this.ContextSummaryFooterUIElement = (SummaryFooterUIElement)element.GetAncestor(typeof(SummaryFooterUIElement)); // geklickter Spaltenfuß
 
-					this.ContextMenuStrip.Items["HeaderCaption"].Visible = this.ContextUltraGridColumn!=null;
-					this.ContextMenuStrip.Items["HeaderCaption"].Text = (this.ContextUltraGridColumn!=null) ? this.ContextUltraGridColumn.Header.Caption : null;
-
-					// "Zusammenfassungen"
-					this.summaryToolStripMenuItem.Enabled = this.ContextUltraGridColumn!=null;
-					if (this.ContextUltraGridColumn!=null)
-						foreach (ToolStripMenuItem menuItem in this.summaryToolStripMenuItem.DropDownItems)
-							menuItem.Checked = this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Any(ss => ss.SourceColumn==this.ContextUltraGridColumn && ss.SummaryType==(SummaryType)menuItem.Tag);
-
-					// "Formatieren als"
-					this.formatToolStripMenuItem.Enabled = this.ContextUltraGridColumn!=null;
+					// Kontextmenü für Spalten
 					if (this.ContextUltraGridColumn!=null)
 					{
-						foreach (ToolStripMenuItem menuItem in this.formatToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
-							menuItem.Checked = (this.ContextUltraGridColumn.Format==(string)menuItem.Tag);
-						this.formatToolStripMenuItem.DropDownItems["Custom"].Text = this.ContextUltraGridColumn.Format;
-					}
+						this.ColumnContextMenuStrip.Items["HeaderCaption"].Text = (this.ContextUltraGridColumn!=null) ? this.ContextUltraGridColumn.Header.Caption : null;
 
-					// "Text formatieren"
-					this.fontToolStripMenuItem.Enabled = this.ContextUltraGridColumn!=null;
-					if (this.ContextUltraGridColumn!=null)
-					{
+						// "Zusammenfassungen"
+						if (this.ContextUltraGridColumn!=null)
+							foreach (ToolStripMenuItem menuItem in this.summaryToolStripMenuItem.DropDownItems)
+								menuItem.Checked = this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Any(ss => ss.SourceColumn==this.ContextUltraGridColumn && ss.SummaryType==(SummaryType)menuItem.Tag);
+
+						// "Formatieren als"
+						if (this.ContextUltraGridColumn!=null)
+						{
+							foreach (ToolStripMenuItem menuItem in this.formatToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
+								menuItem.Checked = (this.ContextUltraGridColumn.Format==(string)menuItem.Tag);
+							this.formatToolStripMenuItem.DropDownItems["Custom"].Text = this.ContextUltraGridColumn.Format;
+						}
+
+						// "Text formatieren"
 						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[0]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Bold==DefaultableBoolean.True);
 						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[1]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Italic==DefaultableBoolean.True);
 						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[2]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Underline==DefaultableBoolean.True);
 						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[4]).Checked = ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues;
 						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[5]).Checked = ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators;
+
+						// "Visualisierung anzeigen"
+						this.visualizationToolStripMenuItem.Enabled = (this.ContextUltraGridRow!=null);
+
+						this.ColumnContextMenuStrip.Show(this,mousePoint);
 					}
-
-					// "Kreisdiagramm anzeigen"
-					this.visualizationToolStripMenuItem.Enabled = (this.ContextUltraGridRow!=null && this.ContextUltraGridColumn!=null);
-
-					this.ContextMenuStrip.Show(this,mousePoint);
+					// Kontextmenü für Zeilen
+					else if (this.ContextUltraGridRow!=null)
+					{
+						if (this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Any(row => row.IsExpandable))
+						{
+							this.RowContextMenuStrip.Items[0].Visible = this.ContextUltraGridRow.IsExpandable && !this.ContextUltraGridRow.IsExpanded;
+							this.RowContextMenuStrip.Items[1].Visible = this.ContextUltraGridRow.IsExpandable && this.ContextUltraGridRow.IsExpanded;
+							this.RowContextMenuStrip.Items[2].Visible = this.ContextUltraGridRow.IsExpandable;
+							this.RowContextMenuStrip.Show(this,mousePoint);
+						}
+					}
 				}
 			}
 			base.OnMouseUp(e);
