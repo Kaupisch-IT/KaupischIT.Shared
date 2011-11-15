@@ -24,10 +24,13 @@ namespace KaupischITC.InfragisticsControls
 		public string Caption { get; set; }
 		[XmlAttribute("hidden")]
 		public bool Hidden { get; set; }
+
 		[XmlArray("columns"),XmlArrayItem("column")]
 		public ColumnLayout[] Columns { get; set; }
 		[XmlArray("summaries"),XmlArrayItem("summary")]
 		public ColumnSummary[] Summaries { get; set; }
+		[XmlArray("groups"),XmlArrayItem("group")]
+		public Grouping[] Groups { get; set; }
 	}
 
 	[DebuggerDisplay("{Key}")]
@@ -43,6 +46,8 @@ namespace KaupischITC.InfragisticsControls
 		public int Width { get; set; }
 		[XmlAttribute("position")]
 		public int Position { get; set; }
+		[XmlAttribute("sort")]
+		public SortIndicator Sorting { get; set; }
 		[XmlAttribute("format")]
 		public string Format { get; set; }
 		[XmlAttribute("bold")]
@@ -57,12 +62,20 @@ namespace KaupischITC.InfragisticsControls
 		public bool ShowTrend { get; set; }
 	}
 
+	[DebuggerDisplay("{ColumnKey} {SummaryType}")]
 	public class ColumnSummary
 	{
 		[XmlAttribute("columnKey")]
 		public string ColumnKey { get; set; }
 		[XmlAttribute("type")]
 		public SummaryType SummaryType { get; set; }
+	}
+
+	[DebuggerDisplay("{ColumnKey}")]
+	public class Grouping
+	{
+		[XmlAttribute("columnKey")]
+		public string ColumnKey { get; set; }
 	}
 
 
@@ -91,6 +104,7 @@ namespace KaupischITC.InfragisticsControls
 						IsUnderlined = column.CellAppearance.FontData.Underline==DefaultableBoolean.True,
 						HighlightNegativeValues = ((ValueAppearance)column.ValueBasedAppearance).HighlightNegativeValues,
 						ShowTrend = ((ValueAppearance)column.ValueBasedAppearance).ShowTrendIndicators,
+						Sorting = column.SortIndicator,
 
 					}).ToArray(),
 
@@ -98,7 +112,12 @@ namespace KaupischITC.InfragisticsControls
 					{
 						ColumnKey = summary.SourceColumn.Key,
 						SummaryType = summary.SummaryType
-					}).ToArray()
+					}).ToArray(),
+
+					Groups = band.SortedColumns.Cast<UltraGridColumn>().Where(col => col.IsGroupByColumn).Select(group => new Grouping
+					{
+						ColumnKey = group.Key
+					}).ToArray(),
 
 				}).ToArray()
 			};
@@ -115,7 +134,7 @@ namespace KaupischITC.InfragisticsControls
 						band.Header.Caption = bandLayout.Caption;
 
 						if (bandLayout.Columns!=null)
-							foreach (ColumnLayout columnLayout in bandLayout.Columns)
+							foreach (ColumnLayout columnLayout in bandLayout.Columns.OrderBy(c => c.Position))
 								if (band.Columns.Exists(columnLayout.Key))
 								{
 									UltraGridColumn column = band.Columns[columnLayout.Key];
@@ -125,6 +144,11 @@ namespace KaupischITC.InfragisticsControls
 									ultraGrid.SetColumnFormat(column,columnLayout.Format);
 									column.Hidden = columnLayout.Hidden;
 									column.Width = columnLayout.Width;
+									if (columnLayout.Sorting!=SortIndicator.None)
+									{
+										band.SortedColumns.Add(column,false,false);
+										column.SortIndicator = columnLayout.Sorting;
+									}
 
 									column.CellAppearance.FontData.Bold = (columnLayout.IsBold) ? DefaultableBoolean.True : DefaultableBoolean.False;
 									column.CellAppearance.FontData.Italic = (columnLayout.IsItalic) ? DefaultableBoolean.True : DefaultableBoolean.False;
@@ -142,6 +166,11 @@ namespace KaupischITC.InfragisticsControls
 									UltraGridColumn column = band.Columns[summary.ColumnKey];
 									ultraGrid.AddColumnSummary(column,summary.SummaryType);
 								}
+
+						if (bandLayout.Groups!=null)
+							foreach (Grouping grouping in bandLayout.Groups)
+								if (band.Columns.Exists(grouping.ColumnKey))
+									band.SortedColumns.Add(grouping.ColumnKey,false,true);
 					}
 		}
 

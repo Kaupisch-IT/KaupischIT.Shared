@@ -557,9 +557,10 @@ namespace KaupischITC.InfragisticsControls
 
 					drawParams.Graphics.DrawImageUnscaled(image,point);
 
-					if (column.Band.SortedColumns.Count>1)
+					List<UltraGridColumn> sortedColumns = column.Band.SortedColumns.Cast<UltraGridColumn>().Where(col => !col.IsGroupByColumn).ToList();
+					if (sortedColumns.Count>1)
 					{
-						int index = column.Band.SortedColumns.IndexOf(column)+1;
+						int index = sortedColumns.IndexOf(column)+1;
 
 						using (Font font = new Font("Verdana",6.25f,FontStyle.Regular))
 						using (StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Center,LineAlignment = StringAlignment.Far })
