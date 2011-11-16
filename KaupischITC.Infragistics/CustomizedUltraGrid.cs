@@ -20,13 +20,13 @@ namespace KaupischITC.InfragisticsControls
 		private static ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
 		private Timer timer = new Timer();
 
-		private readonly ContextMenuStrip ColumnContextMenuStrip = new ContextMenuStrip();
-		private readonly ContextMenuStrip RowContextMenuStrip = new ContextMenuStrip();
 		private readonly ToolStripMenuItem summaryToolStripMenuItem;
 		private readonly ToolStripMenuItem formatToolStripMenuItem;
 		private readonly ToolStripMenuItem fontToolStripMenuItem;
 		private readonly ToolStripMenuItem visualizationToolStripMenuItem;
 
+		public ContextMenuStrip ColumnContextMenuStrip { get; private set; }
+		public ContextMenuStrip RowContextMenuStrip { get; private set; }
 		public UltraGridRow ContextUltraGridRow { get; private set; }
 		public UltraGridCell ContextUltraGridCell { get; private set; }
 		public HeaderUIElement ContextHeaderUIElement { get; private set; }
@@ -81,6 +81,9 @@ namespace KaupischITC.InfragisticsControls
 
 			this.Font = SystemFonts.MessageBoxFont;
 			this.InitializeComponent();
+
+			this.RowContextMenuStrip = new ContextMenuStrip();
+			this.ColumnContextMenuStrip = new ContextMenuStrip();
 
 			ToolStripTextBox toolStripTextBoxCaption = new ToolStripTextBox("HeaderCaption");
 			toolStripTextBoxCaption.TextChanged += delegate
