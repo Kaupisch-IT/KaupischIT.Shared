@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using KaupischITC.Extensions;
-using System.Diagnostics;
 
 namespace KaupischITC.Shared
 {
@@ -85,7 +84,6 @@ namespace KaupischITC.Shared
 		}
 
 
-
 		public ObjectBrowser()
 		{
 			this.InitializeComponent();
@@ -96,6 +94,7 @@ namespace KaupischITC.Shared
 			this.ShowRootLines = false;
 			this.displayedType = this.GetType(); // HACK
 			this.DisplayedType = null;
+
 			this.DrawMode = TreeViewDrawMode.OwnerDrawText;
 		}
 

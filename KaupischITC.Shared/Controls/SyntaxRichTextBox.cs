@@ -215,7 +215,7 @@ namespace KaupischITC.Shared.Controls
 		/// </summary>
 		protected override void OnSelectionChanged(EventArgs e)
 		{
-			if (!this.isProcessing)
+			if (!this.isProcessing && this.SelectionLength==0)
 			{
 				this.timerCurrentWord.Enabled = false;
 
