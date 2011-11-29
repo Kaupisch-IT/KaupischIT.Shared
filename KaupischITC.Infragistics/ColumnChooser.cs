@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Infragistics.Win.UltraWinGrid;
+using KaupischITC.Extensions;
 
 namespace KaupischITC.InfragisticsControls
 {
@@ -41,13 +42,8 @@ namespace KaupischITC.InfragisticsControls
 
 		protected override void OnDrawNode(DrawTreeNodeEventArgs e)
 		{
-			FontStyle fontStyle = FontStyle.Regular;
-			if (!e.Node.Checked)
-				fontStyle |= FontStyle.Strikeout;
-			if (this.GetColumnAt(e.Node.Index).IsChaptered)
-				fontStyle |= FontStyle.Italic;
-
-			Color color = (e.Node.IsSelected) ? SystemColors.HighlightText : SystemColors.ControlText;
+			FontStyle fontStyle = (this.GetColumnAt(e.Node.Index).IsChaptered) ? FontStyle.Italic : FontStyle.Regular;
+			Color color = (e.State.HasFlag(TreeNodeStates.Focused)) ? SystemColors.HighlightText : SystemColors.ControlText;
 			using (Font font = new Font(e.Node.NodeFont ?? this.Font,fontStyle))
 				TextRenderer.DrawText(e.Graphics,e.Node.Text,font,e.Bounds,color);
 		}
