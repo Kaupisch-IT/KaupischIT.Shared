@@ -1,5 +1,5 @@
 ﻿
-namespace KaupischITC.InfragisticsControls
+namespace KaupischITC.InfragisticsControls.Printing
 {
 	public class UltraGridPrintSettings
 	{

@@ -1,84 +1,12 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
 using KaupischITC.InfragisticsControls.ValueAppearances;
 
-namespace KaupischITC.InfragisticsControls
+namespace KaupischITC.InfragisticsControls.LayoutSerialization
 {
-	[XmlRoot("grid")]
-	public class GridLayout
-	{
-		[XmlArray("bands"),XmlArrayItem("band")]
-		public BandLayout[] Bands { get; set; }
-	}
-
-	[DebuggerDisplay("{Key}")]
-	public class BandLayout
-	{
-		[XmlAttribute("key")]
-		public string Key { get; set; }
-		[XmlAttribute("caption")]
-		public string Caption { get; set; }
-		[XmlAttribute("hidden")]
-		public bool Hidden { get; set; }
-
-		[XmlArray("columns"),XmlArrayItem("column")]
-		public ColumnLayout[] Columns { get; set; }
-		[XmlArray("summaries"),XmlArrayItem("summary")]
-		public ColumnSummary[] Summaries { get; set; }
-		[XmlArray("groups"),XmlArrayItem("group")]
-		public Grouping[] Groups { get; set; }
-	}
-
-	[DebuggerDisplay("{Key}")]
-	public class ColumnLayout
-	{
-		[XmlAttribute("key")]
-		public string Key { get; set; }
-		[XmlAttribute("caption")]
-		public string Caption { get; set; }
-		[XmlAttribute("hidden")]
-		public bool Hidden { get; set; }
-		[XmlAttribute("width")]
-		public int Width { get; set; }
-		[XmlAttribute("position")]
-		public int Position { get; set; }
-		[XmlAttribute("sort")]
-		public SortIndicator Sorting { get; set; }
-		[XmlAttribute("format")]
-		public string Format { get; set; }
-		[XmlAttribute("bold")]
-		public bool IsBold { get; set; }
-		[XmlAttribute("italic")]
-		public bool IsItalic { get; set; }
-		[XmlAttribute("underline")]
-		public bool IsUnderlined { get; set; }
-		[XmlAttribute("highlightNegative")]
-		public bool HighlightNegativeValues { get; set; }
-		[XmlAttribute("showTrend")]
-		public bool ShowTrend { get; set; }
-	}
-
-	[DebuggerDisplay("{ColumnKey} {SummaryType}")]
-	public class ColumnSummary
-	{
-		[XmlAttribute("columnKey")]
-		public string ColumnKey { get; set; }
-		[XmlAttribute("type")]
-		public SummaryType SummaryType { get; set; }
-	}
-
-	[DebuggerDisplay("{ColumnKey}")]
-	public class Grouping
-	{
-		[XmlAttribute("columnKey")]
-		public string ColumnKey { get; set; }
-	}
-
-
 	public static class CustomizedUltraGridExtensions
 	{
 		public static GridLayout GetLayout(this UltraGrid ultraGrid)
@@ -122,6 +50,7 @@ namespace KaupischITC.InfragisticsControls
 				}).ToArray()
 			};
 		}
+
 
 		public static void RestoreLayout(this CustomizedUltraGrid ultraGrid,GridLayout gridLayout)
 		{
