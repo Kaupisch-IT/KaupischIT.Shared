@@ -33,6 +33,7 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 						HighlightNegativeValues = ((ValueAppearance)column.ValueBasedAppearance).HighlightNegativeValues,
 						ShowTrend = ((ValueAppearance)column.ValueBasedAppearance).ShowTrendIndicators,
 						Sorting = column.SortIndicator,
+						SortIndex = band.SortedColumns.IndexOf(column),
 
 					}).ToArray(),
 
@@ -63,6 +64,15 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 						band.Header.Caption = bandLayout.Caption;
 
 						if (bandLayout.Columns!=null)
+						{
+							foreach (ColumnLayout columnLayout in bandLayout.Columns.Where(c => c.Sorting!=SortIndicator.None).OrderBy(c => c.SortIndex))
+								if (band.Columns.Exists(columnLayout.Key))
+								{
+									UltraGridColumn column = band.Columns[columnLayout.Key];
+									band.SortedColumns.Add(column,descending:false,groupBy:false);
+									column.SortIndicator = columnLayout.Sorting;
+								}
+
 							foreach (ColumnLayout columnLayout in bandLayout.Columns.OrderBy(c => c.Position))
 								if (band.Columns.Exists(columnLayout.Key))
 								{
@@ -73,12 +83,7 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 									ultraGrid.SetColumnFormat(column,columnLayout.Format);
 									column.Hidden = columnLayout.Hidden;
 									column.Width = columnLayout.Width;
-									if (columnLayout.Sorting!=SortIndicator.None)
-									{
-										band.SortedColumns.Add(column,false,false);
-										column.SortIndicator = columnLayout.Sorting;
-									}
-
+									
 									column.CellAppearance.FontData.Bold = (columnLayout.IsBold) ? DefaultableBoolean.True : DefaultableBoolean.False;
 									column.CellAppearance.FontData.Italic = (columnLayout.IsItalic) ? DefaultableBoolean.True : DefaultableBoolean.False;
 									column.CellAppearance.FontData.Underline = (columnLayout.IsUnderlined) ? DefaultableBoolean.True : DefaultableBoolean.False;
@@ -87,6 +92,7 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 									valueAppearance.HighlightNegativeValues = columnLayout.HighlightNegativeValues;
 									valueAppearance.ShowTrendIndicators = columnLayout.ShowTrend;
 								}
+						}
 
 						if (bandLayout.Summaries!=null)
 							foreach (ColumnSummary summary in bandLayout.Summaries)

@@ -25,6 +25,9 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 		
 		[XmlAttribute("sort"),DefaultValue(SortIndicator.None)]
 		public SortIndicator Sorting { get; set; }
+
+		[XmlAttribute("sortIndex"),DefaultValue(-1)]
+		public int SortIndex { get; set; }
 		
 		[XmlAttribute("format")]
 		public string Format { get; set; }

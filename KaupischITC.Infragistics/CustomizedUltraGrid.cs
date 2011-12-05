@@ -438,19 +438,21 @@ namespace KaupischITC.InfragisticsControls
 
 		protected override void OnBeforeSortChange(BeforeSortChangeEventArgs e)
 		{
-			// wenn Sortierung von aufsteigend nach absteigend geändert wird...
-			foreach (UltraGridColumn column in e.SortedColumns)
-				if (e.Band.SortedColumns.Exists(column.Key))
-					if (column.SortIndicator==SortIndicator.Ascending && e.Band.SortedColumns[column.Key].SortIndicator==SortIndicator.Descending)
-					{
-						// ...dies abbrechen und die Sortierung entfernen
-						e.Cancel = true;
-						this.BeginInvoke((MethodInvoker)delegate
+			// wenn nicht Shift gedrückt ist (MultiColumnSort)
+			if (!Control.ModifierKeys.HasFlag(Keys.Shift))
+				foreach (UltraGridColumn column in e.SortedColumns)
+					if (e.Band.SortedColumns.Exists(column.Key))
+						// wenn Sortierung von aufsteigend nach absteigend geändert wird ...
+						if (column.SortIndicator==SortIndicator.Ascending && e.Band.SortedColumns[column.Key].SortIndicator==SortIndicator.Descending)
 						{
-							e.Band.SortedColumns[column.Key].SortIndicator = SortIndicator.None;
-							column.Band.SortedColumns.RefreshSort(true);
-						});
-					}
+							// ...dies abbrechen und die Sortierung entfernen
+							e.Cancel = true;
+							this.BeginInvoke((MethodInvoker)delegate
+							{
+								e.Band.SortedColumns[column.Key].SortIndicator = SortIndicator.None;
+								column.Band.SortedColumns.RefreshSort(true);
+							});
+						}
 
 			base.OnBeforeSortChange(e);
 		}
@@ -518,12 +520,7 @@ namespace KaupischITC.InfragisticsControls
 			return false;
 		}
 
-
-
-
-
-
-
+		
 
 
 		public bool DrawElement(DrawPhase drawPhase,ref UIElementDrawParams drawParams)
