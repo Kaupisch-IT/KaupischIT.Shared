@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 namespace KaupischITC.Extensions
 {
@@ -76,6 +77,71 @@ namespace KaupischITC.Extensions
 			return outer
 				.GroupJoin(inner,outerKeySelector,innerKeySelector,(outerItem,innerGroup) => innerGroup.DefaultIfEmpty().Select(innerGroupItem => resultSelector(outerItem,innerGroupItem)))
 				.SelectMany(value => value);
+		}
+
+
+
+		/// <summary>
+		/// Gruppiert eine Sequenz nach der angegebenen Datumsauswahlfunktion und fügt leere Gruppen für nicht vorhandene Datumswerte im gesamten Bereich der Sequenz ein.
+		/// Die leeren Gruppen werden so gewählt, dass stets der gesamte Monat befüllt wird.
+		/// </summary>
+		/// <typeparam name="TElement">Der Typ der Elemente der Eingabesequenz</typeparam>
+		/// <param name="source">Die Eingabesequenz</param>
+		/// <param name="dateSelector">Die Funktion zum Extrahieren des Datums aus jedem Element</param>
+		/// <returns>Eine Sequenz mit den gruppierten Elementen der Eingabesequenz</returns>
+		public static IEnumerable<IGrouping<DateTime,TElement>> FullDateGroupBy<TElement>(this IEnumerable<TElement> source,Func<TElement,DateTime> dateSelector)
+		{
+			if (!(source is IList))	// für Performance (sonst wird source jeweils bei Min,Max und GroupJoin evaluiert)
+				source = source.ToList();
+
+			// Monatsanfang des kleinsten Datums der Eingabesequenz finden
+			DateTime minDate = source.Min(item => dateSelector(item).Date);
+			minDate = minDate.AddDays(1-minDate.Day);
+
+			// Monatsende des größten Datums der Eingabesequenz finden
+			DateTime maxDate = source.Max(item => dateSelector(item).Date);
+			maxDate = maxDate.AddDays(1-maxDate.Day).AddMonths(1).AddDays(-1);
+
+			// Datumsgruppierung durchführen
+			return EnumerableExtensions.FullDateGroupBy(source,dateSelector,minDate,maxDate);
+		}
+
+
+		/// <summary>
+		/// Gruppiert eine Sequenz nach der angegebenen Datumsauswahlfunktion und fügt leere Gruppen für nicht vorhandene Datumswerte im gesamten Bereich der Sequenz ein.
+		/// </summary>
+		/// <typeparam name="TElement">Der Typ der Elemente der Eingabesequenz</typeparam>
+		/// <param name="source">Die Eingabesequenz</param>
+		/// <param name="dateSelector">Die Funktion zum Extrahieren des Datums aus jedem Element</param>
+		/// <param name="minDate">Das Datum, mit dem die Ausgabesequenz begonnen wird</param>
+		/// <param name="maxDate">Das Datum, mit dem die Ausgabesequenz beendet wird</param>
+		/// <returns></returns>
+		public static IEnumerable<IGrouping<DateTime,TElement>> FullDateGroupBy<TElement>(this IEnumerable<TElement> source,Func<TElement,DateTime> dateSelector,DateTime minDate,DateTime maxDate)
+		{
+			return Enumerable.Range(0,(maxDate-minDate).Days+1).Select(i => minDate.AddDays(i))
+				.GroupJoin(source,date => date,item => dateSelector(item).Date,(date,group) => new Grouping<DateTime,TElement>(date,group))
+				.Cast<IGrouping<DateTime,TElement>>();
+		}
+
+
+		/// <summary>
+		/// Stellt eine Auflistung von Objekten dar, die über einen gemeinsamen Schlüssel verfügen
+		/// </summary>
+		/// <typeparam name="TKey">Der Typ des Schlüssels</typeparam>
+		/// <typeparam name="TValue">Der Typ der Werte</typeparam>
+		private class Grouping<TKey,TValue> : IGrouping<TKey,TValue>
+		{
+			public TKey Key { get; set; }
+			public IEnumerable<TValue> Values { get; set; }
+
+			public Grouping(TKey key,IEnumerable<TValue> values)
+			{
+				this.Key = key;
+				this.Values = values;
+			}
+
+			public IEnumerator<TValue> GetEnumerator() { return this.Values.GetEnumerator(); }
+			IEnumerator IEnumerable.GetEnumerator() { return this.Values.GetEnumerator(); ; }
 		}
 	}
 }
