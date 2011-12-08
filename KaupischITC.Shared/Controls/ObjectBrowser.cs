@@ -251,7 +251,7 @@ namespace KaupischITC.Shared
 			FontStyle fontStyle = (e.Node.Checked) ? FontStyle.Bold : FontStyle.Regular;
 			using (Font font = new Font(regularFont,fontStyle))
 			{
-				Color color = ((e.State & TreeNodeStates.Focused)==TreeNodeStates.Focused) ? SystemColors.HighlightText : SystemColors.ControlText;
+				Color color = (e.State.HasFlag(TreeNodeStates.Focused)) ? SystemColors.HighlightText : SystemColors.ControlText;
 				TextRenderer.DrawText(e.Graphics,e.Node.Text,font,e.Bounds.Location,color,TextFormatFlags.GlyphOverhangPadding);
 			}
 

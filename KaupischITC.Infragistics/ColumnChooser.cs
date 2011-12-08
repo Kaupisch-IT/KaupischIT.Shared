@@ -14,6 +14,7 @@ namespace KaupischITC.InfragisticsControls
 		public ColumnChooser(UltraGridBand currentBand)
 		{
 			this.Font = SystemFonts.MessageBoxFont;
+			this.Height = 10;
 
 			this.currentBand = currentBand;
 

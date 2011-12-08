@@ -58,6 +58,7 @@
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="FontExtensions.cs" />
     <Compile Include="GraphicsExtensions.cs" />
+    <Compile Include="MethodBaseExtensions.cs" />
     <Compile Include="NTAccountExtensions.cs" />
     <Compile Include="NullableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
