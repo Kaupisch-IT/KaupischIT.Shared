@@ -105,7 +105,7 @@ namespace KaupischITC.Shared
 			get { return this.displayedType; }
 			set
 			{
-				if (!this.DesignMode && this.displayedType!=value)
+				if (!this.DesignMode && !this.AreEquivalentTypes(this.displayedType,value))
 					using (new WaitCursorChanger(this))
 					{
 						this.BeginUpdate();
@@ -137,6 +137,32 @@ namespace KaupischITC.Shared
 		private Type displayedType;
 
 
+		private bool AreEquivalentTypes(Type first,Type second)
+		{
+			if (first==null || second==null)
+				return (first==second);
+
+			if (first.ImplementsInterface(typeof(IEnumerable<>)) && second.ImplementsInterface(typeof(IEnumerable<>)))
+			{
+				Func<Type,Type> getElementType = (type) =>  type.GetInterfaces().Concat(new[] { type }).First(itype => itype.IsGenericType && itype.GetGenericTypeDefinition()==typeof(IEnumerable<>)).GetGenericArguments()[0];
+				return this.AreEquivalentTypes(getElementType(first),getElementType(second));
+			}
+
+			if (first!=second && (first!=null && first.IsCompilerGenerated()) && (second!=null && second.IsCompilerGenerated()))
+			{
+				PropertyInfo[] firstProperties = first.GetProperties();
+				PropertyInfo[] secondProperties = second.GetProperties();
+
+				if (!firstProperties.All(pi1 => secondProperties.Any(pi2 => pi1.Name==pi2.Name && this.AreEquivalentTypes(pi1.PropertyType,pi2.PropertyType))))
+					return false;
+				else if (!secondProperties.All(pi2 => firstProperties.Any(pi1 => pi2.Name==pi1.Name && this.AreEquivalentTypes(pi2.PropertyType,pi1.PropertyType))))
+					return false;
+				else
+					return true;
+			}
+			else
+				return (first==second);
+		}
 
 		private void AddMemberNodes(TreeNodeCollection targetTreeNodeCollection,Type type,string parentKey,IEnumerable<string> checkedNodeNames,bool deferredLoading)
 		{
@@ -247,7 +273,7 @@ namespace KaupischITC.Shared
 		protected override void OnDrawNode(DrawTreeNodeEventArgs e)
 		{
 			Font regularFont = e.Node.NodeFont ?? this.Font;
-			
+
 			FontStyle fontStyle = (e.Node.Checked) ? FontStyle.Bold : FontStyle.Regular;
 			using (Font font = new Font(regularFont,fontStyle))
 			{
