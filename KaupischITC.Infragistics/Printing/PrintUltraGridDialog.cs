@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
 
-
 namespace KaupischITC.InfragisticsControls.Printing
 {
 	public partial class PrintUltraGridDialog : Form
@@ -28,8 +27,6 @@ namespace KaupischITC.InfragisticsControls.Printing
 			this.ultraPrintDocument.DocumentName = title;
 			this.ultraPrintDocument.Header.TextCenter = title;
 			this.ultraPrintDocument.Header.TextLeft = "\r\n\r\n"+description;
-
-
 		}
 
 		private void PrintUltraGridDialog_Shown(object sender,EventArgs e)

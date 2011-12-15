@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Linq;
+using KaupischITC.Extensions;
 
 namespace KaupischITC.Shared
 {
@@ -14,12 +16,12 @@ namespace KaupischITC.Shared
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SelectedProperty
 		{
-			get { return (this.objectBrowser.SelectedNode!=null) ? this.objectBrowser.SelectedNode.Name.TrimStart('.') : null; }
+			get { return this.objectBrowser.SelectedProperty; }
 			set
 			{
 				if (!this.DesignMode)
 				{
-					this.objectBrowser.CheckedNodes = new[] { value };
+					this.objectBrowser.SelectedProperty = value;
 					this.DataSource = new object[] { this.SelectedProperty ?? String.Empty };
 				}
 			}
@@ -33,11 +35,7 @@ namespace KaupischITC.Shared
 			set
 			{
 				if (this.DisplayedType!=value)
-				{
-					string selectedProperty = this.SelectedProperty;
 					this.objectBrowser.DisplayedType = value;
-					this.SelectedProperty = selectedProperty;
-				}
 			}
 		}
 
@@ -54,8 +52,6 @@ namespace KaupischITC.Shared
 			this.DropDownStyle = ComboBoxStyle.DropDownList;
 			this.DropDownHeight *= 2;
 
-			this.objectBrowser.ResolveEnumerable = false;
-			this.objectBrowser.RemoveEmptyTypes = true;
 			this.objectBrowser.HideSelection = false;
 			this.objectBrowser.FullRowSelect = true;
 			this.objectBrowser.BorderStyle = BorderStyle.None;
@@ -93,32 +89,13 @@ namespace KaupischITC.Shared
 
 		public PropertyInfo GetSelectedPropertyInfo(Type type)
 		{
-			PropertyInfo result = null;
-			foreach (string propertyName in this.SelectedProperty.Split('.'))
-			{
-				result = type.GetProperty(propertyName);
-				if (result==null)
-					return null;
-				else
-					type = result.PropertyType;
-			}
-			return result;
+			return this.objectBrowser.GetSelectedPropertyInfo(type);
 		}
 
 
 		public object GetSelectedPropertyValue(object value)
 		{
-			if (value==null)
-				return null;
-			else
-			{
-				foreach (string propertyName in this.SelectedProperty.Split('.'))
-				{
-					PropertyInfo propertyInfo = value.GetType().GetProperty(propertyName);
-					value = propertyInfo.GetValue(value,null);
-				}
-				return value;
-			}
+			return this.objectBrowser.GetSelectedPropertyValue(value);
 		}
 	}
 }
