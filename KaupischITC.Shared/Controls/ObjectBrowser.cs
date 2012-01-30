@@ -194,7 +194,7 @@ namespace KaupischITC.Shared
 
 		public object GetSelectedPropertyValue(object value)
 		{
-			if (value==null || this.SelectedProperty==null)
+			if (value==null || String.IsNullOrEmpty(this.SelectedProperty))
 				return null;
 			else
 			{

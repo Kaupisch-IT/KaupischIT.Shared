@@ -59,8 +59,8 @@ namespace KaupischITC.Shared.Controls
 				.AddStyle("Chars",Color.Brown,@"'\\?.'")
 				.AddStyle("InitializedProperties",Color.FromArgb(43,145,175),@"\s[\w_][\w\d_]*(?=\s*= )")
 				.AddStyle("InitializedProperties",Color.FromArgb(43,145,175),@"(?<=(^|,)[^,=]*\b([a-zA-Z_]\w*\.)+)([a-zA-Z_]\w*)(?=\s*(,|$))")
-				.AddStyle("Comments",Color.Green,@"(//.*$)|(/\*.*?\*/)")
-				.AddStyle("Keywords",Color.Blue,@"\b(as|base|bool|break|byte|char|decimal|default|delegate|double|false|float|int|is|long|new|null|object|ref|return|sbyte|short|string|this|throw|true|typeof|uint|ulong|ushort)\b");
+				.AddStyle("Keywords",Color.Blue,@"\b(as|base|bool|break|byte|char|decimal|default|delegate|double|false|float|int|is|long|new|null|object|ref|return|sbyte|short|string|this|throw|true|typeof|uint|ulong|ushort)\b")
+				.AddStyle("Comments",Color.Green,@"(//.*$)|(/\*.*?\*/)");
 
 		}
 
