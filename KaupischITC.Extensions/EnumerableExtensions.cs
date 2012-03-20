@@ -11,6 +11,18 @@ namespace KaupischITC.Extensions
 	public static class EnumerableExtensions
 	{
 		/// <summary>
+		/// Gibt die eine leere Sequenz zurück, wenn die angegebene Sequenz null ist.
+		/// </summary>
+		/// <typeparam name="T">Der Typ der Elemente von source.</typeparam>
+		/// <param name="source">Die Sequenz, für die eine leere Sequenz zurückgegeben werden soll, wenn sie null ist.</param>
+		/// <returns>Eine leere Auflistung, wenn source null ist; andernfalls source selbst.</returns>
+		public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T> source)
+		{
+			return source ?? Enumerable.Empty<T>();
+		}
+
+
+		/// <summary>
 		/// Reduziert eine hierarchische Struktur in eine flache Struktur
 		/// </summary>
 		/// <typeparam name="T">der Typ der Elemente der Sequenz</typeparam>
@@ -89,21 +101,23 @@ namespace KaupischITC.Extensions
 		/// <param name="source">Die Eingabesequenz</param>
 		/// <param name="dateSelector">Die Funktion zum Extrahieren des Datums aus jedem Element</param>
 		/// <returns>Eine Sequenz mit den gruppierten Elementen der Eingabesequenz</returns>
-		public static IEnumerable<IGrouping<DateTime,TElement>> FullDateGroupBy<TElement>(this IEnumerable<TElement> source,Func<TElement,DateTime> dateSelector)
+		public static IEnumerable<IGrouping<DateTime,TElement>> FullDateGroupBy<TElement>(this IEnumerable<TElement> source,Func<TElement,DateTime?> dateSelector)
 		{
-			if (!(source is IList))	// für Performance (sonst wird source jeweils bei Min,Max und GroupJoin evaluiert)
-				source = source.ToList();
+			source = source.Where(item => dateSelector(item).HasValue).ToList();	// für Performance (sonst wird source jeweils bei Min,Max und GroupJoin evaluiert)
+			
+			if (!source.Any())
+				return Enumerable.Empty<IGrouping<DateTime,TElement>>();
 
 			// Monatsanfang des kleinsten Datums der Eingabesequenz finden
-			DateTime minDate = source.Min(item => dateSelector(item).Date);
+			DateTime minDate = source.Min(item => dateSelector(item).Value.Date);
 			minDate = minDate.AddDays(1-minDate.Day);
 
 			// Monatsende des größten Datums der Eingabesequenz finden
-			DateTime maxDate = source.Max(item => dateSelector(item).Date);
+			DateTime maxDate = source.Max(item => dateSelector(item).Value.Date);
 			maxDate = maxDate.AddDays(1-maxDate.Day).AddMonths(1).AddDays(-1);
 
 			// Datumsgruppierung durchführen
-			return EnumerableExtensions.FullDateGroupBy(source,dateSelector,minDate,maxDate);
+			return EnumerableExtensions.FullDateGroupBy(source,element => dateSelector(element).Value.Date,minDate,maxDate);
 		}
 
 
