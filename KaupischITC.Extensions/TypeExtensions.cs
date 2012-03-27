@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace KaupischITC.Extensions
 {
@@ -66,6 +67,21 @@ namespace KaupischITC.Extensions
 				return type.GetInterfaces().Concat(new[] { type }).Any(itype => itype.IsGenericType && itype.GetGenericTypeDefinition()==interfaceType);
 			else
 				return type.GetInterfaces().Concat(new[] { type }).Any(itype => itype==interfaceType);
+		}
+
+
+		/// <summary>
+		/// Ermittelt den benutzerfreundlichen Typennamen
+		/// </summary>
+		/// <param name="type">der Typ, dessen benutzerfreundlicher Name ermittelt werden soll</param>
+		/// <returns>den benutzerfreundlichen Typennamen</returns>
+		public static string GetPrettyName(this Type type)
+		{
+			return Regex.Replace(type.Name,@"`(?<count>\d)",match =>
+			{
+				Type[] genericArguments = type.GetGenericArguments();
+				return "<"+String.Join(",",Enumerable.Range(0,Convert.ToInt32(match.Groups["count"].Value)).Select(i => (type.IsGenericTypeDefinition) ? "" : genericArguments[i].GetPrettyName()).ToArray())+">";
+			});
 		}
 	}
 }
