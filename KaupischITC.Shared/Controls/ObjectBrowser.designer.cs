@@ -14,15 +14,18 @@ namespace KaupischITC.Shared
 			// 
 			this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
 			this.imageList.TransparentColor = System.Drawing.Color.Fuchsia;
-			this.imageList.Images.SetKeyName(0,"Method");
-			this.imageList.Images.SetKeyName(1,"NavigationProperty");
-			this.imageList.Images.SetKeyName(2,"Class");
-			this.imageList.Images.SetKeyName(3,"ComplexType");
-			this.imageList.Images.SetKeyName(4,"EntitySet");
-			this.imageList.Images.SetKeyName(5,"Property");
-			this.imageList.Images.SetKeyName(6,"Property");
-			this.imageList.Images.SetKeyName(7,"QuestionMark");
-			this.imageList.Images.SetKeyName(8,"EntityType");
+			this.imageList.Images.SetKeyName(0, "Method");
+			this.imageList.Images.SetKeyName(1, "NavigationProperty");
+			this.imageList.Images.SetKeyName(2, "Class");
+			this.imageList.Images.SetKeyName(3, "ComplexType");
+			this.imageList.Images.SetKeyName(4, "EntitySet");
+			this.imageList.Images.SetKeyName(5, "Property");
+			this.imageList.Images.SetKeyName(6, "Property");
+			this.imageList.Images.SetKeyName(7, "QuestionMark");
+			this.imageList.Images.SetKeyName(8, "EntityType");
+			this.imageList.Images.SetKeyName(9, "Field");
+			this.imageList.Images.SetKeyName(10, "Object");
+			this.imageList.Images.SetKeyName(11, "Constant");
 			// 
 			// ObjectBrowser
 			// 

@@ -59,7 +59,7 @@ namespace KaupischITC.Shared
 		{
 			this.toolStripControlHost.Control.Width = this.DropDownWidth;
 			this.toolStripControlHost.Control.Height = this.DropDownHeight;
-			this.toolStripDropDown.Show(this,0,this.Height-this.Margin.Bottom);
+			this.toolStripDropDown.Show(this,0,this.Height);
 		}
 
 

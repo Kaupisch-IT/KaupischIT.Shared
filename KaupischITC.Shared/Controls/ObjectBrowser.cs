@@ -121,7 +121,7 @@ namespace KaupischITC.Shared
 							if (this.TypeFilter==null || this.TypeFilter(propertyInfo.PropertyType))
 							{
 								bool isNavigation = (!propertyInfo.PropertyType.IsValueType && propertyInfo.PropertyType!=typeof(string));
-								bool isEnumerable = (propertyInfo.PropertyType.GetInterface("IEnumerable")!=null);
+								bool isEnumerable = (isNavigation && propertyInfo.PropertyType.GetInterface("IEnumerable")!=null);
 								if (!isEnumerable)
 								{
 									TreeNode treeNode = new TreeNode();
