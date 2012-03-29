@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using System;
 
 namespace KaupischITC.Shared
 {
@@ -57,8 +58,8 @@ namespace KaupischITC.Shared
 		/// </summary>
 		public void ShowDropDown()
 		{
-			this.toolStripControlHost.Control.Width = this.DropDownWidth;
-			this.toolStripControlHost.Control.Height = this.DropDownHeight;
+			this.toolStripControlHost.Control.Width = Math.Max(this.DropDownWidth,this.toolStripControlHost.Control.Width);
+			this.toolStripControlHost.Control.Height = Math.Max(this.DropDownHeight,this.toolStripControlHost.Control.Height);
 			this.toolStripDropDown.Show(this,0,this.Height);
 		}
 
