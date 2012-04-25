@@ -1,12 +1,18 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die MemberInfo-Klasse bereit
+	/// </summary>
 	public static class MemberInfoExtensions
 	{
-		[DebuggerStepThrough]
+		/// <summary>
+		/// Ermittelt den (Rückgabe-)Typ eines Members
+		/// </summary>
+		/// <param name="memberInfo">das MemberInfo, dessen (Rückgabe-)Typ ermittelt werden soll</param>
+		/// <returns>der (Rückgabe-)Typ des übergebenen Members</returns>
 		public static Type GetMemberType(this MemberInfo memberInfo)
 		{
 			if (memberInfo is PropertyInfo)
@@ -15,8 +21,8 @@ namespace KaupischITC.Extensions
 				return ((MethodInfo)memberInfo).ReturnType;
 			else if (memberInfo is FieldInfo)
 				return ((FieldInfo)memberInfo).FieldType;
-			else
-				throw new ArgumentException(memberInfo.ToString());
+			
+			throw new ArgumentException(memberInfo.ToString());
 		}
 	}
 }

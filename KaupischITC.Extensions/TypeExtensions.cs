@@ -77,10 +77,31 @@ namespace KaupischITC.Extensions
 		/// <returns>den benutzerfreundlichen Typennamen</returns>
 		public static string GetPrettyName(this Type type)
 		{
+			if (type==null)
+				return null;
+
 			return Regex.Replace(type.Name,@"`(?<count>\d)$",match =>
 			{
 				Type[] genericArguments = type.GetGenericArguments();
 				return "<"+String.Join(",",Enumerable.Range(0,Convert.ToInt32(match.Groups["count"].Value)).Select(i => genericArguments[i].GetPrettyName()).ToArray())+">";
+			});
+		}
+
+		
+		/// <summary>
+		/// Ermittelt den benutzerfreundlichen Typennamen inklusive Namespace
+		/// </summary>
+		/// <param name="type">der Typ, dessen benutzerfreundlicher Name inklusive Namespace ermittelt werden soll</param>
+		/// <returns>den benutzerfreundlichen Typennamen inklusive Namespace</returns>
+		public static string GetPrettyFullName(this Type type)
+		{
+			if (type==null)
+				return null;
+
+			return Regex.Replace(type.FullName,@"`(?<count>\d)\[.*\]$",match =>
+			{
+				Type[] genericArguments = type.GetGenericArguments();
+				return "<"+String.Join(",",Enumerable.Range(0,Convert.ToInt32(match.Groups["count"].Value)).Select(i => genericArguments[i].GetPrettyFullName()).ToArray())+">";
 			});
 		}
 	}
