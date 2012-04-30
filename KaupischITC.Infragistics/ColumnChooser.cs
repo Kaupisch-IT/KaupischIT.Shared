@@ -26,7 +26,12 @@ namespace KaupischITC.InfragisticsControls
 			foreach (UltraGridColumn column in this.currentBand.Columns.OfType<UltraGridColumn>().OrderBy(c => c.Header.Caption))
 			{
 				bool isHidden = (column.IsChaptered) ? this.currentBand.Layout.Bands[column.Key].Hidden : column.Hidden;
-				TreeNode treeNode = new TreeNode(column.Header.Caption) { Checked = !isHidden,Tag = column };
+
+				string text = column.Header.Caption;
+				if (column.Header.Caption!=column.Key)
+					text += " ("+column.Key+")";
+
+				TreeNode treeNode = new TreeNode(text) { Checked = !isHidden,Tag = column };
 				this.Nodes.Add(treeNode);
 			}
 						
@@ -43,10 +48,17 @@ namespace KaupischITC.InfragisticsControls
 
 		protected override void OnDrawNode(DrawTreeNodeEventArgs e)
 		{
+			UltraGridColumn column = (UltraGridColumn)e.Node.Tag;
+			
 			FontStyle fontStyle = (this.GetColumnAt(e.Node.Index).IsChaptered) ? FontStyle.Italic : FontStyle.Regular;
-			Color color = (e.State.HasFlag(TreeNodeStates.Focused)) ? SystemColors.HighlightText : SystemColors.ControlText;
 			using (Font font = new Font(e.Node.NodeFont ?? this.Font,fontStyle))
-				TextRenderer.DrawText(e.Graphics,e.Node.Text,font,e.Bounds,color);
+			{
+				Color color = (e.State.HasFlag(TreeNodeStates.Focused)) ? SystemColors.HighlightText : SystemColors.ControlText;
+				TextRenderer.DrawText(e.Graphics,column.Header.Caption,font,e.Bounds,color,TextFormatFlags.Left);
+			
+				if (column.Header.Caption!=column.Key)
+					TextRenderer.DrawText(e.Graphics,"("+column.Key+")",font,e.Bounds,SystemColors.GrayText,TextFormatFlags.Right);
+			}
 		}
 
 		private UltraGridColumn GetColumnAt(int index)
