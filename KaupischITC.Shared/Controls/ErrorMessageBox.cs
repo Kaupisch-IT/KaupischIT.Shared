@@ -5,8 +5,14 @@ using System.Windows.Forms;
 
 namespace KaupischITC.Shared
 {
+	/// <summary>
+	/// Zeigt ein Meldungsfeld an, das Text und Details über eine Ausnahme enthält.
+	/// </summary>
 	public partial class ErrorMessageBox : Form
 	{
+		/// <summary>
+		/// Gibt die Ausnahme zurück, deren Details angezeigt werden.
+		/// </summary>
 		public Exception Exception { get; private set; }
 
 
@@ -35,13 +41,13 @@ namespace KaupischITC.Shared
 		}
 
 
-		private void buttonOk_Click(object sender,EventArgs e)
+		private void ButtonOk_Click(object sender,EventArgs e)
 		{
 			this.Close();
 		}
 
 
-		private void linkLabelDetails_LinkClicked(object sender,LinkLabelLinkClickedEventArgs e)
+		private void LinkLabelDetails_LinkClicked(object sender,LinkLabelLinkClickedEventArgs e)
 		{
 			Size oldSize = this.Size;
 
@@ -59,7 +65,7 @@ namespace KaupischITC.Shared
 		}
 
 
-		private void ErrorMessageBox_KeyUp(object sender,KeyEventArgs e)
+		private void ErrorMessageBox_KeyDown(object sender,KeyEventArgs e)
 		{
 			if (e.Control && e.KeyCode==Keys.C)
 			{
@@ -72,21 +78,56 @@ namespace KaupischITC.Shared
 			}
 		}
 
+		private void TextBoxDetails_KeyDown(object sender,KeyEventArgs e)
+		{
+			if (e.Control && e.KeyCode==Keys.A)
+				this.textBoxDetails.SelectAll();
+		}	
+
+
+		/// <summary>
+		/// Zeigt ein Meldungsfeld mit dem Meldungstext und ggf. Detailinformationen der angegebenen Ausnahme an.
+		/// </summary>
+		/// <param name="exception">die Ausnahme, deren Meldung und Details ausgegeben werden sollen</param>
+		/// <returns></returns>
+		public static ErrorMessageBox Show(Exception exception)
+		{
+			return ErrorMessageBox.Show(exception.Message,exception);
+		}
+
+
+		/// <summary>
+		/// Zeigt ein Meldungsfeld mit dem Meldungstext und ggf. Detailinformationen der angegebenen Ausnahme an.
+		/// </summary>
+		/// <param name="message">der im Meldungsfeld anzuzeigende Text</param>
+		/// <param name="exception">die Ausnahme, deren Details ausgegeben werden sollen</param>
+		/// <returns></returns>
 		public static ErrorMessageBox Show(string message,Exception exception)
 		{
 			return ErrorMessageBox.Show(message,Application.ProductName,exception);
 		}
 
+
+		/// <summary>
+		/// Zeigt ein Meldungsfeld mit dem Meldungstext und ggf. Detailinformationen der angegebenen Ausnahme an.
+		/// </summary>
+		/// <param name="message">der im Meldungsfeld anzuzeigende Text</param>
+		/// <param name="caption">der in der Titelleiste des Meldungsfelds anzuzeigende Text</param>
+		/// <param name="exception">die Ausnahme, deren Details ausgegeben werden sollen</param>
+		/// <returns></returns>
 		public static ErrorMessageBox Show(string message,string caption,Exception exception)
 		{
 			ErrorMessageBox errorMessageBox = new ErrorMessageBox(message,caption,exception);
 
 			Form activeForm = Form.ActiveForm;
 			if (activeForm!=null)
+			{
 				errorMessageBox.StartPosition = FormStartPosition.CenterParent;
+				errorMessageBox.ShowInTaskbar = false;
+			}
 
 			errorMessageBox.ShowDialog(activeForm);
 			return errorMessageBox;
-		}
+		}			
 	}
 }

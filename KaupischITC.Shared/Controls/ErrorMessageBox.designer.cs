@@ -91,7 +91,7 @@
 			this.buttonOk.TabIndex = 0;
 			this.buttonOk.Text = "OK";
 			this.buttonOk.UseVisualStyleBackColor = true;
-			this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
+			this.buttonOk.Click += new System.EventHandler(this.ButtonOk_Click);
 			// 
 			// tableLayoutPanel2
 			// 
@@ -124,7 +124,7 @@
 			this.linkLabelDetails.TabStop = true;
 			this.linkLabelDetails.Text = "Was genau ist passiert?";
 			this.linkLabelDetails.UseMnemonic = false;
-			this.linkLabelDetails.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelDetails_LinkClicked);
+			this.linkLabelDetails.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelDetails_LinkClicked);
 			// 
 			// textBoxDetails
 			// 
@@ -138,6 +138,8 @@
 			this.textBoxDetails.Size = new System.Drawing.Size(448, 181);
 			this.textBoxDetails.TabIndex = 2;
 			this.textBoxDetails.Visible = false;
+			this.textBoxDetails.WordWrap = false;
+			this.textBoxDetails.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxDetails_KeyDown);
 			// 
 			// ErrorMessageBox
 			// 
@@ -157,9 +159,10 @@
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(200, 50);
 			this.Name = "ErrorMessageBox";
+			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "ExceptionMessageBox";
-			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ErrorMessageBox_KeyUp);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ErrorMessageBox_KeyDown);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBoxIcon)).EndInit();
