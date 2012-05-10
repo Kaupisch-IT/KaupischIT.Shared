@@ -142,7 +142,7 @@ namespace KaupischITC.InfragisticsControls.Printing
 			if (!this.preventRefreshFlag)
 			{
 				this.RefreshPrintDocumentSettings();
-				this.ultraPrintPreviewControl.GeneratePreview(true);
+				this.ultraPrintPreviewControl.GeneratePreview(recreate:true);
 			}
 		}
 
