@@ -82,6 +82,12 @@
     <Compile Include="Controls\DelayTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ErrorMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ErrorMessageBox.designer.cs">
+      <DependentUpon>ErrorMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ObjectBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -129,6 +135,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\ErrorMessageBox.resx">
+      <DependentUpon>ErrorMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ObjectBrowser.resx">
       <DependentUpon>ObjectBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
