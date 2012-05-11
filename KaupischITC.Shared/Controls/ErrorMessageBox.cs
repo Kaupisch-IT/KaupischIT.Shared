@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Taskbar;
 
 namespace KaupischITC.Shared
 {
@@ -82,14 +83,34 @@ namespace KaupischITC.Shared
 		{
 			if (e.Control && e.KeyCode==Keys.A)
 				this.textBoxDetails.SelectAll();
-		}	
+		}
+
+
+#if true // Windows API Code Pack
+		protected override void OnShown(EventArgs e)
+		{
+			if (TaskbarManager.IsPlatformSupported)
+			{
+				TaskbarManager.Instance.SetProgressValue(1,1);
+				TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Error);
+			}
+			base.OnShown(e);
+		}
+
+		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+		{
+			if (TaskbarManager.IsPlatformSupported)
+				TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.NoProgress);
+			base.OnClosing(e);
+		}
+#endif
 
 
 		/// <summary>
 		/// Zeigt ein Meldungsfeld mit dem Meldungstext und ggf. Detailinformationen der angegebenen Ausnahme an.
 		/// </summary>
 		/// <param name="exception">die Ausnahme, deren Meldung und Details ausgegeben werden sollen</param>
-		/// <returns></returns>
+		/// <returns>das angezeigte Meldungsfeld</returns>
 		public static ErrorMessageBox Show(Exception exception)
 		{
 			return ErrorMessageBox.Show(exception.Message,exception);
@@ -101,7 +122,7 @@ namespace KaupischITC.Shared
 		/// </summary>
 		/// <param name="message">der im Meldungsfeld anzuzeigende Text</param>
 		/// <param name="exception">die Ausnahme, deren Details ausgegeben werden sollen</param>
-		/// <returns></returns>
+		/// <returns>das angezeigte Meldungsfeld</returns>
 		public static ErrorMessageBox Show(string message,Exception exception)
 		{
 			return ErrorMessageBox.Show(message,Application.ProductName,exception);
@@ -114,7 +135,7 @@ namespace KaupischITC.Shared
 		/// <param name="message">der im Meldungsfeld anzuzeigende Text</param>
 		/// <param name="caption">der in der Titelleiste des Meldungsfelds anzuzeigende Text</param>
 		/// <param name="exception">die Ausnahme, deren Details ausgegeben werden sollen</param>
-		/// <returns></returns>
+		/// <returns>das angezeigte Meldungsfeld</returns>
 		public static ErrorMessageBox Show(string message,string caption,Exception exception)
 		{
 			ErrorMessageBox errorMessageBox = new ErrorMessageBox(message,caption,exception);
@@ -124,10 +145,12 @@ namespace KaupischITC.Shared
 			{
 				errorMessageBox.StartPosition = FormStartPosition.CenterParent;
 				errorMessageBox.ShowInTaskbar = false;
+				activeForm.Invoke((MethodInvoker)delegate { errorMessageBox.ShowDialog(activeForm); });
 			}
-
-			errorMessageBox.ShowDialog(activeForm);
+			else
+				errorMessageBox.ShowDialog();
+			
 			return errorMessageBox;
-		}			
+		}
 	}
 }
