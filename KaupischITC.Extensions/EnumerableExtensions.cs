@@ -23,21 +23,6 @@ namespace KaupischITC.Extensions
 
 
 		/// <summary>
-		/// Reduziert eine hierarchische Struktur in eine flache Struktur
-		/// </summary>
-		/// <typeparam name="T">der Typ der Elemente der Sequenz</typeparam>
-		/// <param name="value">die hierarchische Struktur, die in eine Flache Struktur umgewandelt werden soll</param>
-		/// <param name="childSelector">eine Funktion zum Ermitteln der untergeordneten Elemente</param>
-		/// <returns>die in eine flache Struktur umgewandelten Elemente</returns>
-		public static IEnumerable<T> Flatten<T>(this T value,Func<T,IEnumerable<T>> childSelector)
-		{
-			yield return value;
-			foreach (T flattendChild in childSelector(value).SelectMany(child => child.Flatten(childSelector)))
-				yield return flattendChild;
-		}
-
-
-		/// <summary>
 		/// Korreliert die Elemente einer Sequenz anhand der Gleichheit der Schlüssel. Schlüssel werden mithilfe des Standardgleichheitsvergleichs verglichen.
 		/// </summary>
 		/// <typeparam name="TSource">Der Typ der Elemente der beiden Sequenzen.</typeparam>

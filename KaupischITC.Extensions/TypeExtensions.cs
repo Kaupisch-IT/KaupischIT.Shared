@@ -51,6 +51,17 @@ namespace KaupischITC.Extensions
 			return (type.IsGenericType && type.GetGenericTypeDefinition()==typeof(Nullable<>));
 		}
 
+
+		/// <summary>
+		/// Prügt, ob Werte des angegebenen Typs den Wert null annehmen können.
+		/// </summary>
+		/// <param name="type">der Typ, der geprüft werden soll</param>
+		/// <returns>True, wenn Werte des angegebenen Typs den Wert null annehmen können; andernfalls false</returns>
+		public static bool IsNullAssignable(this Type type)
+		{
+			return (!type.IsValueType || (type.IsGenericType && type.GetGenericTypeDefinition()==typeof(Nullable<>)));
+		}
+
 		
 		/// <summary>
 		/// Ermittelt, ob der angegebene Typ eine bestimmte Schnittstelle implementiert
