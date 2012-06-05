@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
 using KaupischITC.InfragisticsControls.ValueAppearances;
+using System;
 
 namespace KaupischITC.InfragisticsControls.LayoutSerialization
 {
@@ -15,7 +16,7 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 			{
 				Bands = ultraGrid.DisplayLayout.Bands.Cast<UltraGridBand>().Select(band => new BandLayout
 				{
-					Key = band.Key,
+					Key = band.GetKey(),
 					Hidden = band.Hidden,
 					Caption = band.Header.Caption,
 
@@ -57,9 +58,10 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 		{
 			if (gridLayout.Bands!=null)
 				foreach (BandLayout bandLayout in gridLayout.Bands)
-					if (ultraGrid.DisplayLayout.Bands.Exists(bandLayout.Key))
+				{
+					UltraGridBand band = ultraGrid.FindBand(bandLayout.Key);
+					if (band!=null)
 					{
-						UltraGridBand band = ultraGrid.DisplayLayout.Bands[bandLayout.Key];
 						band.Hidden = bandLayout.Hidden;
 						band.Header.Caption = bandLayout.Caption;
 
@@ -69,7 +71,7 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 								if (band.Columns.Exists(columnLayout.Key))
 								{
 									UltraGridColumn column = band.Columns[columnLayout.Key];
-									band.SortedColumns.Add(column,descending:false,groupBy:false);
+									band.SortedColumns.Add(column,descending: false,groupBy: false);
 									column.SortIndicator = columnLayout.Sorting;
 								}
 
@@ -83,7 +85,7 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 									ultraGrid.SetColumnFormat(column,columnLayout.Format);
 									column.Hidden = columnLayout.Hidden;
 									column.Width = columnLayout.Width;
-									
+
 									column.CellAppearance.FontData.Bold = (columnLayout.IsBold) ? DefaultableBoolean.True : DefaultableBoolean.False;
 									column.CellAppearance.FontData.Italic = (columnLayout.IsItalic) ? DefaultableBoolean.True : DefaultableBoolean.False;
 									column.CellAppearance.FontData.Underline = (columnLayout.IsUnderlined) ? DefaultableBoolean.True : DefaultableBoolean.False;
@@ -107,6 +109,28 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 								if (band.Columns.Exists(grouping.ColumnKey))
 									band.SortedColumns.Add(grouping.ColumnKey,false,true);
 					}
+				}
+		}
+
+		private static string GetKey(this UltraGridBand ultraGridBand)
+		{
+			string result = "";
+			while (ultraGridBand!=null)
+			{
+				result = (!String.IsNullOrEmpty(result)) ? ultraGridBand.Key+"."+result : ultraGridBand.Key;
+				ultraGridBand = ultraGridBand.ParentBand;
+			}
+			return result;
+		}
+
+		private static UltraGridBand FindBand(this CustomizedUltraGrid ultraGrid,string key)
+		{
+			UltraGridBand result = null;
+			foreach (string subKey in key.Split('.'))
+				if (ultraGrid.DisplayLayout.Bands.Exists(subKey))
+					result = (result==null) ? ultraGrid.DisplayLayout.Bands[subKey] : ultraGrid.DisplayLayout.Bands.Cast<UltraGridBand>().SingleOrDefault(ugb => ugb.Key==subKey && ugb.ParentBand==result);
+
+			return result;
 		}
 
 
