@@ -115,5 +115,20 @@ namespace KaupischITC.Extensions
 				return "<"+String.Join(",",Enumerable.Range(0,Convert.ToInt32(match.Groups["count"].Value)).Select(i => genericArguments[i].GetPrettyFullName()).ToArray())+">";
 			});
 		}
+
+
+		/// <summary>
+		/// Gibt den Assembly-qualifizierten Namen eines Typs in Kurzform zurück
+		/// </summary>
+		/// <param name="type">der Typ, dessen Assembly-qualifizierter Name in Kurzform zurückgegeben werden soll</param>
+		/// <returns>den Assembly-qualifizierter Name in Kurzform</returns>
+		public static string GetShortAssemblyQualifiedName(this Type type)
+		{
+			AssemblyName assemblyName = type.Assembly.GetName();
+			if (assemblyName.Name=="mscorlib")
+				return type.FullName;
+			else
+				return type.FullName+", "+type.Assembly.GetName().Name;
+		}
 	}
 }

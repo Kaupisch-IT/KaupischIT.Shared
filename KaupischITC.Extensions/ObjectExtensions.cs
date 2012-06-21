@@ -38,6 +38,9 @@ namespace KaupischITC.Extensions
 				else
 					targetType = Nullable.GetUnderlyingType(targetType);
 			}
+
+			if (targetType.IsEnum)
+				return Enum.Parse(targetType,value.ToString());
 			
 			return Convert.ChangeType(value,targetType,formatProvider);
 		}
