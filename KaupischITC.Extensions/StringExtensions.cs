@@ -41,28 +41,40 @@ namespace KaupischITC.Extensions
 			return (String.IsNullOrEmpty(value)) ? null : value;
 		}
 
-		
+
+
 		/// <summary>
 		/// Ersetzt ein oder mehrere Formatelemente in einer angegebenen Zeichenfolge durch die Zeichenfolgendarstellung der Eigenschaften eines angegebenen Objekts.
 		/// </summary>
-		/// <param name="format">Eine kombinierte Formatzeichenfolge</param>
-		/// <param name="source">Das Objekt mit den zu formatierenden Eigenschaften.</param>
-		/// <returns>Eine Kopie von format, in der die Formatelemente durch die Zeichenfolgendarstellung der entsprechenden Eigenschaften aus source ersetzt wurden.</returns>
-		public static string FormatWith(this string format,object source)
+		/// <param name="format">eine kombinierte Formatzeichenfolge</param>
+		/// <param name="value">das Objekt mit den zu formatierenden Eigenschaften</param>
+		/// <param name="provider">ein Objekt, das kulturspezifische Formatierungsinformationen bereitstellt</param>
+		/// <returns>eine Kopie von format, in der die Formatelemente durch die Zeichenfolgendarstellung der entsprechenden Eigenschaften aus source ersetzt wurden</returns>
+		/// <remarks>http://james.newtonking.com/archive/2008/03/29/formatwith-2-0-string-formatting-with-named-variables.aspx</remarks>
+		public static string FormatWith(this string format,object value,IFormatProvider provider = null)
 		{
-			return StringExtensions.FormatWith(format,null,source);
+			Func<string,object> matchEvaluator = (propertyName) =>
+			{
+				if (propertyName=="0")
+					return value;
+				else
+					try { return DataBinder.Eval(value,propertyName); }
+					catch (HttpException e) { throw new FormatException(null,e); }
+			};
+
+			return StringExtensions.FormatWith(format,matchEvaluator,provider);
 		}
 
 
 		/// <summary>
 		/// Ersetzt ein oder mehrere Formatelemente in einer angegebenen Zeichenfolge durch die Zeichenfolgendarstellung der Eigenschaften eines angegebenen Objekts.
 		/// </summary>
-		/// <param name="format">Eine kombinierte Formatzeichenfolge</param>
-		/// <param name="provider">Ein Objekt, das kulturspezifische Formatierungsinformationen bereitstellt. </param>
-		/// <param name="source">Das Objekt mit den zu formatierenden Eigenschaften.</param>
-		/// <returns>Eine Kopie von format, in der die Formatelemente durch die Zeichenfolgendarstellung der entsprechenden Eigenschaften aus source ersetzt wurden.</returns>
+		/// <param name="format">eine kombinierte Formatzeichenfolge</param>
+		/// <param name="matchEvaluator">ein Delegat, der ein Format als Eingabe akzeptiert und das entsprechende zu formatierende Objekt zurück gibt</param>
+		/// <param name="provider">ein Objekt, das kulturspezifische Formatierungsinformationen bereitstellt</param>
+		/// <returns>eine Kopie von format, in der die Formatelemente durch die Zeichenfolgendarstellung der entsprechenden Eigenschaften aus source ersetzt wurden</returns>
 		/// <remarks>http://james.newtonking.com/archive/2008/03/29/formatwith-2-0-string-formatting-with-named-variables.aspx</remarks>
-		public static string FormatWith(this string format,IFormatProvider provider,object source)
+		public static string FormatWith(this string format,Func<string,object> matchEvaluator,IFormatProvider provider = null)
 		{
 			if (format == null)
 				throw new ArgumentNullException("format");
@@ -74,15 +86,12 @@ namespace KaupischITC.Extensions
 				delegate(Match match)
 				{
 					Group startGroup = match.Groups["start"];
-					Group propertyGroup = match.Groups["property"];  
+					Group propertyGroup = match.Groups["property"];
 					Group formatGroup = match.Groups["format"];
-					Group endGroup = match.Groups["end"]; 
+					Group endGroup = match.Groups["end"];
 
-					if (propertyGroup.Value=="0")
-						values.Add(source);
-					else
-						try { values.Add(DataBinder.Eval(source,propertyGroup.Value)); }
-						catch (HttpException e) { throw new FormatException(null,e); }
+					if (propertyGroup.Value!="0")
+						values.Add(matchEvaluator(propertyGroup.Value));
 
 					int openingsCount = startGroup.Captures.Count;
 					int closingsCount = endGroup.Captures.Count;
