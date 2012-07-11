@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
+using KaupischITC.Extensions;
 
 namespace KaupischITC.InfragisticsControls.Printing
 {
@@ -103,15 +104,13 @@ namespace KaupischITC.InfragisticsControls.Printing
 
 			string selectedText = this.comboBoxColorStyle.Text;
 			this.comboBoxColorStyle.DataSource = colorStyles;
-			this.comboBoxColorStyle.DisplayMember = "Name";
-			this.comboBoxColorStyle.ValueMember = "ColorRenderMode";
+			this.comboBoxColorStyle.DisplayMember = GetMemberName.Of<ColorStyle>(cs => cs.Name);
+			this.comboBoxColorStyle.ValueMember = GetMemberName.Of<ColorStyle>(cs => cs.ColorRenderMode);
 			this.comboBoxColorStyle.Text = selectedText;
 
 			this.RefreshPreview();
 		}
 
-
-		[Obfuscation(Feature = "renaming",ApplyToMembers=true,Exclude=true)]
 		private class ColorStyle
 		{
 			public string Name { get; set; }
@@ -142,7 +141,7 @@ namespace KaupischITC.InfragisticsControls.Printing
 			if (!this.preventRefreshFlag)
 			{
 				this.RefreshPrintDocumentSettings();
-				this.ultraPrintPreviewControl.GeneratePreview(recreate:true);
+				this.ultraPrintPreviewControl.GeneratePreview(recreate: true);
 			}
 		}
 

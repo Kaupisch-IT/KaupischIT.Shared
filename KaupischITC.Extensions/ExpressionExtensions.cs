@@ -73,5 +73,49 @@ namespace KaupischITC.Extensions
 			var invokedExpr = Expression.Invoke(expr2,expr1.Parameters.Cast<Expression>());
 			return Expression.Lambda<Func<T,TValue>>(Expression.Divide(expr1.Body,invokedExpr),expr1.Parameters);
 		}
+
+
+		/// <summary>
+		/// Ermittelt den Namen des aufgerufenen Members, das als Expression übergeben wurde
+		/// </summary>
+		/// <param name="expression">die Expression des Memberaufrufs</param>
+		/// <returns>den Namen des aufgerufenen Members</returns>
+		public static string GetMemberName(this LambdaExpression expression)
+		{
+			MemberExpression memberExpression = expression.Body as MemberExpression;
+			if (memberExpression!=null)
+				return memberExpression.Member.Name;
+			else
+				throw new ArgumentException("Der angegebene Ausdruck entspricht keinem Memberzugriff.");
+		}
+	}
+
+	
+	/// <summary>
+	/// Stellt Methoden bereit, um typisiert den Namen einen Members zu ermitteln
+	/// </summary>
+	public static class GetMemberName
+	{
+		/// <summary>
+		/// Ermittelt den Namen des angegebenen Members
+		/// </summary>
+		/// <typeparam name="T">der Typ des Objekts, dessen Member aufgerufen wird</typeparam>
+		/// <param name="expression">die Expression des Memberaufrufs</param>
+		/// <returns>den Namen des aufgerufenen Members</returns>
+		public static string Of<T>(Expression<Func<T,object>> expression)
+		{
+			return ExpressionExtensions.GetMemberName((LambdaExpression)expression);
+		}
+
+
+		/// <summary>
+		/// Ermittelt den Namen des angegebenen Members
+		/// </summary>
+		/// <param name="expression">die Expression des Memberaufrufs</param>
+		/// <returns>den Namen des aufgerufenen Members</returns>
+		public static string Of(Expression<Func<object>> expression)
+		{
+			return ExpressionExtensions.GetMemberName((LambdaExpression)expression);
+		}
 	}
 }

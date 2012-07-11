@@ -4,6 +4,12 @@ namespace KaupischITC.Extensions
 {
 	public static class EnumExtensions
 	{
+		/// <summary>
+		/// Bestimmt, ob ein oder mehrere Bitfelder in der aktuellen Instanz festgelegt werden.
+		/// </summary>
+		/// <param name="variable">die aktuelle Instanz</param>
+		/// <param name="flag">ein Enumerationswert.</param>
+		/// <returns>true, wenn das in flag festgelegte Bitfeld bzw. die Bitfelder auch in der aktuellen Instanz festgelegt werden, andernfalls false.</returns>
 		public static bool HasFlag(this Enum variable,Enum flag)
 		{
 			if (variable==null)
