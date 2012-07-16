@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die DateTime-Klasse bereit
+	/// </summary>
 	public static class DateTimeExtensions
 	{
 		/// <summary>

@@ -6,7 +6,7 @@ using System.Reflection;
 namespace KaupischITC.Extensions
 {
 	/// <summary>
-	/// Stellt Erweiterungsmethoden für mathematische Operationen für Ausdrucksbäume bereit
+	/// Stellt Erweiterungsmethoden für die Expression-Klasse bereit
 	/// </summary>
 	public static class ExpressionExtensions
 	{
