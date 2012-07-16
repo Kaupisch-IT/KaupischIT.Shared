@@ -75,6 +75,9 @@
   <ItemGroup>
     <Compile Include="ControlChanger\ControlChangerBase.cs" />
     <Compile Include="ControlChanger\TaskbarIndeterminateProgressChanger.cs" />
+    <Compile Include="Controls\AllowedCharsTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ComboBoxControlHost.cs">
       <SubType>Component</SubType>
     </Compile>
