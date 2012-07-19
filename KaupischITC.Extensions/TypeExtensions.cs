@@ -124,6 +124,9 @@ namespace KaupischITC.Extensions
 		/// <returns>den Assembly-qualifizierter Name in Kurzform</returns>
 		public static string GetShortAssemblyQualifiedName(this Type type)
 		{
+			if (type==null)
+				return null;
+
 			AssemblyName assemblyName = type.Assembly.GetName();
 			if (assemblyName.Name=="mscorlib")
 				return type.FullName;

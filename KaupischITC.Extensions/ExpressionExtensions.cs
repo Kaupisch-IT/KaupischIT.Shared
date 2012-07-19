@@ -80,9 +80,13 @@ namespace KaupischITC.Extensions
 		/// </summary>
 		/// <param name="expression">die Expression des Memberaufrufs</param>
 		/// <returns>den Namen des aufgerufenen Members</returns>
-		public static string GetMemberName(this LambdaExpression expression)
+		public static string GetMemberName(this LambdaExpression lambdaExpression)
 		{
-			MemberExpression memberExpression = expression.Body as MemberExpression;
+			Expression expression = lambdaExpression.Body;
+			if (expression is UnaryExpression)
+				expression = ((UnaryExpression)expression).Operand;
+
+			MemberExpression memberExpression = expression as MemberExpression;
 			if (memberExpression!=null)
 				return memberExpression.Member.Name;
 			else
