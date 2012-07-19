@@ -31,9 +31,10 @@ namespace KaupischITC.Shared.Controls
 			set
 			{
 				StringBuilder onlyValid = new StringBuilder();
-				foreach (char ch in value)
-					if (this.IsValidChar!=null && this.IsValidChar(ch))
-						onlyValid.Append(ch);
+				if (value!=null)
+					foreach (char ch in value)
+						if (this.IsValidChar!=null && this.IsValidChar(ch))
+							onlyValid.Append(ch);
 
 				base.Text = onlyValid.ToString();
 			}
@@ -51,7 +52,7 @@ namespace KaupischITC.Shared.Controls
 		{
 			if (this.isValidating)
 				return;
-			
+
 			try
 			{
 				this.isValidating = true;
@@ -64,7 +65,7 @@ namespace KaupischITC.Shared.Controls
 						this.SelectionLength = this.lastValidSelectionLength;
 						return;
 					}
-			
+
 				this.lastValidText = base.Text;
 				this.lastValidSelectionStart = this.SelectionStart;
 				this.lastValidSelectionLength = this.SelectionLength;
