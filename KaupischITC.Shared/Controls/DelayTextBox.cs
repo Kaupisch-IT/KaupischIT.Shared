@@ -44,8 +44,13 @@ namespace KaupischITC.Shared
 		/// </summary>
 		protected override void OnTextChanged(EventArgs e)
 		{
-			this.timer.Enabled = false;
-			this.timer.Enabled = true;
+			if (this.Focused)
+			{
+				this.timer.Enabled = false;
+				this.timer.Enabled = true;
+			}
+			else
+				base.OnTextChanged(e);
 		}
 
 
