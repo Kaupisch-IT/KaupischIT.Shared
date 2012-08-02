@@ -91,6 +91,12 @@
     <Compile Include="Controls\ErrorMessageBox.designer.cs">
       <DependentUpon>ErrorMessageBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\InputBox.Designer.cs">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ObjectBrowser.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -140,6 +146,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\ErrorMessageBox.resx">
       <DependentUpon>ErrorMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ObjectBrowser.resx">
       <DependentUpon>ObjectBrowser.cs</DependentUpon>
