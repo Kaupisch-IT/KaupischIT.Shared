@@ -17,6 +17,12 @@ namespace KaupischITC.Shared
 		public Exception Exception { get; private set; }
 
 
+		/// <summary>
+		/// Erstellt ein neues Meldungsfenster für Details einer Ausnahme
+		/// </summary>
+		/// <param name="message">die Meldung, die angezeigt werden soll</param>
+		/// <param name="caption">der Fenstertitel</param>
+		/// <param name="exception">die Ausnahme, deren Details angezeigt werden sollen</param>
 		internal ErrorMessageBox(string message,string caption,Exception exception)
 		{
 			this.Font = SystemFonts.MessageBoxFont;
@@ -42,30 +48,36 @@ namespace KaupischITC.Shared
 		}
 
 
+		/// <summary>
+		/// Klick auf "OK"
+		/// </summary>
 		private void ButtonOk_Click(object sender,EventArgs e)
 		{
 			this.Close();
 		}
 
-
+		/// <summary>
+		/// Klick auf "Details anzeigen"
+		/// </summary>
 		private void LinkLabelDetails_LinkClicked(object sender,LinkLabelLinkClickedEventArgs e)
 		{
 			Size oldSize = this.Size;
 
 			this.SuspendLayout();
-
-			this.textBoxDetails.Visible = true;
-			this.linkLabelDetails.Visible = false;
-			this.textBoxDetails.MinimumSize = new Size(480,150);
-			this.labelMessage.MinimumSize = new Size(450,this.labelMessage.MinimumSize.Height);
-			this.buttonOk.Select();
-
+			{
+				this.textBoxDetails.Visible = true;
+				this.linkLabelDetails.Visible = false;
+				this.MinimumSize = new Size(this.MaximumSize.Width,this.MinimumSize.Height);
+				this.buttonOk.Select();
+			}
 			this.ResumeLayout();
 
 			this.Location = new Point(Math.Max(1,this.Left - (this.Width-oldSize.Width)/2),Math.Max(1,this.Top - (this.Height-oldSize.Height)/2));
 		}
 
-
+		/// <summary>
+		/// Beim Drücken von [Strg+C] den Inhalt der MessageBox in die Zwischenablage kopieren
+		/// </summary>
 		private void ErrorMessageBox_KeyDown(object sender,KeyEventArgs e)
 		{
 			if (e.Control && e.KeyCode==Keys.C)
@@ -79,6 +91,9 @@ namespace KaupischITC.Shared
 			}
 		}
 
+		/// <summary>
+		/// [Strg+A] für die TextBox mit den Ausnahme-Details
+		/// </summary>
 		private void TextBoxDetails_KeyDown(object sender,KeyEventArgs e)
 		{
 			if (e.Control && e.KeyCode==Keys.A)

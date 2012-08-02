@@ -57,7 +57,7 @@
 			this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(15, 20, 15, 20);
 			this.tableLayoutPanel1.RowCount = 1;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(464, 107);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(414, 104);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// labelMessage
@@ -68,7 +68,7 @@
 			this.labelMessage.MaximumSize = new System.Drawing.Size(350, 0);
 			this.labelMessage.MinimumSize = new System.Drawing.Size(200, 13);
 			this.labelMessage.Name = "labelMessage";
-			this.labelMessage.Size = new System.Drawing.Size(341, 67);
+			this.labelMessage.Size = new System.Drawing.Size(338, 64);
 			this.labelMessage.TabIndex = 0;
 			this.labelMessage.Text = resources.GetString("labelMessage.Text");
 			// 
@@ -85,7 +85,7 @@
 			this.buttonOk.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.buttonOk.AutoSize = true;
 			this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonOk.Location = new System.Drawing.Point(381, 194);
+			this.buttonOk.Location = new System.Drawing.Point(331, 194);
 			this.buttonOk.Name = "buttonOk";
 			this.buttonOk.Size = new System.Drawing.Size(75, 23);
 			this.buttonOk.TabIndex = 0;
@@ -104,13 +104,13 @@
 			this.tableLayoutPanel2.Controls.Add(this.linkLabelDetails, 0, 1);
 			this.tableLayoutPanel2.Controls.Add(this.textBoxDetails, 0, 0);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 107);
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 104);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.tableLayoutPanel2.RowCount = 2;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(464, 224);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(414, 224);
 			this.tableLayoutPanel2.TabIndex = 1;
 			// 
 			// linkLabelDetails
@@ -135,7 +135,7 @@
 			this.textBoxDetails.Name = "textBoxDetails";
 			this.textBoxDetails.ReadOnly = true;
 			this.textBoxDetails.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.textBoxDetails.Size = new System.Drawing.Size(448, 181);
+			this.textBoxDetails.Size = new System.Drawing.Size(398, 181);
 			this.textBoxDetails.TabIndex = 2;
 			this.textBoxDetails.Visible = false;
 			this.textBoxDetails.WordWrap = false;
@@ -149,13 +149,13 @@
 			this.AutoSize = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.CancelButton = this.buttonOk;
-			this.ClientSize = new System.Drawing.Size(464, 331);
+			this.ClientSize = new System.Drawing.Size(414, 328);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Controls.Add(this.tableLayoutPanel2);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.KeyPreview = true;
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(480, 1000);
+			this.MaximumSize = new System.Drawing.Size(430, 1000);
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(200, 50);
 			this.Name = "ErrorMessageBox";
