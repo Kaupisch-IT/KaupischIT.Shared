@@ -24,6 +24,7 @@ namespace KaupischITC.InfragisticsControls
 		private readonly ToolStripMenuItem formatToolStripMenuItem;
 		private readonly ToolStripMenuItem fontToolStripMenuItem;
 		private readonly ToolStripMenuItem visualizationToolStripMenuItem;
+		private readonly UrlProtocolHandler urlProtocolHandler = new UrlProtocolHandler();
 
 		public ContextMenuStrip ColumnContextMenuStrip { get; private set; }
 		public ContextMenuStrip RowContextMenuStrip { get; private set; }
@@ -132,6 +133,21 @@ namespace KaupischITC.InfragisticsControls
 			this.RowContextMenuStrip.Items.Add("-");
 			this.RowContextMenuStrip.Items.Add("Alles erweitern",null,delegate { this.ContextUltraGridRow.ParentCollection.ExpandAll(false); });
 			this.RowContextMenuStrip.Items.Add("Alles reduzieren",null,delegate { this.ContextUltraGridRow.ParentCollection.CollapseAll(false); });
+
+			this.ColumnContextMenuStrip.Opening += delegate
+			{
+				foreach (ToolStripItem item in this.ColumnContextMenuStrip.Items.Cast<ToolStripItem>().Where(tsi => tsi.Tag==this.urlProtocolHandler).ToList())
+					this.ColumnContextMenuStrip.Items.Remove(item);
+
+				List<UrlProtocolHandler.ConcreteRoute> validRoutes = this.urlProtocolHandler.GetValidRoutes(this.ContextUltraGridCell).ToList();
+				if (validRoutes.Any())
+				{
+					this.ColumnContextMenuStrip.Items.Add("-").Tag = this.urlProtocolHandler;
+					foreach (UrlProtocolHandler.ConcreteRoute route in validRoutes)
+						this.ColumnContextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
+				}
+			};
+
 
 			ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
 			this.SortIndicatorImageAscending = (Image)resources.GetObject("Up");
