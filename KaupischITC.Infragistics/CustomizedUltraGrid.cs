@@ -403,13 +403,8 @@ namespace KaupischITC.InfragisticsControls
 						string[] hiddenPostfixes = { "ID","Id","Key" };
 						if (hiddenPostfixes.Any(pf => ultraGridColumn.Key.EndsWith(pf)) || ultraGridColumn.PropertyDescriptor.Attributes.OfType<BrowsableAttribute>().Any(ba => !ba.Browsable))
 							ultraGridColumn.Hidden = true;
-						// TODO
-						//else if (ultraGridColumn.DataType!=typeof(string) && !ultraGridColumn.DataType.IsValueType)
-						//{
-						//    ultraGridColumn.Style = Infragistics.Win.UltraWinGrid.ColumnStyle.EditButton;
-						//    ultraGridColumn.ButtonDisplayStyle = Infragistics.Win.UltraWinGrid.ButtonDisplayStyle.Always;
-						//    ultraGridColumn.CellButtonAppearance.Image = "searchGlyph";
-						//}
+						else if (ultraGridColumn.DataType!=typeof(string) && !ultraGridColumn.DataType.IsValueType)
+							ultraGridColumn.Hidden = true;
 						else
 							ultraGridColumn.Style = Infragistics.Win.UltraWinGrid.ColumnStyle.Default;
 					}
