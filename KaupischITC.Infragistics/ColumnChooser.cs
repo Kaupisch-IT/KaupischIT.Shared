@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Infragistics.Win.UltraWinGrid;
 using KaupischITC.Extensions;
+using System.Collections.Generic;
 
 namespace KaupischITC.InfragisticsControls
 {
@@ -24,7 +25,7 @@ namespace KaupischITC.InfragisticsControls
 			this.CheckBoxes = true;
 
 			foreach (UltraGridColumn column in this.currentBand.Columns.OfType<UltraGridColumn>().OrderBy(c => c.Header.Caption))
-				if (column.DataType==typeof(string) || column.DataType.IsValueType)
+				if (column.DataType.IsValueType || column.DataType==typeof(string) || column.IsChaptered)
 				{
 					bool isHidden = (column.IsChaptered) ? this.currentBand.Layout.Bands[column.Key].Hidden : column.Hidden;
 
