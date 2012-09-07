@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace KaupischITC.InfragisticsControls
 	{
 		private static ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
 		private Timer timer = new Timer();
+		private List<ExpandedRow> expandedRowsState;
 
 		private readonly ToolStripMenuItem summaryToolStripMenuItem;
 		private readonly ToolStripMenuItem formatToolStripMenuItem;
@@ -531,7 +533,7 @@ namespace KaupischITC.InfragisticsControls
 			return false;
 		}
 
-		
+
 
 
 		public bool DrawElement(DrawPhase drawPhase,ref UIElementDrawParams drawParams)
@@ -593,6 +595,51 @@ namespace KaupischITC.InfragisticsControls
 				return DrawPhase.BeforeDrawBorders;
 
 			return DrawPhase.None;
+		}
+
+
+		public void SaveExpandedState()
+		{
+			this.expandedRowsState = this.GetExpandedRows(this.Rows).ToList();
+		}
+
+		private IEnumerable<ExpandedRow> GetExpandedRows(RowsCollection rowsCollection)
+		{
+			foreach (UltraGridGroupByRow groupByRow in rowsCollection.OfType<UltraGridGroupByRow>())
+				if (groupByRow.IsExpanded)
+					yield return new ExpandedRow
+					{
+						ColumnKey = groupByRow.Column.Key,
+						Value = groupByRow.ValueAsDisplayText,
+						ChildRows = this.GetExpandedRows(groupByRow.Rows).ToList()
+					};
+		}
+
+		public void RestoreExpandedState()
+		{
+			if (this.expandedRowsState!=null)
+				this.SetExpandedRows(this.expandedRowsState,this.Rows);
+		}
+
+		private void SetExpandedRows(IEnumerable<ExpandedRow> expandedRows,RowsCollection rowsCollection)
+		{
+			foreach (UltraGridGroupByRow groupByRow in rowsCollection.OfType<UltraGridGroupByRow>())
+			{
+				ExpandedRow expandedRow = expandedRows.SingleOrDefault(er => er.ColumnKey==groupByRow.Column.Key && er.Value==groupByRow.ValueAsDisplayText);
+				if (expandedRow!=null)
+				{
+					groupByRow.Expanded = true;
+					this.SetExpandedRows(expandedRow.ChildRows,groupByRow.Rows);
+				}
+			}
+		}
+
+		[DebuggerDisplay("Name")]
+		private class ExpandedRow
+		{
+			public string ColumnKey { get; set; }
+			public string Value { get; set; }
+			public List<ExpandedRow> ChildRows { get; set; }
 		}
 	}
 }
