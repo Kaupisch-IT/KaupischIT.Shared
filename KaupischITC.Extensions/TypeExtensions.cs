@@ -23,7 +23,7 @@ namespace KaupischITC.Extensions
 		{
 			return TypeExtensions.numericTypes.Contains(type) || TypeExtensions.numericNullableTypes.Contains(type);
 		}
-		
+
 
 		/// <summary>
 		/// Sucht die angegebene generische öffentliche Methode, deren Parameter den angegebenen Argumenttypen entsprechen.
@@ -40,7 +40,7 @@ namespace KaupischITC.Extensions
 				.SingleOrDefault();
 		}
 
-		
+
 		/// <summary>
 		/// Prüft, ob der angegebene Typ ein generischer Nullable-Typ ist
 		/// </summary>
@@ -62,7 +62,7 @@ namespace KaupischITC.Extensions
 			return (!type.IsValueType || (type.IsGenericType && type.GetGenericTypeDefinition()==typeof(Nullable<>)));
 		}
 
-		
+
 		/// <summary>
 		/// Ermittelt, ob der angegebene Typ eine bestimmte Schnittstelle implementiert
 		/// </summary>
@@ -93,12 +93,15 @@ namespace KaupischITC.Extensions
 
 			return Regex.Replace(type.Name,@"`(?<count>\d)$",match =>
 			{
-				Type[] genericArguments = type.GetGenericArguments();
-				return "<"+String.Join(",",Enumerable.Range(0,Convert.ToInt32(match.Groups["count"].Value)).Select(i => genericArguments[i].GetPrettyName()).ToArray())+">";
+				Type[] argumentTypes = type.GetGenericArguments();
+				if (type.IsGenericType)
+					argumentTypes = type.GetGenericTypeDefinition().GetGenericArguments().Select((genericArgumentType,i) => (argumentTypes[i].IsCompilerGenerated()) ? genericArgumentType : argumentTypes[i]).ToArray();
+
+				return "<"+String.Join(",",Enumerable.Range(0,Convert.ToInt32(match.Groups["count"].Value)).Select(i => argumentTypes[i].GetPrettyName()).ToArray())+">";
 			});
 		}
 
-		
+
 		/// <summary>
 		/// Ermittelt den benutzerfreundlichen Typennamen inklusive Namespace
 		/// </summary>
@@ -111,8 +114,11 @@ namespace KaupischITC.Extensions
 
 			return Regex.Replace(type.FullName,@"`(?<count>\d)\[.*\]$",match =>
 			{
-				Type[] genericArguments = type.GetGenericArguments();
-				return "<"+String.Join(",",Enumerable.Range(0,Convert.ToInt32(match.Groups["count"].Value)).Select(i => genericArguments[i].GetPrettyFullName()).ToArray())+">";
+				Type[] argumentTypes = type.GetGenericArguments();
+				if (type.IsGenericType)
+					argumentTypes = type.GetGenericTypeDefinition().GetGenericArguments().Select((genericArgumentType,i) => (argumentTypes[i].IsCompilerGenerated()) ? genericArgumentType : argumentTypes[i]).ToArray();
+
+				return "<"+String.Join(",",Enumerable.Range(0,Convert.ToInt32(match.Groups["count"].Value)).Select(i => argumentTypes[i].GetPrettyFullName()).ToArray())+">";
 			});
 		}
 
