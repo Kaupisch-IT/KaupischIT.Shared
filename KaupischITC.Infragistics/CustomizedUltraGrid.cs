@@ -332,6 +332,7 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.ViewStyleBand = ViewStyleBand.OutlookGroupBy;
 				this.DisplayLayout.ViewStyle = ViewStyle.MultiBand;
 				this.DisplayLayout.Override.RowSelectorNumberStyle = RowSelectorNumberStyle.RowIndex;
+				this.DisplayLayout.Override.RowSelectorAppearance.TextTrimming = TextTrimming.None;
 				this.DisplayLayout.Override.ExpansionIndicator = ShowExpansionIndicator.CheckOnDisplay;
 				this.DisplayLayout.Override.CellAppearance.TextTrimming = TextTrimming.EllipsisCharacter;
 				this.DisplayLayout.Override.HeaderAppearance.TextTrimming = TextTrimming.EllipsisCharacter;
@@ -468,6 +469,23 @@ namespace KaupischITC.InfragisticsControls
 						}
 
 			base.OnBeforeSortChange(e);
+		}
+
+		protected override void OnAfterRowExpanded(RowEventArgs e)
+		{
+			foreach (UltraGridChildBand childBands in e.Row.ChildBands)
+			{
+				string count = childBands.Rows.Count.ToString();
+				string text = new string('8',count.Length) + new string('.',count.Length/3);
+
+				var la = TextRenderer.MeasureText(text,this.Font);
+
+				int preferredWidth = la.Width + 15;
+				if (childBands.Band.Override.RowSelectorWidth<preferredWidth)
+					childBands.Band.Override.RowSelectorWidth = preferredWidth;
+			}
+
+			base.OnAfterRowExpanded(e);
 		}
 
 
