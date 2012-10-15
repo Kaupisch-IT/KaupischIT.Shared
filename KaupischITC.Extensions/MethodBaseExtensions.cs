@@ -5,13 +5,20 @@ using System.Reflection.Emit;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die MethodBase-Klasse bereit
+	/// </summary>
 	public static class MethodBaseExtensions
 	{
-		private static readonly OpCode[] oneByteOpCodes = new OpCode[0x100];
-		private static readonly OpCode[] twoByteOpCodes = new OpCode[0x100];
+		private static readonly OpCode[] oneByteOpCodes = new OpCode[0x100]; // enthält die 1 Byte großen OpCodes
+		private static readonly OpCode[] twoByteOpCodes = new OpCode[0x100]; // enthält die 2 Byte großen OpCodes
 
+		/// <summary>
+		/// Statischer Konstruktor
+		/// </summary>
 		static MethodBaseExtensions()
 		{
+			// OpCodes "sortieren"
 			foreach (FieldInfo fieldInfo in typeof(OpCodes).GetFields(BindingFlags.Public|BindingFlags.Static))
 			{
 				OpCode opCode = (OpCode)fieldInfo.GetValue(null);
@@ -24,6 +31,11 @@ namespace KaupischITC.Extensions
 		}
 
 
+		/// <summary>
+		/// Ermittelt alle Methodenaufrufe innerhalb der übergebenen Methode
+		/// </summary>
+		/// <param name="methodInfo">die Methode, deren Methodenaufrufe ermittelt werden solle</param>
+		/// <returns>eine Auflistung aller Methoden, die in der übergebene Methoden aufgerufen wurde</returns>
 		public static IEnumerable<MethodBase> GetCalls(this MethodBase methodInfo)
 		{
 			MethodBody methodBody = methodInfo.GetMethodBody();

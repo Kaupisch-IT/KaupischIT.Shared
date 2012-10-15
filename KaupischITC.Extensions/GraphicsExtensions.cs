@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die Graphics-Klasse bereit
+	/// </summary>
 	public static class GraphicsExtensions
 	{
 		/// <summary>

@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für generische Typen bereit
+	/// </summary>
 	public static class ObjectGenericExtensions
 	{
 		public static TResult IfNotNull<T,TResult>(this T value,Func<T,TResult> func)

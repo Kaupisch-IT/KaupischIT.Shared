@@ -22,6 +22,5 @@ namespace KaupischITC.Extensions
 			object value = dataRecord[columnName];
 			return (value is DBNull) ? default(T) : (T)value;
 		}
-
 	}
 }

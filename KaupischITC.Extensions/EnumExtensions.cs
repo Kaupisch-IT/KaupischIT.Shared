@@ -2,6 +2,9 @@
 
 namespace KaupischITC.Extensions
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die Enum-Klasse bereit
+	/// </summary>
 	public static class EnumExtensions
 	{
 		/// <summary>
