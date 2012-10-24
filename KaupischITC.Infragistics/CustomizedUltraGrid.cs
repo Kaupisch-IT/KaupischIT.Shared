@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
+using Infragistics.Win.UltraWinGrid.ExcelExport;
 using KaupischITC.Charting;
 using KaupischITC.Extensions;
 using KaupischITC.InfragisticsControls.ValueAppearances;
@@ -478,9 +479,9 @@ namespace KaupischITC.InfragisticsControls
 				string count = childBands.Rows.Count.ToString();
 				string text = new string('8',count.Length) + new string('.',count.Length/3);
 
-				var la = TextRenderer.MeasureText(text,this.Font);
+				Size measuredSize = TextRenderer.MeasureText(text,this.Font);
 
-				int preferredWidth = la.Width + 15;
+				int preferredWidth = measuredSize.Width + 15;
 				if (childBands.Band.Override.RowSelectorWidth<preferredWidth)
 					childBands.Band.Override.RowSelectorWidth = preferredWidth;
 			}
@@ -552,6 +553,49 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
+		public void ExportToExcel(string path)
+		{
+			using (UltraGridExcelExporter excelExporter = new UltraGridExcelExporter())
+			{
+				excelExporter.BandSpacing = BandSpacing.None;
+				excelExporter.InitializeColumn += (sender,initializeColumnEventArgs) => initializeColumnEventArgs.ExcelFormatStr = this.GetExcelFormatStr(initializeColumnEventArgs.FrameworkFormatStr,initializeColumnEventArgs.Column.DataType);
+
+				int lastOutlineLevel = -1;
+				excelExporter.HeaderRowExporting += delegate(object sender,HeaderRowExportingEventArgs e)
+				{
+					if (lastOutlineLevel>=e.CurrentOutlineLevel)
+						e.Cancel = true;
+					lastOutlineLevel = e.CurrentOutlineLevel;
+				};
+
+				excelExporter.Export(this,path);
+			}
+		}
+
+		private string GetExcelFormatStr(string frameworkFormatStr,Type dataType)
+		{
+			if (frameworkFormatStr==null)
+				return null;
+
+			if (frameworkFormatStr=="C")
+				return @"#,##0.00 €";
+
+			if (frameworkFormatStr=="P")
+				return "0%";
+
+			Match numericMatch = Regex.Match(frameworkFormatStr,@"^N(?<count>\d{1,3})$");
+			if (numericMatch.Success)
+			{
+				string result = "#,##0";
+				int count = Int32.Parse(numericMatch.Groups["count"].Value);
+				if (count>0)
+					result += "." + new string('0',count);
+				return result;
+			}
+
+			return frameworkFormatStr;
+		}
+		
 
 
 		public bool DrawElement(DrawPhase drawPhase,ref UIElementDrawParams drawParams)
