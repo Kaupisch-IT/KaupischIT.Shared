@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Enthält speziell angepasste Infragistics-Controls")]
 [assembly: AssemblyCompany("Kaupisch ITC-Solution")]
 [assembly: AssemblyProduct("KaupischITC.Infragistics")]
-[assembly: AssemblyCopyright("Copyright © Kaupisch ITC-Solution 2011")]
+[assembly: AssemblyCopyright("Copyright © Kaupisch ITC-Solution 2012")]
 
 // Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
 // für COM-Komponenten. Wenn Sie auf einen Typ in dieser Assembly von 

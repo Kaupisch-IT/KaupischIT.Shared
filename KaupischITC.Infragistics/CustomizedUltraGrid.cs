@@ -17,32 +17,22 @@ using KaupischITC.Shared;
 
 namespace KaupischITC.InfragisticsControls
 {
-	public partial class CustomizedUltraGrid : UltraGrid,IUIElementCreationFilter,IUIElementDrawFilter
+	/// <summary>
+	/// Stellt ein angepasstes UltraGrid-Steuerelement dar
+	/// </summary>
+	public partial class CustomizedUltraGrid : UltraGrid,IUIElementDrawFilter
 	{
 		private static ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
-		private Timer timer = new Timer();
-		private List<ExpandedRow> expandedRowsState;
+		private Timer timer = new Timer();						// Timer für den WaitCursor
+		private List<ExpandedGroupByRow> expandedRowsState;		// enthält ggf. die gespeicherten ausgeklappten Gruppierungszeilen
 
-		private readonly ToolStripMenuItem summaryToolStripMenuItem;
-		private readonly ToolStripMenuItem formatToolStripMenuItem;
-		private readonly ToolStripMenuItem fontToolStripMenuItem;
-		private readonly ToolStripMenuItem visualizationToolStripMenuItem;
-		private readonly UrlProtocolHandler urlProtocolHandler = new UrlProtocolHandler();
+		private ToolStripMenuItem summaryToolStripMenuItem;		// Kontextmenüeintrag für Zusammenfassungen
+		private ToolStripMenuItem formatToolStripMenuItem;		// Kontextmenüeintrag für Wertformatierungen
+		private ToolStripMenuItem fontToolStripMenuItem;		// Kontextmenüeintrag für Schriftformatierungen
+		private ToolStripMenuItem visualizationToolStripMenuItem; // Kontextmenüeintrag für Visualisierungen
+		private UrlProtocolHandler urlProtocolHandler = new UrlProtocolHandler(); // der UrlProtocolHandler für benutzerdefinierte Kontextmenüeinträge
 
-		public ContextMenuStrip ColumnContextMenuStrip { get; private set; }
-		public ContextMenuStrip RowContextMenuStrip { get; private set; }
-		public UltraGridRow ContextUltraGridRow { get; private set; }
-		public UltraGridCell ContextUltraGridCell { get; private set; }
-		public HeaderUIElement ContextHeaderUIElement { get; private set; }
-		public UltraGridColumn ContextUltraGridColumn { get; private set; }
-		public SummaryFooterUIElement ContextSummaryFooterUIElement { get; private set; }
-		public Image SortIndicatorImageAscending { get; set; }
-		public Image SortIndicatorImageDescending { get; set; }
-
-		public class UltraGridColumnEventArgs : EventArgs { public UltraGridColumn Column { get; set; } }
-		public event EventHandler<UltraGridColumnEventArgs> ColumnFormatChanged;
-		public event EventHandler<UltraGridColumnEventArgs> ColumnCaptionChanged;
-
+		// alle verfügbaren Zusammenfassungen mit Beschreibungstext und Symbol
 		private Dictionary<SummaryType,string[]> availableSummaries = new Dictionary<SummaryType,string[]>()
 		{
 			{ SummaryType.Sum, new [] { "Summe","Σ" }},
@@ -52,7 +42,7 @@ namespace KaupischITC.InfragisticsControls
 			{ SummaryType.Maximum, new [] {"Maximum","Max" }}
 		};
 
-
+		// alle verfügbaren vordefinierten Wertformatierungen mit Beschreibungstext
 		private Dictionary<string,string> availableFormats = new Dictionary<string,string>()
 		{
 			{ "N0","Zahl (mit Tausendertrennzeichen)" },
@@ -65,6 +55,48 @@ namespace KaupischITC.InfragisticsControls
 		};
 
 
+		/// <summary> Gibt das Kontextmenü, dass beim Klicken in ein Zelle, die zu einer Spalte gehört, angezeigt wird, zurück </summary>
+		public ContextMenuStrip ColumnCellContextMenuStrip { get; private set; }
+
+		/// <summary> Gibt das Kontextmenü, das beim Klicken auf den Zeilenselektor angezeigt wird, zurück </summary>
+		public ContextMenuStrip RowSelectorContextMenuStrip { get; private set; }
+
+		/// <summary> Gibt die Zeile zurück, auf die in diesem Kontext geklickt wurde </summary>
+		public UltraGridRow ContextUltraGridRow { get; private set; }
+		
+		/// <summary> Gibt die Zelle zurück, auf die in diesem Kontext geklickt wurde </summary>
+		public UltraGridCell ContextUltraGridCell { get; private set; }
+
+		/// <summary> Gibt den Spaltenkopf zurück, auf den in diesem Kontext geklickt wurde </summary>
+		public HeaderUIElement ContextHeaderUIElement { get; private set; }
+
+		/// <summary> Gibt die Spalte zurück, auf die in diesem Kontext geklickt wurde </summary>
+		public UltraGridColumn ContextUltraGridColumn { get; private set; }
+
+		/// <summary> Gibt die Zusammenfassung zurück, auf die in diesem Kontext geklickt wurde </summary>
+		public SummaryFooterUIElement ContextSummaryFooterUIElement { get; private set; }
+
+		/// <summary> Gibt die Grafik für aufsteigend sortierte Spalten zurück oder legt diese fest </summary>
+		public Image SortIndicatorImageAscending { get; set; }
+
+		/// <summary> Gibt die Grafik für absteigend sortierte Spalten zurück oder legt diese fest </summary>
+		public Image SortIndicatorImageDescending { get; set; }
+
+
+		/// <summary> Stellt Informationen über Ereignisdaten bereit, bei denen eine Spalte betroffen ist </summary>
+		public class UltraGridColumnEventArgs : EventArgs { public UltraGridColumn Column { get; set; } }
+
+		/// <summary> Wird ausgelöst, wenn das Werteformat einer Spalte geändert wird </summary>
+		public event EventHandler<UltraGridColumnEventArgs> ColumnFormatChanged;
+
+		/// <summary> Wird ausgelöst, wenn die Beschriftung einer Spalte geändert wird </summary>
+		public event EventHandler<UltraGridColumnEventArgs> ColumnCaptionChanged;
+
+
+
+		/// <summary>
+		/// Gibt an, ob der Zeilenfilter aktiviert ist, oder legt dieses fest
+		/// </summary>
 		public bool AllowRowFiltering
 		{
 			get { return (this.DisplayLayout.Override.AllowRowFiltering==DefaultableBoolean.True); }
@@ -78,254 +110,43 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
+
+		/// <summary>
+		/// Erstellt ein neues angepasstes UltraGrid-Steuerelement
+		/// </summary>
 		public CustomizedUltraGrid()
 		{
-			this.CreationFilter = this;
 			this.DrawFilter = this;
-
 			this.Font = SystemFonts.MessageBoxFont;
+
 			this.InitializeComponent();
 
-			this.RowContextMenuStrip = new ContextMenuStrip();
-			this.ColumnContextMenuStrip = new ContextMenuStrip();
+			// Kontextmenüs initialisieren
+			this.InitializeColumContextMenuStrip();
+			this.InitializeRowContextMenuStrip();
 
-			ToolStripTextBox toolStripTextBoxCaption = new ToolStripTextBox("HeaderCaption");
-			toolStripTextBoxCaption.TextChanged += delegate
-			{
-				if (this.ContextUltraGridColumn!=null)
-					this.ContextUltraGridColumn.Header.Caption = toolStripTextBoxCaption.Text;
-
-				if (this.ColumnCaptionChanged!=null && this.ContextUltraGridColumn!=null)
-					this.ColumnCaptionChanged(this,new UltraGridColumnEventArgs { Column = this.ContextUltraGridColumn });
-			};
-			this.ColumnContextMenuStrip.Items.Add(toolStripTextBoxCaption);
-
-			this.formatToolStripMenuItem = (ToolStripMenuItem)this.ColumnContextMenuStrip.Items.Add("Werte formatieren als");
-			foreach (string formatString in availableFormats.Keys)
-				this.formatToolStripMenuItem.DropDownItems.Add(availableFormats[formatString],null,FormatMenuItem_Click).Tag = formatString;
-
-			ToolStripTextBox toolStripTextBox = new ToolStripTextBox("Custom");
-			toolStripTextBox.TextChanged += delegate
-			{
-				toolStripTextBox.Tag = toolStripTextBox.Text;
-				this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty);
-			};
-			toolStripTextBox.Click += delegate { this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty); };
-			this.formatToolStripMenuItem.DropDownItems.Add(toolStripTextBox);
-
-			this.summaryToolStripMenuItem = (ToolStripMenuItem)this.ColumnContextMenuStrip.Items.Add("Zusammenfassung hinzufügen");
-			foreach (SummaryType summaryType in availableSummaries.Keys)
-				this.summaryToolStripMenuItem.DropDownItems.Add(availableSummaries[summaryType][0],null,SummaryMenuItem_Click).Tag = summaryType;
-
-			this.fontToolStripMenuItem = (ToolStripMenuItem)this.ColumnContextMenuStrip.Items.Add("Text formatieren");
-			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
-
-			this.fontToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
-			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues = !((ToolStripMenuItem)sender).Checked; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators = !((ToolStripMenuItem)sender).Checked; });
-
-			this.visualizationToolStripMenuItem = (ToolStripMenuItem)this.ColumnContextMenuStrip.Items.Add("Visualisierung");
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate { this.ShowChartForm(new BarChartForm()); });
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate { this.ShowChartForm(new TreeMapForm()); });
-
-			this.RowContextMenuStrip.Items.Add("Erweitern",null,delegate { this.ContextUltraGridRow.Expanded = true; });
-			this.RowContextMenuStrip.Items.Add("Reduzieren",null,delegate { this.ContextUltraGridRow.Expanded = false; });
-			this.RowContextMenuStrip.Items.Add("-");
-			this.RowContextMenuStrip.Items.Add("Alles erweitern",null,delegate { this.ContextUltraGridRow.ParentCollection.ExpandAll(false); });
-			this.RowContextMenuStrip.Items.Add("Alles reduzieren",null,delegate { this.ContextUltraGridRow.ParentCollection.CollapseAll(false); });
-
-			this.ColumnContextMenuStrip.Opening += delegate
-			{
-				foreach (ToolStripItem item in this.ColumnContextMenuStrip.Items.Cast<ToolStripItem>().Where(tsi => tsi.Tag==this.urlProtocolHandler).ToList())
-					this.ColumnContextMenuStrip.Items.Remove(item);
-
-				List<UrlProtocolHandler.ConcreteRoute> validRoutes = this.urlProtocolHandler.GetValidRoutes(this.ContextUltraGridCell).ToList();
-				if (validRoutes.Any())
-				{
-					this.ColumnContextMenuStrip.Items.Add("-").Tag = this.urlProtocolHandler;
-					foreach (UrlProtocolHandler.ConcreteRoute route in validRoutes)
-						this.ColumnContextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
-				}
-			};
-
-
+			// Ressourcen initialisieren
 			ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
 			this.SortIndicatorImageAscending = (Image)resources.GetObject("Up");
 			this.SortIndicatorImageDescending = (Image)resources.GetObject("Down");
-
-			this.OnInitializeLayout(new InitializeLayoutEventArgs(this.DisplayLayout));
-
 			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("ColumnChooserButtonToolTip","Spalten auswählen");
+
+			// Layout initialisieren
+			this.OnInitializeLayout(new InitializeLayoutEventArgs(this.DisplayLayout));
 		}
 
 
-		private void SummaryMenuItem_Click(object sender,EventArgs e)
-		{
-			ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-			SummaryType summaryType = (SummaryType)menuItem.Tag;
-
-			if (!menuItem.Checked)
-				this.AddColumnSummary(this.ContextUltraGridColumn,summaryType);
-			else
-				this.RemoveColumnSummary(this.ContextUltraGridColumn,summaryType);
-		}
-		public void AddColumnSummary(UltraGridColumn column,SummaryType summaryType)
-		{
-			SummarySettings summarySettings =column.Band.Summaries.Add(summaryType,column);
-			summarySettings.DisplayFormat = this.GetColumnSummaryFormat(column.Format,summaryType);
-			summarySettings.Appearance.TextHAlign = HAlign.Right;
-		}
-		public void RemoveColumnSummary(UltraGridColumn column,SummaryType summaryType)
-		{
-			foreach (SummarySettings summarySettings in column.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SummaryType==summaryType && ss.SourceColumn==column))
-				this.ContextUltraGridColumn.Band.Summaries.Remove(summarySettings);
-		}
-
-
-
-		private void FormatMenuItem_Click(object sender,EventArgs e)
-		{
-			ToolStripItem menuItem = (ToolStripItem)sender;
-			string format = (string)menuItem.Tag;
-
-			this.SetColumnFormat(this.ContextUltraGridColumn,format);
-		}
-		public void SetColumnFormat(UltraGridColumn column,string format)
-		{
-			column.Format = format;
-
-			foreach (SummarySettings summarySettings in column.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SourceColumn==column))
-				summarySettings.DisplayFormat = this.GetColumnSummaryFormat(format,summarySettings.SummaryType);
-
-			if (this.ColumnFormatChanged!=null)
-				this.ColumnFormatChanged(this,new UltraGridColumnEventArgs { Column = column });
-		}
-
-
-		private string GetColumnSummaryFormat(string cellFormat,SummaryType summaryType)
-		{
-			return this.availableSummaries[summaryType][1]+": " + ((summaryType!=SummaryType.Count) ? "{0:"+cellFormat+"}" : "{0}");
-		}
-
-
-		private void ShowChartForm(ChartForm chartForm)
-		{
-			var elements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => !ugr.Hidden && !ugr.IsFilteredOut).Select(ugr => ugr.ListObject).ToList();
-			if (elements.Any())
-			{
-				chartForm.DisplayedType = elements.First().GetType();
-				chartForm.Elements = elements;
-				chartForm.EmphasizedElements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => ugr.Selected).Select(ugr => ugr.ListObject).ToList();
-				chartForm.ShowInTaskbar = false;
-				chartForm.DisplayMember = this.ContextUltraGridColumn.Band.GetFirstVisibleCol(this.ActiveColScrollRegion,true).Key;
-				chartForm.ValueMember = this.ContextUltraGridColumn.Key;
-				chartForm.GetFormatString = (columnName) => (this.ContextUltraGridColumn.Band.Columns.Exists(columnName)) ? this.ContextUltraGridColumn.Band.Columns[columnName].Format : null;
-
-				chartForm.Show(this);
-			}
-		}
-
-
-		protected override void OnMouseUp(MouseEventArgs e)
-		{
-			if (e.Button==MouseButtons.Right)
-			{
-				Point mousePoint = new Point(e.X,e.Y);
-				UIElement element = this.DisplayLayout.UIElement.ElementFromPoint(mousePoint);
-				if (element!=null)
-				{
-					this.ContextUltraGridRow = (UltraGridRow)element.GetContext(typeof(UltraGridRow));				// geklickte Zeile
-					this.ContextUltraGridCell = (UltraGridCell)element.GetContext(typeof(UltraGridCell));			// geklickte Zelle
-					this.ContextHeaderUIElement = (HeaderUIElement)element.GetAncestor(typeof(HeaderUIElement));	// geklickter Spaltenkopf
-					this.ContextUltraGridColumn = (UltraGridColumn)element.GetContext(typeof(UltraGridColumn));		// geklickte Spalte
-					this.ContextSummaryFooterUIElement = (SummaryFooterUIElement)element.GetAncestor(typeof(SummaryFooterUIElement)); // geklickter Spaltenfuß
-
-					// Kontextmenü für Spalten
-					if (this.ContextUltraGridColumn!=null)
-					{
-						this.ColumnContextMenuStrip.Items["HeaderCaption"].Text = (this.ContextUltraGridColumn!=null) ? this.ContextUltraGridColumn.Header.Caption : null;
-
-						// "Zusammenfassungen"
-						if (this.ContextUltraGridColumn!=null)
-							foreach (ToolStripMenuItem menuItem in this.summaryToolStripMenuItem.DropDownItems)
-								menuItem.Checked = this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Any(ss => ss.SourceColumn==this.ContextUltraGridColumn && ss.SummaryType==(SummaryType)menuItem.Tag);
-
-						// "Formatieren als"
-						if (this.ContextUltraGridColumn!=null)
-						{
-							foreach (ToolStripMenuItem menuItem in this.formatToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
-								menuItem.Checked = (this.ContextUltraGridColumn.Format==(string)menuItem.Tag);
-							this.formatToolStripMenuItem.DropDownItems["Custom"].Text = this.ContextUltraGridColumn.Format;
-						}
-
-						// "Text formatieren"
-						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[0]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Bold==DefaultableBoolean.True);
-						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[1]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Italic==DefaultableBoolean.True);
-						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[2]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Underline==DefaultableBoolean.True);
-						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[4]).Checked = ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues;
-						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[5]).Checked = ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators;
-
-						// "Visualisierung anzeigen"
-						this.visualizationToolStripMenuItem.Enabled = (this.ContextUltraGridRow!=null);
-
-						this.ColumnContextMenuStrip.Show(this,mousePoint);
-					}
-					// Kontextmenü für Zeilen
-					else if (this.ContextUltraGridRow!=null)
-					{
-						if (this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Any(row => row.IsExpandable))
-						{
-							this.RowContextMenuStrip.Items[0].Visible = this.ContextUltraGridRow.IsExpandable && !this.ContextUltraGridRow.IsExpanded;
-							this.RowContextMenuStrip.Items[1].Visible = this.ContextUltraGridRow.IsExpandable && this.ContextUltraGridRow.IsExpanded;
-							this.RowContextMenuStrip.Items[2].Visible = this.ContextUltraGridRow.IsExpandable;
-							this.RowContextMenuStrip.Show(this,mousePoint);
-						}
-					}
-				}
-			}
-			base.OnMouseUp(e);
-		}
-
-
-
-		public void AutoResizeColumns()
-		{
-			foreach (UltraGridBand band in this.DisplayLayout.Bands)
-			{
-				Dictionary<UltraGridColumn,int> oldMaxWidths = new Dictionary<UltraGridColumn,int>(band.Columns.Count);
-				foreach (UltraGridColumn column in band.Columns)
-				{
-					oldMaxWidths[column] = column.MaxWidth;
-					column.MaxWidth = 300;
-				}
-
-				band.PerformAutoResizeColumns(false,PerformAutoSizeType.VisibleRows,AutoResizeColumnWidthOptions.IncludeCells|AutoResizeColumnWidthOptions.IncludeHeader|AutoResizeColumnWidthOptions.IncludeSummaryRows);
-
-				foreach (UltraGridColumn column in oldMaxWidths.Keys)
-					column.MaxWidth = oldMaxWidths[column];
-			}
-		}
-
-
-		public void AutoResizeRows()
-		{
-			this.DisplayLayout.Override.CellMultiLine = DefaultableBoolean.True;
-			foreach (RowScrollRegion rowScrollRegion in this.DisplayLayout.RowScrollRegions)
-				foreach (VisibleRow visibleRow in rowScrollRegion.VisibleRows)
-					visibleRow.Row.PerformAutoSize();
-		}
-
-
+		/// <summary>
+		/// Initialisierung des Layouts des Grids
+		/// </summary>
 		protected override void OnInitializeLayout(InitializeLayoutEventArgs e)
 		{
 			using (new WaitCursorChanger(this))
 			{
-				this.DisplayLayout.MaxBandDepth = 5; // TODO
+				this.DisplayLayout.MaxBandDepth = 5; // bei zyklischen Datenstrukturen hängt das Grid gern mal beim Laden. 5 scheint relativ in Ordnung zu sein: Viel tiefer wird (eigentlich) nie aufgeklappt; schon bei 7 kann es sein, dass das Grid hängen bleibt
 				this.DisplayLayout.LoadStyle = LoadStyle.LoadOnDemand;
 
+				// diverse Einstellungen für Aussehen & Verhalten
 				this.DisplayLayout.GroupByBox.Prompt = "Ziehen Sie einen Spaltenkopf hierher, um nach diesem zu gruppieren.";
 				this.DisplayLayout.Override.CellClickAction = CellClickAction.EditAndSelectText;
 				this.DisplayLayout.Override.HeaderClickAction = HeaderClickAction.SortMulti;
@@ -351,6 +172,7 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.Override.FilterUIType = FilterUIType.FilterRow;
 				this.DisplayLayout.Override.RowFilterMode = RowFilterMode.AllRowsInBand;
 
+				// Anpassung diverser Farben und Zeichenstile zur Vereinheitlichung des Aussehens mit den DevExpress-Steuerelementen
 				Color borderColor = Color.FromArgb(202,203,211);
 				Color selectedBackColor = Color.FromArgb(226,234,253);
 				Color selectedForeColor = SystemColors.ControlText;
@@ -359,7 +181,6 @@ namespace KaupischITC.InfragisticsControls
 				Color headerBackColor1 = Color.FromArgb(248,248,248);
 				Color headerBackColor2 = Color.FromArgb(242,242,242);
 				Color summaryBackColor = Color.FromArgb(242,246,251);
-
 				this.DisplayLayout.DefaultSelectedBackColor = selectedBackColor;
 				this.DisplayLayout.DefaultSelectedForeColor = selectedForeColor;
 				this.DisplayLayout.GroupByBox.Style = GroupByBoxStyle.Compact;
@@ -380,12 +201,14 @@ namespace KaupischITC.InfragisticsControls
 
 				this.SuspendRowSynchronization();
 
+				// Anpassungen für Bänder
 				foreach (UltraGridBand ultraGridBand in e.Layout.Bands)
 				{
 					ultraGridBand.HeaderVisible = (ultraGridBand.Index!=0 && ultraGridBand.Key!="Elements");
 					ultraGridBand.Header.Appearance.TextHAlign = HAlign.Left;
 					ultraGridBand.RowLayoutStyle = RowLayoutStyle.None;
 
+					// Anpassungen für Spalten
 					foreach (UltraGridColumn ultraGridColumn in ultraGridBand.Columns)
 					{
 						ultraGridColumn.CellActivation = Activation.ActivateOnly;
@@ -393,10 +216,10 @@ namespace KaupischITC.InfragisticsControls
 						if (ultraGridColumn.ValueBasedAppearance==null)
 							ultraGridColumn.ValueBasedAppearance = new ValueAppearance { HighlightNegativeValues = ultraGridColumn.DataType.IsNumeric() };
 
-						if (ultraGridColumn.DataType.IsNumeric())
+						if (ultraGridColumn.DataType.IsNumeric()) // numerische Werte rechtsbündig
 							ultraGridColumn.CellAppearance.TextHAlign = HAlign.Right;
 
-						if (ultraGridColumn.Format==null)
+						if (ultraGridColumn.Format==null) // voreingestellte Wertformatierungen bei bestimmten Spaltennamen
 						{
 							if (ultraGridColumn.Key.EndsWith("Preis",StringComparison.InvariantCultureIgnoreCase))
 								this.SetColumnFormat(ultraGridColumn,"C");
@@ -404,6 +227,7 @@ namespace KaupischITC.InfragisticsControls
 								this.SetColumnFormat(ultraGridColumn,"P");
 						}
 
+						// bestimmte Spalten nicht anzeigen: Spezielle Postfixes und komplexe Datentypen
 						string[] hiddenPostfixes = { "ID","Id","Key" };
 						if (hiddenPostfixes.Any(pf => ultraGridColumn.Key.EndsWith(pf)) || ultraGridColumn.PropertyDescriptor.Attributes.OfType<BrowsableAttribute>().Any(ba => !ba.Browsable))
 							ultraGridColumn.Hidden = true;
@@ -417,101 +241,295 @@ namespace KaupischITC.InfragisticsControls
 
 			base.OnInitializeLayout(e);
 		}
+		
+
+		/// <summary>
+		/// Initialisiert das Kontextmenü, dass beim Klicken in eine Zelle, die zu einer Spalte gehört, angezeigt wird
+		/// </summary>
+		private void InitializeColumContextMenuStrip()
+		{
+			this.ColumnCellContextMenuStrip = new ContextMenuStrip();
+
+			// Spaltenbezeichnung
+			ToolStripTextBox toolStripTextBoxCaption = new ToolStripTextBox("HeaderCaption");
+			toolStripTextBoxCaption.TextChanged += delegate
+			{
+				if (this.ContextUltraGridColumn!=null)
+					this.ContextUltraGridColumn.Header.Caption = toolStripTextBoxCaption.Text;
+
+				if (this.ColumnCaptionChanged!=null && this.ContextUltraGridColumn!=null)
+					this.ColumnCaptionChanged(this,new UltraGridColumnEventArgs { Column = this.ContextUltraGridColumn });
+			};
+			this.ColumnCellContextMenuStrip.Items.Add(toolStripTextBoxCaption);
+
+			// Werte formatieren als
+			this.formatToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Werte formatieren als");
+			foreach (string formatString in availableFormats.Keys)
+				this.formatToolStripMenuItem.DropDownItems.Add(availableFormats[formatString],null,FormatMenuItem_Click).Tag = formatString; // vordefinierte Formate
+			// eigenes Format
+			ToolStripTextBox toolStripTextBox = new ToolStripTextBox("Custom");
+			toolStripTextBox.TextChanged += delegate
+			{
+				toolStripTextBox.Tag = toolStripTextBox.Text;
+				this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty);
+			};
+			toolStripTextBox.Click += delegate { this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty); };
+			this.formatToolStripMenuItem.DropDownItems.Add(toolStripTextBox);
+
+			// Zusammenfassungen
+			this.summaryToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Zusammenfassung hinzufügen");
+			foreach (SummaryType summaryType in availableSummaries.Keys)
+				this.summaryToolStripMenuItem.DropDownItems.Add(availableSummaries[summaryType][0],null,SummaryMenuItem_Click).Tag = summaryType;
+
+			// Formatierungen
+			this.fontToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Text formatieren");
+			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+
+			// wertbasierte Formatierungen
+			this.fontToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
+			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues = !((ToolStripMenuItem)sender).Checked; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators = !((ToolStripMenuItem)sender).Checked; });
+
+			// Visualisierungen
+			this.visualizationToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Visualisierung");
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate { this.ShowChartForm(new BarChartForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate { this.ShowChartForm(new TreeMapForm()); });
+
+			// Protokoll-Handler
+			this.ColumnCellContextMenuStrip.Opening += delegate
+			{
+				// alle alten Einträge entfernen...
+				foreach (ToolStripItem item in this.ColumnCellContextMenuStrip.Items.Cast<ToolStripItem>().Where(tsi => tsi.Tag==this.urlProtocolHandler).ToList())
+					this.ColumnCellContextMenuStrip.Items.Remove(item);
+
+				// ... und nur Einträge für Protokoll-Handler erzeugen, die ausführbar sind
+				List<UrlProtocolHandler.ConcreteRoute> validRoutes = this.urlProtocolHandler.GetValidRoutes(this.ContextUltraGridCell).ToList();
+				if (validRoutes.Any()) 
+				{
+					this.ColumnCellContextMenuStrip.Items.Add("-").Tag = this.urlProtocolHandler;
+					foreach (UrlProtocolHandler.ConcreteRoute route in validRoutes)
+						this.ColumnCellContextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
+				}
+			};
+		}
+
+		/// <summary>
+		/// Wenn auf einen Kontextmenüeintrag geklickt wird, der einen (Spalten-)Zusammenfassung darstellt
+		/// </summary>
+		private void SummaryMenuItem_Click(object sender,EventArgs e)
+		{
+			ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+			SummaryType summaryType = (SummaryType)menuItem.Tag;
+
+			if (!menuItem.Checked)
+				this.AddColumnSummary(this.ContextUltraGridColumn,summaryType);
+			else
+				this.RemoveColumnSummary(this.ContextUltraGridColumn,summaryType);
+		}
+		/// <summary> Fügt einer Spalte eine Zusammenfassung hinzu </summary>
+		public void AddColumnSummary(UltraGridColumn column,SummaryType summaryType)
+		{
+			SummarySettings summarySettings =column.Band.Summaries.Add(summaryType,column);
+			summarySettings.DisplayFormat = this.GetColumnSummaryFormat(column.Format,summaryType);
+			summarySettings.Appearance.TextHAlign = HAlign.Right;
+		}
+		/// <summary> Entfernt die Zusammenfassung einer Spalte </summary>
+		public void RemoveColumnSummary(UltraGridColumn column,SummaryType summaryType)
+		{
+			foreach (SummarySettings summarySettings in column.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SummaryType==summaryType && ss.SourceColumn==column))
+				this.ContextUltraGridColumn.Band.Summaries.Remove(summarySettings);
+		}
+
+		/// <summary>
+		/// Wenn auf einen Kontextmenüeintrag zum Formatieren von Spaltenwerten geklickt wird
+		/// </summary>
+		private void FormatMenuItem_Click(object sender,EventArgs e)
+		{
+			ToolStripItem menuItem = (ToolStripItem)sender;
+			string format = (string)menuItem.Tag;
+
+			this.SetColumnFormat(this.ContextUltraGridColumn,format);
+		}
+		/// <summary> Richtet das angegebene Format für die angegebene Spalte und alle zugehörigen Zusammenfassungsspalten ein </summary>
+		public void SetColumnFormat(UltraGridColumn column,string format)
+		{
+			column.Format = format;
+
+			foreach (SummarySettings summarySettings in column.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SourceColumn==column))
+				summarySettings.DisplayFormat = this.GetColumnSummaryFormat(format,summarySettings.SummaryType);
+
+			if (this.ColumnFormatChanged!=null)
+				this.ColumnFormatChanged(this,new UltraGridColumnEventArgs { Column = column });
+		}
+
+		/// <summary>
+		/// Ermittelt das spezifische Format für eine Spalten-Zusammenfassung
+		/// </summary>
+		private string GetColumnSummaryFormat(string cellFormat,SummaryType summaryType)
+		{
+			string summarySymbol = this.availableSummaries[summaryType][1];
+			return summarySymbol+": " + ((summaryType!=SummaryType.Count) ? "{0:"+cellFormat+"}" : "{0}");
+		}
 
 
+		/// <summary>
+		/// Wenn auf einen Kontextmenüeintrag zum Anzeigen einer Visualisierung geklickt wird
+		/// </summary>
+		private void ShowChartForm(ChartForm chartForm)
+		{
+			var elements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => !ugr.Hidden && !ugr.IsFilteredOut).Select(ugr => ugr.ListObject).ToList();
+			if (elements.Any())
+			{
+				chartForm.DisplayedType = elements.First().GetType();
+				chartForm.Elements = elements;
+				chartForm.EmphasizedElements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => ugr.Selected).Select(ugr => ugr.ListObject).ToList();
+				chartForm.ShowInTaskbar = false;
+				chartForm.DisplayMember = this.ContextUltraGridColumn.Band.GetFirstVisibleCol(this.ActiveColScrollRegion,true).Key;
+				chartForm.ValueMember = this.ContextUltraGridColumn.Key;
+				chartForm.GetFormatString = (columnName) => (this.ContextUltraGridColumn.Band.Columns.Exists(columnName)) ? this.ContextUltraGridColumn.Band.Columns[columnName].Format : null;
+
+				chartForm.Show(this);
+			}
+		}
+
+
+		/// <summary>
+		/// Initialisiert das Kontextmenü, das angezeigt wird, wenn auf einen Zeilenselektor geklickt wird
+		/// </summary>
+		private void InitializeRowContextMenuStrip()
+		{
+			this.RowSelectorContextMenuStrip = new ContextMenuStrip();
+
+			this.RowSelectorContextMenuStrip.Items.Add("Erweitern",null,delegate { this.ContextUltraGridRow.Expanded = true; });
+			this.RowSelectorContextMenuStrip.Items.Add("Reduzieren",null,delegate { this.ContextUltraGridRow.Expanded = false; });
+			this.RowSelectorContextMenuStrip.Items.Add("-");
+			this.RowSelectorContextMenuStrip.Items.Add("Alles erweitern",null,delegate { this.ContextUltraGridRow.ParentCollection.ExpandAll(false); });
+			this.RowSelectorContextMenuStrip.Items.Add("Alles reduzieren",null,delegate { this.ContextUltraGridRow.ParentCollection.CollapseAll(false); });
+		}
+
+
+		/// <summary>
+		/// Nach einem Rechtsklick in das UltraGrid die Kontext-Objekte aktualisieren und ggf. eine Kontextmenü anzeigen
+		/// </summary>
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			if (e.Button==MouseButtons.Right)
+			{
+				Point mousePoint = new Point(e.X,e.Y);
+				UIElement element = this.DisplayLayout.UIElement.ElementFromPoint(mousePoint);
+				if (element!=null)
+				{
+					this.ContextUltraGridRow = (UltraGridRow)element.GetContext(typeof(UltraGridRow));				// geklickte Zeile
+					this.ContextUltraGridCell = (UltraGridCell)element.GetContext(typeof(UltraGridCell));			// geklickte Zelle
+					this.ContextHeaderUIElement = (HeaderUIElement)element.GetAncestor(typeof(HeaderUIElement));	// geklickter Spaltenkopf
+					this.ContextUltraGridColumn = (UltraGridColumn)element.GetContext(typeof(UltraGridColumn));		// geklickte Spalte
+					this.ContextSummaryFooterUIElement = (SummaryFooterUIElement)element.GetAncestor(typeof(SummaryFooterUIElement)); // geklickter Spaltenfuß
+
+					// Kontextmenü für Spalten
+					if (this.ContextUltraGridColumn!=null)
+					{
+						this.ColumnCellContextMenuStrip.Items["HeaderCaption"].Text = (this.ContextUltraGridColumn!=null) ? this.ContextUltraGridColumn.Header.Caption : null;
+
+						// "Zusammenfassungen"
+						if (this.ContextUltraGridColumn!=null)
+							foreach (ToolStripMenuItem menuItem in this.summaryToolStripMenuItem.DropDownItems)
+								menuItem.Checked = this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Any(ss => ss.SourceColumn==this.ContextUltraGridColumn && ss.SummaryType==(SummaryType)menuItem.Tag);
+
+						// "Formatieren als"
+						if (this.ContextUltraGridColumn!=null)
+						{
+							foreach (ToolStripMenuItem menuItem in this.formatToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
+								menuItem.Checked = (this.ContextUltraGridColumn.Format==(string)menuItem.Tag);
+							this.formatToolStripMenuItem.DropDownItems["Custom"].Text = this.ContextUltraGridColumn.Format;
+						}
+
+						// "Text formatieren"
+						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[0]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Bold==DefaultableBoolean.True);
+						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[1]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Italic==DefaultableBoolean.True);
+						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[2]).Checked = (this.ContextUltraGridColumn.CellAppearance.FontData.Underline==DefaultableBoolean.True);
+						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[4]).Checked = ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues;
+						((ToolStripMenuItem)this.fontToolStripMenuItem.DropDownItems[5]).Checked = ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators;
+
+						// "Visualisierung anzeigen"
+						this.visualizationToolStripMenuItem.Enabled = (this.ContextUltraGridRow!=null);
+
+						this.ColumnCellContextMenuStrip.Show(this,mousePoint);
+					}
+					// Kontextmenü für Zeilen
+					else if (this.ContextUltraGridRow!=null)
+					{
+						if (this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Any(row => row.IsExpandable))
+						{
+							this.RowSelectorContextMenuStrip.Items[0].Visible = this.ContextUltraGridRow.IsExpandable && !this.ContextUltraGridRow.IsExpanded;
+							this.RowSelectorContextMenuStrip.Items[1].Visible = this.ContextUltraGridRow.IsExpandable && this.ContextUltraGridRow.IsExpanded;
+							this.RowSelectorContextMenuStrip.Items[2].Visible = this.ContextUltraGridRow.IsExpandable;
+							this.RowSelectorContextMenuStrip.Show(this,mousePoint);
+						}
+					}
+				}
+			}
+			base.OnMouseUp(e);
+		}
+
+
+		/// <summary>
+		/// Führt eine automatische Breitenanpassung der Spalten aus
+		/// </summary>
+		public void AutoResizeColumns()
+		{
+			foreach (UltraGridBand band in this.DisplayLayout.Bands)
+			{
+				// für die automatische Breitenanpassung eine maximalbreite für die Spalten verwenden (sonst wird es manchmal sehr unübersichtlich) -> dazu die alten Maximalbreiten merken
+				Dictionary<UltraGridColumn,int> oldMaxWidths = new Dictionary<UltraGridColumn,int>(band.Columns.Count);
+				foreach (UltraGridColumn column in band.Columns)
+				{
+					oldMaxWidths[column] = column.MaxWidth;
+					column.MaxWidth = 300;
+				}
+
+				// automatische Spaltenbreitenanpassung durchführen
+				band.PerformAutoResizeColumns(false,PerformAutoSizeType.VisibleRows,AutoResizeColumnWidthOptions.IncludeCells|AutoResizeColumnWidthOptions.IncludeHeader|AutoResizeColumnWidthOptions.IncludeSummaryRows);
+
+				// die alten Maximalbreiten wiederherstellen
+				foreach (UltraGridColumn column in oldMaxWidths.Keys)
+					column.MaxWidth = oldMaxWidths[column];
+			}
+		}
+
+		/// <summary>
+		/// Führt eine automatische Höhenanpassung der Zeilen aus
+		/// </summary>
+		public void AutoResizeRows()
+		{
+			this.DisplayLayout.Override.CellMultiLine = DefaultableBoolean.True;
+			foreach (RowScrollRegion rowScrollRegion in this.DisplayLayout.RowScrollRegions)
+				foreach (VisibleRow visibleRow in rowScrollRegion.VisibleRows)
+					visibleRow.Row.PerformAutoSize();
+		}
+
+
+		/// <summary>
+		/// Waitcursor anzeigen, während eine Zeile initialisiert wird
+		/// </summary>
 		protected override void OnInitializeRow(InitializeRowEventArgs e)
 		{
 			this.SetWaitCursorWithAutoReset();
 			base.OnInitializeRow(e);
 		}
-
-
-		protected override void OnInitializeGroupByRow(InitializeGroupByRowEventArgs e)
-		{
-			object value = e.Row.Value;
-			if (value is bool)
-				value = ((bool)value) ? "Ja" : "Nein";
-
-			e.Row.Description = e.Row.Column.Header.Caption+": "+value+" ("+e.Row.Rows.Count+" "+((e.Row.Rows.Count==1)?"Element":"Elemente")+")";
-			base.OnInitializeGroupByRow(e);
-		}
-
-
-		protected override void OnBeforeColumnChooserDisplayed(BeforeColumnChooserDisplayedEventArgs e)
-		{
-			e.Cancel = true;
-
-			ColumnChooser columnChooser = new ColumnChooser(e.Dialog.ColumnChooserControl.CurrentBand) { BorderStyle = BorderStyle.None };
-			ToolStripControlHost toolStripControlHost = new ToolStripControlHost(columnChooser) { Margin = new Padding(3) };
-			ToolStripDropDown toolStripDropDown = new ToolStripDropDown();
-			toolStripDropDown.Items.Add(toolStripControlHost);
-
-			UIElement uiElement = this.DisplayLayout.UIElement.ElementFromPoint(this.DisplayLayout.UIElement.CurrentMousePosition);
-			toolStripDropDown.Show(this,uiElement.Rect.X-1,uiElement.Rect.Bottom+1);
-		}
-
-
-		protected override void OnBeforeSortChange(BeforeSortChangeEventArgs e)
-		{
-			// wenn nicht Shift gedrückt ist (MultiColumnSort)
-			if (!Control.ModifierKeys.HasFlag(Keys.Shift))
-				foreach (UltraGridColumn column in e.SortedColumns)
-					if (e.Band.SortedColumns.Exists(column.Key))
-						// wenn Sortierung von aufsteigend nach absteigend geändert wird ...
-						if (column.SortIndicator==SortIndicator.Ascending && e.Band.SortedColumns[column.Key].SortIndicator==SortIndicator.Descending)
-						{
-							// ...dies abbrechen und die Sortierung entfernen
-							e.Cancel = true;
-							this.BeginInvoke((MethodInvoker)delegate
-							{
-								e.Band.SortedColumns[column.Key].SortIndicator = SortIndicator.None;
-								column.Band.SortedColumns.RefreshSort(true);
-							});
-						}
-
-			base.OnBeforeSortChange(e);
-		}
-
-		protected override void OnAfterRowExpanded(RowEventArgs e)
-		{
-			foreach (UltraGridChildBand childBands in e.Row.ChildBands)
-			{
-				string count = childBands.Rows.Count.ToString();
-				string text = new string('8',count.Length) + new string('.',count.Length/3);
-
-				Size measuredSize = TextRenderer.MeasureText(text,this.Font);
-
-				int preferredWidth = measuredSize.Width + 15;
-				if (childBands.Band.Override.RowSelectorWidth<preferredWidth)
-					childBands.Band.Override.RowSelectorWidth = preferredWidth;
-			}
-
-			base.OnAfterRowExpanded(e);
-		}
-
-
-		protected override void OnInitializePrint(CancelablePrintEventArgs e)
-		{
-			e.PrintLayout.BorderStyle = UIElementBorderStyle.None;
-			e.DefaultLogicalPageLayoutInfo.ClippingOverride = ClippingOverride.No;
-			e.DefaultLogicalPageLayoutInfo.ColumnClipMode = ColumnClipMode.RepeatClippedColumns;
-		}
-
-
-		protected override void OnClickCellButton(CellEventArgs e)
-		{
-			// TODO
-			base.OnClickCellButton(e);
-		}
-
-
+		/// <summary>
+		/// Waitcursor anzeigen, während eine Zeile ausgeklappt wird
+		/// </summary>
 		protected override void OnBeforeRowExpanded(CancelableRowEventArgs e)
 		{
 			this.SetWaitCursorWithAutoReset();
 			base.OnBeforeRowExpanded(e);
 		}
-
-
+		/// <summary>
+		/// Aktiviert den Waitcursor und setzt diesen zurück, wenn die folgende Benutzeraktion beendet wurde
+		/// </summary>
 		private void SetWaitCursorWithAutoReset()
 		{
 			if (!this.timer.Enabled)
@@ -533,26 +551,99 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
-		public void AfterCreateChildElements(UIElement parent)
+		/// <summary>
+		/// Angepassten Text für Gruppierungszeilen anzeigen
+		/// </summary>
+		protected override void OnInitializeGroupByRow(InitializeGroupByRowEventArgs e)
 		{
-			if (parent is CellUIElement)
+			object value = e.Row.Value;
+			if (value is bool)
+				value = ((bool)value) ? "Ja" : "Nein";
+
+			e.Row.Description = e.Row.Column.Header.Caption+": "+value+" ("+e.Row.Rows.Count+" "+((e.Row.Rows.Count==1)?"Element":"Elemente")+")";
+			base.OnInitializeGroupByRow(e);
+		}
+
+
+		/// <summary>
+		/// Eigenes Steuerelement für die Spaltenauswahl anzeigen
+		/// </summary>
+		protected override void OnBeforeColumnChooserDisplayed(BeforeColumnChooserDisplayedEventArgs e)
+		{
+			ColumnChooser columnChooser = new ColumnChooser(e.Dialog.ColumnChooserControl.CurrentBand) { BorderStyle = BorderStyle.None };
+
+			// ColumnChooser-Control als DropDown anzeigen
+			ToolStripControlHost toolStripControlHost = new ToolStripControlHost(columnChooser) { Margin = new Padding(3) };
+			ToolStripDropDown toolStripDropDown = new ToolStripDropDown();
+			toolStripDropDown.Items.Add(toolStripControlHost);
+
+			UIElement uiElement = this.DisplayLayout.UIElement.ElementFromPoint(this.DisplayLayout.UIElement.CurrentMousePosition);
+			toolStripDropDown.Show(this,uiElement.Rect.X-1,uiElement.Rect.Bottom+1);
+			e.Cancel = true;
+		}
+
+
+		/// <summary>
+		/// Drei-Zustands-Sortierung (aufsteigend/absteigend/keine)
+		/// </summary>
+		protected override void OnBeforeSortChange(BeforeSortChangeEventArgs e)
+		{
+			// wenn nicht Shift gedrückt ist (MultiColumnSort)
+			if (!Control.ModifierKeys.HasFlag(Keys.Shift))
+				foreach (UltraGridColumn column in e.SortedColumns)
+					if (e.Band.SortedColumns.Exists(column.Key))
+						// wenn Sortierung von aufsteigend nach absteigend geändert wird ...
+						if (column.SortIndicator==SortIndicator.Ascending && e.Band.SortedColumns[column.Key].SortIndicator==SortIndicator.Descending)
+						{
+							// ...dies abbrechen und die Sortierung entfernen
+							e.Cancel = true;
+							this.BeginInvoke((MethodInvoker)delegate
+							{
+								e.Band.SortedColumns[column.Key].SortIndicator = SortIndicator.None;
+								column.Band.SortedColumns.RefreshSort(true);
+							});
+						}
+
+			base.OnBeforeSortChange(e);
+		}
+
+
+		/// <summary>
+		/// Workaround für Bug bei der Breite des Zeilenselektors, wenn mehr als 999 Zeilen in einem Unter-Band enthalten sind
+		/// </summary>
+		protected override void OnAfterRowExpanded(RowEventArgs e)
+		{
+			foreach (UltraGridChildBand childBands in e.Row.ChildBands)
 			{
-				UltraGridColumn ultraGridColumn = parent.GetContext(typeof(UltraGridColumn)) as UltraGridColumn;
-				if (ultraGridColumn!=null && ultraGridColumn.Style==Infragistics.Win.UltraWinGrid.ColumnStyle.EditButton)
-				{
-					UltraGridCell ultraGridCell = parent.GetContext(typeof(UltraGridCell)) as UltraGridCell;
-					if ((ultraGridCell.Style==Infragistics.Win.UltraWinGrid.ColumnStyle.Default || ultraGridCell.Style==ultraGridColumn.Style) && ultraGridCell.Value==null)
-						ultraGridCell.Style = Infragistics.Win.UltraWinGrid.ColumnStyle.Edit;
-				}
+				string count = childBands.Rows.Count.ToString();
+				string text = new string('8',count.Length) + new string('.',count.Length/3);
+
+				Size measuredSize = TextRenderer.MeasureText(text,this.Font);
+
+				int preferredWidth = measuredSize.Width + 15;
+				if (childBands.Band.Override.RowSelectorWidth<preferredWidth)
+					childBands.Band.Override.RowSelectorWidth = preferredWidth;
 			}
+
+			base.OnAfterRowExpanded(e);
 		}
 
-		public bool BeforeCreateChildElements(UIElement parent)
+
+		/// <summary>
+		/// Anpassungen für das Aussehen beim Drucken
+		/// </summary>
+		protected override void OnInitializePrint(CancelablePrintEventArgs e)
 		{
-			return false;
+			e.PrintLayout.BorderStyle = UIElementBorderStyle.None;
+			e.DefaultLogicalPageLayoutInfo.ClippingOverride = ClippingOverride.No;
+			e.DefaultLogicalPageLayoutInfo.ColumnClipMode = ColumnClipMode.RepeatClippedColumns;
 		}
 
-
+				
+		/// <summary>
+		/// Exportiert den Inhalt des UltraGrids als Excel-Datei
+		/// </summary>
+		/// <param name="path">der Pfad der Datei, die erstellt werden soll</param>
 		public void ExportToExcel(string path)
 		{
 			using (UltraGridExcelExporter excelExporter = new UltraGridExcelExporter())
@@ -561,7 +652,7 @@ namespace KaupischITC.InfragisticsControls
 				excelExporter.InitializeColumn += (sender,initializeColumnEventArgs) => initializeColumnEventArgs.ExcelFormatStr = this.GetExcelFormatStr(initializeColumnEventArgs.FrameworkFormatStr,initializeColumnEventArgs.Column.DataType);
 
 				int lastOutlineLevel = -1;
-				excelExporter.HeaderRowExporting += delegate(object sender,HeaderRowExportingEventArgs e)
+				excelExporter.HeaderRowExporting += delegate(object sender,HeaderRowExportingEventArgs e) // Header nur über der ersten Zeile eines ausgeklappten Bereichs exportieren 
 				{
 					if (lastOutlineLevel>=e.CurrentOutlineLevel)
 						e.Cancel = true;
@@ -571,7 +662,9 @@ namespace KaupischITC.InfragisticsControls
 				excelExporter.Export(this,path);
 			}
 		}
-
+		/// <summary>
+		/// Wandelt .NET-Framework-Formatierungszeichenfolgen in entsprechende Formatierungszeichenfolgen für Excel um
+		/// </summary>
 		private string GetExcelFormatStr(string frameworkFormatStr,Type dataType)
 		{
 			if (frameworkFormatStr==null)
@@ -598,8 +691,12 @@ namespace KaupischITC.InfragisticsControls
 		
 
 
+		/// <summary>
+		/// Bestimmte Bereiche selbst zeichnen, um das Aussehen mit den DevExpress-Steuerelementen zu vereinheitlichen
+		/// </summary>
 		public bool DrawElement(DrawPhase drawPhase,ref UIElementDrawParams drawParams)
 		{
+			// Spaltenkopf & Zeilenselektor
 			if (drawParams.Element is HeaderUIElement || drawParams.Element is RowSelectorUIElement)
 			{
 				HeaderUIElement headerUIElement = drawParams.Element as HeaderUIElement;
@@ -618,6 +715,7 @@ namespace KaupischITC.InfragisticsControls
 					drawParams.Graphics.DrawRectangle(pen,rectangle);
 			}
 
+			// Markierung für die Sortierung
 			if (drawParams.Element is SortIndicatorUIElement)
 			{
 				UltraGridColumn column = drawParams.Element.GetContext(typeof(UltraGridColumn)) as UltraGridColumn;
@@ -630,8 +728,10 @@ namespace KaupischITC.InfragisticsControls
 					if (column.Band.SortedColumns.Count>1)
 						point.Offset(0,-image.Height);
 
-					drawParams.Graphics.DrawImageUnscaled(image,point);
+					// eigenes Bild für aufsteigend/absteigend
+					drawParams.Graphics.DrawImageUnscaled(image,point); 
 
+					// bei Sortierung mit mehreren Spalten deren Reihenfolge mit anzeigen
 					List<UltraGridColumn> sortedColumns = column.Band.SortedColumns.Cast<UltraGridColumn>().Where(col => !col.IsGroupByColumn).ToList();
 					if (sortedColumns.Count>1)
 					{
@@ -646,7 +746,9 @@ namespace KaupischITC.InfragisticsControls
 
 			return true;
 		}
-
+		/// <summary>
+		/// In den regulären Grid-Zeichenablauf eingreifen
+		/// </summary>
 		public DrawPhase GetPhasesToFilter(ref UIElementDrawParams drawParams)
 		{
 			if (drawParams.Element is HeaderUIElement)
@@ -660,16 +762,22 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
+
+		/// <summary>
+		/// Speichert alle ausgeklappten Gruppierungszeilen
+		/// </summary>
 		public void SaveExpandedState()
 		{
 			this.expandedRowsState = this.GetExpandedRows(this.Rows).ToList();
 		}
-
-		private IEnumerable<ExpandedRow> GetExpandedRows(RowsCollection rowsCollection)
+		/// <summary>
+		/// Ermittelt eine alle Gruppierungszeilen, die ausgeklappt sind
+		/// </summary>
+		private IEnumerable<ExpandedGroupByRow> GetExpandedRows(RowsCollection rowsCollection)
 		{
 			foreach (UltraGridGroupByRow groupByRow in rowsCollection.OfType<UltraGridGroupByRow>())
 				if (groupByRow.IsExpanded)
-					yield return new ExpandedRow
+					yield return new ExpandedGroupByRow
 					{
 						ColumnKey = groupByRow.Column.Key,
 						Value = groupByRow.ValueAsDisplayText,
@@ -677,17 +785,19 @@ namespace KaupischITC.InfragisticsControls
 					};
 		}
 
+		/// <summary>
+		/// Stellt die zuvor gespeicherten ausgeklappten Gruppierungszeilen wieder her
+		/// </summary>
 		public void RestoreExpandedState()
 		{
 			if (this.expandedRowsState!=null)
 				this.SetExpandedRows(this.expandedRowsState,this.Rows);
 		}
-
-		private void SetExpandedRows(IEnumerable<ExpandedRow> expandedRows,RowsCollection rowsCollection)
+		private void SetExpandedRows(IEnumerable<ExpandedGroupByRow> expandedRows,RowsCollection rowsCollection)
 		{
 			foreach (UltraGridGroupByRow groupByRow in rowsCollection.OfType<UltraGridGroupByRow>())
 			{
-				ExpandedRow expandedRow = expandedRows.SingleOrDefault(er => er.ColumnKey==groupByRow.Column.Key && er.Value==groupByRow.ValueAsDisplayText);
+				ExpandedGroupByRow expandedRow = expandedRows.SingleOrDefault(er => er.ColumnKey==groupByRow.Column.Key && er.Value==groupByRow.ValueAsDisplayText);
 				if (expandedRow!=null)
 				{
 					groupByRow.Expanded = true;
@@ -696,12 +806,18 @@ namespace KaupischITC.InfragisticsControls
 			}
 		}
 
+		/// <summary>
+		/// Stellt Informationen über eine ausgeklappte Gruppierungszeile bereit
+		/// </summary>
 		[DebuggerDisplay("Name")]
-		private class ExpandedRow
+		private class ExpandedGroupByRow
 		{
+			/// <summary> Gibt den Schlüssel der Spalte zurück, die gruppiert wurde, oder legt diesen fest </summary>
 			public string ColumnKey { get; set; }
+			/// <summary> Gibt den Wert der Gruppierung zurück oder legt diesen fest </summary>
 			public string Value { get; set; }
-			public List<ExpandedRow> ChildRows { get; set; }
+			/// <summary> Gibt alle ausgeklappten Unter-Gruppierungszeilen zurück oder legt diese fest </summary>
+			public List<ExpandedGroupByRow> ChildRows { get; set; }
 		}
 	}
 }

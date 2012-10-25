@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
@@ -11,11 +10,21 @@ using KaupischITC.Extensions;
 
 namespace KaupischITC.InfragisticsControls.Printing
 {
+	/// <summary>
+	/// Stellt ein Druckvorschau-Dialogfenster für ein UltraGrid dar
+	/// </summary>
 	public partial class PrintUltraGridDialog : Form
 	{
 		private bool preventRefreshFlag = true;
 		private UltraGridPrintDocument ultraPrintDocument = new UltraGridPrintDocument();
 
+
+		/// <summary>
+		/// Erstellt ein neues Druckvorschau-Dialogfenster für ein UltraGrid
+		/// </summary>
+		/// <param name="ultraGrid">das UltraGrid, das gedruckt werden soll</param>
+		/// <param name="title">der Titel des Druckdokuments</param>
+		/// <param name="description">die Beschreibung des Druckdokuments</param>
 		public PrintUltraGridDialog(UltraGrid ultraGrid,string title,string description)
 		{
 			this.Font = SystemFonts.MessageBoxFont;
@@ -30,6 +39,10 @@ namespace KaupischITC.InfragisticsControls.Printing
 			this.ultraPrintDocument.Header.TextLeft = "\r\n\r\n"+description;
 		}
 
+
+		/// <summary>
+		/// Sobald das Druckvorschau-Dialogfenster angezeigt wird
+		/// </summary>
 		private void PrintUltraGridDialog_Shown(object sender,EventArgs e)
 		{
 			radioButtonPortrait.Checked = true;
@@ -54,19 +67,29 @@ namespace KaupischITC.InfragisticsControls.Printing
 			this.RefreshPreview();
 		}
 
-
-		private void buttonCancel_Click(object sender,EventArgs e)
+		
+		/// <summary>
+		/// Beim Klicken auf den "Abbrechen"-Button
+		/// </summary>
+		private void ButtonCancel_Click(object sender,EventArgs e)
 		{
 			this.DialogResult = DialogResult.Cancel;
 			this.Close();
 		}
 
-		private void buttonPrint_Click(object sender,EventArgs e)
+		/// <summary>
+		/// Beim Klicken auf den "Drucken"-Button
+		/// </summary>
+		private void ButtonPrint_Click(object sender,EventArgs e)
 		{
 			this.RefreshPrintDocumentSettings();
 			this.ultraPrintDocument.Print();
 		}
 
+
+		/// <summary>
+		/// Aktualisiert die Druckdokument-Einstellungen anhand der im Druckvorschaudialog vorgenommenen Einstellungen
+		/// </summary>
 		public void RefreshPrintDocumentSettings()
 		{
 			this.ultraPrintDocument.PrinterSettings.PrinterName = (string)this.comboBoxPrinter.SelectedItem;
@@ -82,7 +105,11 @@ namespace KaupischITC.InfragisticsControls.Printing
 			this.ultraPrintDocument.FitWidthToPages = (this.radioButtonColumnDefaultSize.Checked) ? 0 : (int)this.numericUpDownAutoFitPageCount.Value;
 		}
 
-		private void comboBoxPrinter_SelectedIndexChanged(object sender,EventArgs e)
+
+		/// <summary>
+		/// Wenn der ausgewählte Drucker geändert wird, die auswählbaren Drucker- und Seiteneinstellungen aktualisieren
+		/// </summary>
+		private void ComboBoxPrinter_SelectedIndexChanged(object sender,EventArgs e)
 		{
 			PrintDocument printDocument = new PrintDocument();
 			printDocument.PrinterSettings.PrinterName = comboBoxPrinter.SelectedItem.ToString();
@@ -96,46 +123,49 @@ namespace KaupischITC.InfragisticsControls.Printing
 
 			var colorStyles = new[]
 			{
-				new ColorStyle { ColorRenderMode = ColorRenderMode.GrayScale, Name = "Graustufen" },
-				new ColorStyle { ColorRenderMode = ColorRenderMode.Monochrome,Name = "Schwarzweiß" }
+				new ColorStyleViewModel { ColorRenderMode = ColorRenderMode.GrayScale, Name = "Graustufen" },
+				new ColorStyleViewModel { ColorRenderMode = ColorRenderMode.Monochrome,Name = "Schwarzweiß" }
 			};
 			if (printDocument.PrinterSettings.SupportsColor)
-				colorStyles = new[] { new ColorStyle { ColorRenderMode = ColorRenderMode.Color,Name = "Farbdruck" } }.Concat(colorStyles).ToArray();
+				colorStyles = new[] { new ColorStyleViewModel { ColorRenderMode = ColorRenderMode.Color,Name = "Farbdruck" } }.Concat(colorStyles).ToArray();
 
 			string selectedText = this.comboBoxColorStyle.Text;
 			this.comboBoxColorStyle.DataSource = colorStyles;
-			this.comboBoxColorStyle.DisplayMember = GetMemberName.Of<ColorStyle>(cs => cs.Name);
-			this.comboBoxColorStyle.ValueMember = GetMemberName.Of<ColorStyle>(cs => cs.ColorRenderMode);
+			this.comboBoxColorStyle.DisplayMember = GetMemberName.Of<ColorStyleViewModel>(cs => cs.Name);
+			this.comboBoxColorStyle.ValueMember = GetMemberName.Of<ColorStyleViewModel>(cs => cs.ColorRenderMode);
 			this.comboBoxColorStyle.Text = selectedText;
 
 			this.RefreshPreview();
 		}
 
-		private class ColorStyle
+
+		/// <summary> Stellt Dialog-Informationen über Farbeinstellungen des Druckers bereit </summary>
+		private class ColorStyleViewModel
 		{
 			public string Name { get; set; }
 			public ColorRenderMode ColorRenderMode { get; set; }
 		}
 
-
+		/// <summary>
+		/// Wandelt Drucker-Zoll in Zentimeter um
+		/// </summary>
 		private decimal PrintInchToCm(int inch)
 		{
 			return (decimal)(inch / 39.37);
 		}
 
+		/// <summary>
+		/// Wandelt Zentimeter in Drucker-Zoll 
+		/// </summary>
 		private int CmToPrintInch(decimal cm)
 		{
 			return (int)((float)cm / 0.0254);
 		}
 
 
-		private void numericUpDownColumn_ValueChanged(object sender,EventArgs e)
-		{
-			radioButtonColumnAutoFitPages.Checked = true;
-			this.RefreshPreview();
-		}
-
-
+		/// <summary>
+		/// Aktualisiert die Druckvorschau entsprechend der vorgenommenen Einstellungen
+		/// </summary>
 		private void RefreshPreview()
 		{
 			if (!this.preventRefreshFlag)
@@ -144,24 +174,25 @@ namespace KaupischITC.InfragisticsControls.Printing
 				this.ultraPrintPreviewControl.GeneratePreview(recreate: true);
 			}
 		}
-
-		private void comboBoxPapersize_SelectedIndexChanged(object sender,EventArgs e)
+		private void NumericUpDownColumn_ValueChanged(object sender,EventArgs e)
+		{
+			this.radioButtonColumnAutoFitPages.Checked = true;
+			this.RefreshPreview();
+		}
+		private void ComboBoxPapersize_SelectedIndexChanged(object sender,EventArgs e)
 		{
 			this.RefreshPreview();
 		}
-
-		private void numericUpDownTop_ValueChanged(object sender,EventArgs e)
+		private void NumericUpDownTop_ValueChanged(object sender,EventArgs e)
 		{
 			this.RefreshPreview();
 		}
-
-		private void radioButton_CheckedChanged(object sender,EventArgs e)
+		private void RadioButton_CheckedChanged(object sender,EventArgs e)
 		{
 			if (((RadioButton)sender).Checked)
 				this.RefreshPreview();
 		}
-
-		private void comboBoxColorStyle_SelectionChangeCommitted(object sender,EventArgs e)
+		private void ComboBoxColorStyle_SelectionChangeCommitted(object sender,EventArgs e)
 		{
 			this.RefreshPreview();
 		}

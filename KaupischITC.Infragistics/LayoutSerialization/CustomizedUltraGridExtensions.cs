@@ -1,26 +1,36 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
 using KaupischITC.InfragisticsControls.ValueAppearances;
-using System;
 
 namespace KaupischITC.InfragisticsControls.LayoutSerialization
 {
+	/// <summary>
+	/// Stellt Erweiterungsmethoden für die (Customized)UltraGrid-Klasse bereit
+	/// </summary>
 	public static class CustomizedUltraGridExtensions
 	{
+		/// <summary>
+		/// Ermittelt die Layout-Informationen eines UltraGrids
+		/// </summary>
+		/// <param name="ultraGrid">das Grid, dessen Layout-Informationen bereitgestellt werden sollen</param>
+		/// <returns>die Layout-Informationen des angegebenen UltraGrids</returns>
 		public static GridLayout GetLayout(this UltraGrid ultraGrid)
 		{
 			return new GridLayout
 			{
-				Bands = ultraGrid.DisplayLayout.Bands.Cast<UltraGridBand>().Select(band => new BandLayout
+				// alle Band-Layouts
+				Bands = ultraGrid.DisplayLayout.Bands.Cast<UltraGridBand>().Select(band => new BandLayout 
 				{
 					Key = band.GetKey(),
 					Hidden = band.Hidden,
 					Caption = band.Header.Caption,
 
-					Columns = band.Columns.Cast<UltraGridColumn>().Select(column => new ColumnLayout
+					// alle Spalten-Layouts
+					Columns = band.Columns.Cast<UltraGridColumn>().Select(column => new ColumnLayout 
 					{
 						Key = column.Key,
 						Caption = column.Header.Caption,
@@ -38,12 +48,14 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 
 					}).ToArray(),
 
-					Summaries = band.Summaries.Cast<SummarySettings>().Select(summary => new ColumnSummary
+					// alle Spalten-Zusammenfassungen
+					Summaries = band.Summaries.Cast<SummarySettings>().Select(summary => new ColumnSummary // alle 
 					{
 						ColumnKey = summary.SourceColumn.Key,
 						SummaryType = summary.SummaryType
 					}).ToArray(),
 
+					// alle Spalten-Gruppierungen
 					Groups = band.SortedColumns.Cast<UltraGridColumn>().Where(col => col.IsGroupByColumn).Select(group => new Grouping
 					{
 						ColumnKey = group.Key
@@ -54,11 +66,17 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 		}
 
 
+		/// <summary>
+		/// Stellt ein UltraGrid-Layout wieder her
+		/// </summary>
+		/// <param name="ultraGrid">das CustomizedUltraGrid, dessen Layout wieder her</param>
+		/// <param name="gridLayout">das Layout, das wieder hergestellt werden soll</param>
 		public static void RestoreLayout(this CustomizedUltraGrid ultraGrid,GridLayout gridLayout)
 		{
 			if (gridLayout.Bands!=null)
 				foreach (BandLayout bandLayout in gridLayout.Bands)
 				{
+					// alle Band-Layouts
 					UltraGridBand band = ultraGrid.FindBand(bandLayout.Key);
 					if (band!=null)
 					{
@@ -67,15 +85,15 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 
 						if (bandLayout.Columns!=null)
 						{
-							foreach (ColumnLayout columnLayout in bandLayout.Columns.Where(c => c.Sorting!=SortIndicator.None).OrderBy(c => c.SortIndex))
+							// alle Spalten-Layouts
+							foreach (ColumnLayout columnLayout in bandLayout.Columns.Where(c => c.Sorting!=SortIndicator.None).OrderBy(c => c.SortIndex)) // Reihenfolge beim Setzen der SortedColumns beachten 
 								if (band.Columns.Exists(columnLayout.Key))
 								{
 									UltraGridColumn column = band.Columns[columnLayout.Key];
 									band.SortedColumns.Add(column,descending: false,groupBy: false);
 									column.SortIndicator = columnLayout.Sorting;
 								}
-
-							foreach (ColumnLayout columnLayout in bandLayout.Columns.OrderBy(c => c.Position))
+							foreach (ColumnLayout columnLayout in bandLayout.Columns.OrderBy(c => c.Position)) // Reihenfolge beim Setzen der VisiblePosition beachten
 								if (band.Columns.Exists(columnLayout.Key))
 								{
 									UltraGridColumn column = band.Columns[columnLayout.Key];
@@ -96,6 +114,7 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 								}
 						}
 
+						// alle Spalten-Zusammenfassungen
 						if (bandLayout.Summaries!=null)
 							foreach (ColumnSummary summary in bandLayout.Summaries)
 								if (band.Columns.Exists(summary.ColumnKey))
@@ -104,6 +123,7 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 									ultraGrid.AddColumnSummary(column,summary.SummaryType);
 								}
 
+						// alle Gruppierungen
 						if (bandLayout.Groups!=null)
 							foreach (Grouping grouping in bandLayout.Groups)
 								if (band.Columns.Exists(grouping.ColumnKey))
@@ -112,8 +132,17 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 				}
 		}
 
+
+		/// <summary>
+		/// Ermittelt den Schlüssel eines Bandes
+		/// </summary>
+		/// <param name="ultraGridBand">das Band, dessen Schlüssel ermittelt werden soll</param>
+		/// <returns>den Schlüssel des Bandes</returns>
 		private static string GetKey(this UltraGridBand ultraGridBand)
 		{
+			// Es wird nicht die normale Band.Key-Eigenschaft verwendet, da es mehrere verschiedene Bänder mit dem gleichen Wert geben kann.
+			// Daher wird der Schlüssel aus der Hierarchie des Bandes ermittelt.
+
 			string result = "";
 			while (ultraGridBand!=null)
 			{
@@ -123,8 +152,17 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 			return result;
 		}
 
+		/// <summary>
+		/// Ermittelt ein Band anhand des übergebenen Schlüssels
+		/// </summary>
+		/// <param name="ultraGrid">das UltraGrid, in dem das Band gesucht werden soll</param>
+		/// <param name="key">der Schlüssel des Bandes, das gefunden werden soll</param>
+		/// <returns>das Band mit dem angegebenen Schlüssel; falls nicht gefunden, null</returns>
 		private static UltraGridBand FindBand(this CustomizedUltraGrid ultraGrid,string key)
 		{
+			// Es wird nicht die normale Band.Key-Eigenschaft verwendet, da es mehrere verschiedene Bänder mit dem gleichen Wert geben kann.
+			// Daher wird das Band anhand des hierarchischen Schlüssels ermittelt
+
 			UltraGridBand result = null;
 			foreach (string subKey in key.Split('.'))
 				if (ultraGrid.DisplayLayout.Bands.Exists(subKey))
@@ -133,7 +171,12 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 			return result;
 		}
 
-
+		
+		/// <summary>
+		/// Speichert die Layout-Informationen des UltraGrids in ein XML-Dokument
+		/// </summary>
+		/// <param name="ultraGrid">das UltraGrid, dessen Layout-Informationen gespeichert werden sollen</param>
+		/// <param name="xmlWriter">der zum Schreiben des XML-Dokuments verwendete XmlWriter</param>
 		public static void SaveLayoutToXml(this UltraGrid ultraGrid,XmlWriter xmlWriter)
 		{
 			GridLayout gridLayout = ultraGrid.GetLayout();
@@ -141,6 +184,11 @@ namespace KaupischITC.InfragisticsControls.LayoutSerialization
 			xmlSerializer.Serialize(xmlWriter,gridLayout);
 		}
 
+		/// <summary>
+		/// Stellt die Layout-Informationen des UltraGrids aus einem XML-Dokument wieder her
+		/// </summary>
+		/// <param name="ultraGrid"></param>
+		/// <param name="xmlReader">der zum Lesen des XML-Dokuments verwendete XmlReader</param>
 		public static void RestoreLayoutFromXml(this CustomizedUltraGrid ultraGrid,XmlReader xmlReader)
 		{
 			XmlSerializer xmlSerializer = new XmlSerializer(typeof(GridLayout));

@@ -60,6 +60,7 @@
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="FontExtensions.cs" />
+    <Compile Include="ImageExtensions.cs" />
     <Compile Include="ObjectGenericExtensions.cs" />
     <Compile Include="GraphicsExtensions.cs" />
     <Compile Include="MemberInfoExtensions.cs" />

@@ -100,7 +100,7 @@
 			this.numericUpDownTop.Name = "numericUpDownTop";
 			this.numericUpDownTop.Size = new System.Drawing.Size(76, 20);
 			this.numericUpDownTop.TabIndex = 2;
-			this.numericUpDownTop.ValueChanged += new System.EventHandler(this.numericUpDownTop_ValueChanged);
+			this.numericUpDownTop.ValueChanged += new System.EventHandler(this.NumericUpDownTop_ValueChanged);
 			// 
 			// tableLayoutPanel1
 			// 
@@ -211,7 +211,7 @@
 			this.numericUpDownRight.Name = "numericUpDownRight";
 			this.numericUpDownRight.Size = new System.Drawing.Size(76, 20);
 			this.numericUpDownRight.TabIndex = 8;
-			this.numericUpDownRight.ValueChanged += new System.EventHandler(this.numericUpDownTop_ValueChanged);
+			this.numericUpDownRight.ValueChanged += new System.EventHandler(this.NumericUpDownTop_ValueChanged);
 			// 
 			// label1
 			// 
@@ -236,7 +236,7 @@
 			this.numericUpDownLeft.Name = "numericUpDownLeft";
 			this.numericUpDownLeft.Size = new System.Drawing.Size(76, 20);
 			this.numericUpDownLeft.TabIndex = 6;
-			this.numericUpDownLeft.ValueChanged += new System.EventHandler(this.numericUpDownTop_ValueChanged);
+			this.numericUpDownLeft.ValueChanged += new System.EventHandler(this.NumericUpDownTop_ValueChanged);
 			// 
 			// numericUpDownBottom
 			// 
@@ -251,7 +251,7 @@
 			this.numericUpDownBottom.Name = "numericUpDownBottom";
 			this.numericUpDownBottom.Size = new System.Drawing.Size(76, 20);
 			this.numericUpDownBottom.TabIndex = 4;
-			this.numericUpDownBottom.ValueChanged += new System.EventHandler(this.numericUpDownTop_ValueChanged);
+			this.numericUpDownBottom.ValueChanged += new System.EventHandler(this.NumericUpDownTop_ValueChanged);
 			// 
 			// label6
 			// 
@@ -335,7 +335,7 @@
 			this.buttonPrint.Text = "Abfrage drucken";
 			this.buttonPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
 			this.buttonPrint.UseVisualStyleBackColor = true;
-			this.buttonPrint.Click += new System.EventHandler(this.buttonPrint_Click);
+			this.buttonPrint.Click += new System.EventHandler(this.ButtonPrint_Click);
 			// 
 			// label12
 			// 
@@ -374,7 +374,7 @@
 			this.comboBoxColorStyle.Name = "comboBoxColorStyle";
 			this.comboBoxColorStyle.Size = new System.Drawing.Size(130, 21);
 			this.comboBoxColorStyle.TabIndex = 12;
-			this.comboBoxColorStyle.SelectionChangeCommitted += new System.EventHandler(this.comboBoxColorStyle_SelectionChangeCommitted);
+			this.comboBoxColorStyle.SelectionChangeCommitted += new System.EventHandler(this.ComboBoxColorStyle_SelectionChangeCommitted);
 			// 
 			// separatorLabel3
 			// 
@@ -397,7 +397,7 @@
 			this.comboBoxPrinter.Size = new System.Drawing.Size(320, 21);
 			this.comboBoxPrinter.Sorted = true;
 			this.comboBoxPrinter.TabIndex = 2;
-			this.comboBoxPrinter.SelectedIndexChanged += new System.EventHandler(this.comboBoxPrinter_SelectedIndexChanged);
+			this.comboBoxPrinter.SelectedIndexChanged += new System.EventHandler(this.ComboBoxPrinter_SelectedIndexChanged);
 			// 
 			// separatorLabel4
 			// 
@@ -418,7 +418,7 @@
 			this.comboBoxPapersize.Name = "comboBoxPapersize";
 			this.comboBoxPapersize.Size = new System.Drawing.Size(198, 21);
 			this.comboBoxPapersize.TabIndex = 4;
-			this.comboBoxPapersize.SelectedIndexChanged += new System.EventHandler(this.comboBoxPapersize_SelectedIndexChanged);
+			this.comboBoxPapersize.SelectedIndexChanged += new System.EventHandler(this.ComboBoxPapersize_SelectedIndexChanged);
 			// 
 			// separatorLabel1
 			// 
@@ -475,7 +475,7 @@
 			this.radioButtonLandscape.TabIndex = 12;
 			this.radioButtonLandscape.TabStop = true;
 			this.radioButtonLandscape.UseVisualStyleBackColor = false;
-			this.radioButtonLandscape.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
+			this.radioButtonLandscape.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
 			// 
 			// imageList
 			// 
@@ -519,7 +519,7 @@
 			this.radioButtonPortrait.TabStop = true;
 			this.radioButtonPortrait.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			this.radioButtonPortrait.UseVisualStyleBackColor = true;
-			this.radioButtonPortrait.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
+			this.radioButtonPortrait.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
 			// 
 			// separatorLabel6
 			// 
@@ -563,7 +563,7 @@
 			this.radioButtonColumnDefaultSize.TabStop = true;
 			this.radioButtonColumnDefaultSize.Text = "&wie angezeigt (keine Änderungen)";
 			this.radioButtonColumnDefaultSize.UseVisualStyleBackColor = true;
-			this.radioButtonColumnDefaultSize.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
+			this.radioButtonColumnDefaultSize.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
 			// 
 			// radioButtonColumnAutoFitPages
 			// 
@@ -575,7 +575,7 @@
 			this.radioButtonColumnAutoFitPages.TabIndex = 1;
 			this.radioButtonColumnAutoFitPages.Text = "&maximal";
 			this.radioButtonColumnAutoFitPages.UseVisualStyleBackColor = true;
-			this.radioButtonColumnAutoFitPages.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
+			this.radioButtonColumnAutoFitPages.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
 			// 
 			// numericUpDownAutoFitPageCount
 			// 
@@ -599,7 +599,7 @@
             0,
             0,
             0});
-			this.numericUpDownAutoFitPageCount.ValueChanged += new System.EventHandler(this.numericUpDownColumn_ValueChanged);
+			this.numericUpDownAutoFitPageCount.ValueChanged += new System.EventHandler(this.NumericUpDownColumn_ValueChanged);
 			// 
 			// label11
 			// 
