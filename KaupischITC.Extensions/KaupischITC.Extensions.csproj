@@ -54,6 +54,7 @@
     <Compile Include="CustomAttributeProviderExtensions.cs" />
     <Compile Include="DataRecordExtensions.cs" />
     <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="DbCommandExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="EventHandlerExtensions.cs" />
