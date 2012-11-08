@@ -87,7 +87,8 @@ namespace KaupischITC.Shared
 				result.AppendLine();
 				result.AppendLine(this.textBoxDetails.Text);
 
-				Clipboard.SetText(result.ToString());
+				try { Clipboard.SetText(result.ToString()); }
+				catch { }
 			}
 		}
 
