@@ -91,6 +91,9 @@
     <Compile Include="Controls\ErrorMessageBox.designer.cs">
       <DependentUpon>ErrorMessageBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HintTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\InputBox.cs">
       <SubType>Form</SubType>
     </Compile>
