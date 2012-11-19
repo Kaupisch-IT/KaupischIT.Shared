@@ -729,7 +729,7 @@ namespace KaupischITC.InfragisticsControls
 						point.Offset(0,-image.Height);
 
 					// eigenes Bild für aufsteigend/absteigend
-					drawParams.Graphics.DrawImageUnscaled(image,point); 
+					drawParams.Graphics.DrawImage(image,point.X,point.Y,image.Width,image.Height); 
 
 					// bei Sortierung mit mehreren Spalten deren Reihenfolge mit anzeigen
 					List<UltraGridColumn> sortedColumns = column.Band.SortedColumns.Cast<UltraGridColumn>().Where(col => !col.IsGroupByColumn).ToList();

@@ -12,6 +12,19 @@ namespace KaupischITC.Extensions
 	public static class StringExtensions
 	{
 		/// <summary>
+		/// Kürzt ggf. die übergebene Zeichenfolge auf die angegebene Länge
+		/// </summary>
+		/// <param name="value">die Zeichenfolge, die ggf. gekürzt werden soll</param>
+		/// <param name="maxLength">die maximale Länge der Zeichenfolge</param>
+		/// <returns>die gekürzte Zeichenfolge, falls die Länge die angegebene Maximallänge überschreitet; andernfalls die unveränderte Zeichenfolge</returns>
+		public static string WithMaxLength(this string value,int maxLength)
+		{
+			return (value!=null && value.Length>maxLength) ? value.Substring(0,maxLength) : value;
+		}
+
+
+
+		/// <summary>
 		/// Versucht, die angegebene Zeichenkette in den angegeben Typen zu konvertieren
 		/// </summary>
 		/// <typeparam name="T">der Typ, in den die Zeichenkette konvertiert werden soll</typeparam>

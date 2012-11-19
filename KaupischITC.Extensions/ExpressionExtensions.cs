@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -94,7 +95,7 @@ namespace KaupischITC.Extensions
 		}
 	}
 
-	
+
 	/// <summary>
 	/// Stellt Methoden bereit, um typisiert den Namen einen Members zu ermitteln
 	/// </summary>
@@ -107,6 +108,19 @@ namespace KaupischITC.Extensions
 		/// <param name="expression">die Expression des Memberaufrufs</param>
 		/// <returns>den Namen des aufgerufenen Members</returns>
 		public static string Of<T>(Expression<Func<T,object>> expression)
+		{
+			return ExpressionExtensions.GetMemberName((LambdaExpression)expression);
+		}
+
+
+		/// <summary>
+		/// Ermittelt den Namen des angegebenen Members eines Elements der Auflistung
+		/// </summary>
+		/// <typeparam name="T">der Typ des Objekts, dessen Member aufgerufen wird</typeparam>
+		/// <param name="source">die Auflistung der Elemente</param>
+		/// <param name="expression">die Expression des Memberaufrufs</param>
+		/// <returns>den Namen des aufgerufenen Members</returns>
+		public static string GetElementMemberName<T>(this IEnumerable<T> source,Expression<Func<T,object>> expression)
 		{
 			return ExpressionExtensions.GetMemberName((LambdaExpression)expression);
 		}
