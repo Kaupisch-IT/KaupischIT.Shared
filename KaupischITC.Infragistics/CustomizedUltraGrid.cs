@@ -130,7 +130,9 @@ namespace KaupischITC.InfragisticsControls
 			this.SortIndicatorImageAscending = (Image)resources.GetObject("Up");
 			this.SortIndicatorImageDescending = (Image)resources.GetObject("Down");
 			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("ColumnChooserButtonToolTip","Spalten auswählen");
-
+			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("FilterClearButtonToolTip_FilterCell","Klicken Sie hier, um den Filterwert für die Spalte '{0}' zu entfernen");
+			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("FilterClearButtonToolTip_RowSelector","Klicken Sie hier, um alle Filterwerte zu entfernen");
+		
 			// Layout initialisieren
 			this.OnInitializeLayout(new InitializeLayoutEventArgs(this.DisplayLayout));
 		}
@@ -167,10 +169,11 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.Override.AllowMultiCellOperations = AllowMultiCellOperation.CopyWithHeaders;
 				this.DisplayLayout.Override.SummaryFooterCaptionVisible = DefaultableBoolean.False;
 
-				this.DisplayLayout.Override.AllowRowFiltering = DefaultableBoolean.False;
 				this.DisplayLayout.Override.FilterOperatorDefaultValue = FilterOperatorDefaultValue.Contains;
 				this.DisplayLayout.Override.FilterUIType = FilterUIType.FilterRow;
 				this.DisplayLayout.Override.RowFilterMode = RowFilterMode.AllRowsInBand;
+				this.DisplayLayout.Override.FilterOperandStyle = FilterOperandStyle.Edit;
+				this.DisplayLayout.Override.FilterOperatorLocation = FilterOperatorLocation.Hidden;
 
 				// Anpassung diverser Farben und Zeichenstile zur Vereinheitlichung des Aussehens mit den DevExpress-Steuerelementen
 				Color borderColor = Color.FromArgb(202,203,211);
