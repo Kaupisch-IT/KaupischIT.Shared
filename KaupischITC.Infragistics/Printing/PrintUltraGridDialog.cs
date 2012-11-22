@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
@@ -16,7 +17,8 @@ namespace KaupischITC.InfragisticsControls.Printing
 	public partial class PrintUltraGridDialog : Form
 	{
 		private bool preventRefreshFlag = true;
-		private UltraGridPrintDocument ultraPrintDocument = new UltraGridPrintDocument();
+		private int pageNumber;
+		private readonly UltraGridPrintDocument ultraPrintDocument = new UltraGridPrintDocument();
 
 
 		/// <summary>
@@ -61,13 +63,18 @@ namespace KaupischITC.InfragisticsControls.Printing
 			this.ultraPrintDocument.Page.BorderStyle = UIElementBorderStyle.None;
 			this.ultraPrintDocument.Header.Margins.Bottom = 10;
 			this.ultraPrintDocument.Footer.TextLeft = "[Date Printed] [Time Printed]";
-			this.ultraPrintDocument.Footer.TextRight = "Seite <#> von <##>";
-
+			this.ultraPrintDocument.BeginPrint += delegate { this.pageNumber = 0; };
+			this.ultraPrintDocument.PagePrinting += delegate
+			{
+				this.ultraPrintDocument.Footer.TextRight = (this.ultraPrintDocument.PrinterSettings.PrintRange==PrintRange.AllPages) ? "Seite <#> von <##>" : "Seite "+(this.ultraPrintDocument.PrinterSettings.FromPage+this.pageNumber);
+				this.pageNumber++;
+			};
+			
 			this.preventRefreshFlag = false;
 			this.RefreshPreview();
 		}
 
-		
+
 		/// <summary>
 		/// Beim Klicken auf den "Abbrechen"-Button
 		/// </summary>
@@ -83,7 +90,39 @@ namespace KaupischITC.InfragisticsControls.Printing
 		private void ButtonPrint_Click(object sender,EventArgs e)
 		{
 			this.RefreshPrintDocumentSettings();
-			this.ultraPrintDocument.Print();
+
+			if (String.IsNullOrEmpty(this.textBoxPages.Text))
+			{
+				this.ultraPrintDocument.PrinterSettings.PrintRange = PrintRange.AllPages;
+				this.ultraPrintDocument.Print();
+			}
+			else
+			{
+				string pageRange = ","+Regex.Replace(this.textBoxPages.Text,@"\s+","").Trim(',')+",";
+				if (!Regex.IsMatch(pageRange,@"^,(((?<single>\d+)|(?<range>\d+-\d+)),)+$"))
+					MessageBox.Show("Bitte prüfen Sie die Angabe des Druckbereichs.\r\n"+this.toolTipPageRange.GetToolTip(this.textBoxPages),"Fehler beim Druckbereich",MessageBoxButtons.OK,MessageBoxIcon.Error);
+				else
+				{
+					foreach (Match ma in Regex.Matches(pageRange,@",(?<page>\d{1,6})(?=,)"))
+					{
+						int page = Int32.Parse(ma.Groups["page"].Value);
+						this.ultraPrintDocument.PrinterSettings.PrintRange = PrintRange.SomePages;
+						this.ultraPrintDocument.PrinterSettings.FromPage = this.ultraPrintDocument.PrinterSettings.ToPage = page;
+						this.ultraPrintDocument.Print();
+					}
+					foreach (Match ma in Regex.Matches(pageRange,@",(?<from>\d{1,6})-(?<to>\d{1,6})(?=,)"))
+					{
+						int from = Int32.Parse(ma.Groups["from"].Value);
+						int to = Int32.Parse(ma.Groups["to"].Value);
+						this.ultraPrintDocument.PrinterSettings.PrintRange = PrintRange.SomePages;
+						this.ultraPrintDocument.PrinterSettings.FromPage = from;
+						this.ultraPrintDocument.PrinterSettings.ToPage = to;
+						this.ultraPrintDocument.Print();
+					}
+				}
+			}
+
+			this.ultraPrintDocument.PrinterSettings.PrintRange = PrintRange.AllPages;
 		}
 
 

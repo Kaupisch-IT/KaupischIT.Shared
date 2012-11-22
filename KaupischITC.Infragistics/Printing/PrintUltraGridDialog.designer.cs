@@ -49,27 +49,30 @@
 			this.label12 = new System.Windows.Forms.Label();
 			this.numericUpDownCopies = new System.Windows.Forms.NumericUpDown();
 			this.comboBoxColorStyle = new System.Windows.Forms.ComboBox();
-			this.separatorLabel3 = new KaupischITC.Shared.SeparatorLabel();
+			this.checkBoxDuplex = new System.Windows.Forms.CheckBox();
 			this.comboBoxPrinter = new System.Windows.Forms.ComboBox();
-			this.separatorLabel4 = new KaupischITC.Shared.SeparatorLabel();
 			this.comboBoxPapersize = new System.Windows.Forms.ComboBox();
-			this.separatorLabel1 = new KaupischITC.Shared.SeparatorLabel();
-			this.separatorLabel2 = new KaupischITC.Shared.SeparatorLabel();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.radioButtonLandscape = new System.Windows.Forms.RadioButton();
 			this.imageList = new System.Windows.Forms.ImageList(this.components);
 			this.label9 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.radioButtonPortrait = new System.Windows.Forms.RadioButton();
-			this.separatorLabel6 = new KaupischITC.Shared.SeparatorLabel();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
 			this.radioButtonColumnDefaultSize = new System.Windows.Forms.RadioButton();
 			this.radioButtonColumnAutoFitPages = new System.Windows.Forms.RadioButton();
 			this.numericUpDownAutoFitPageCount = new System.Windows.Forms.NumericUpDown();
 			this.label11 = new System.Windows.Forms.Label();
-			this.checkBoxDuplex = new System.Windows.Forms.CheckBox();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.ultraPrintPreviewControl = new Infragistics.Win.Printing.UltraPrintPreviewControl();
+			this.textBoxPages = new System.Windows.Forms.TextBox();
+			this.toolTipPageRange = new System.Windows.Forms.ToolTip(this.components);
+			this.separatorLabel5 = new KaupischITC.Shared.SeparatorLabel();
+			this.separatorLabel3 = new KaupischITC.Shared.SeparatorLabel();
+			this.separatorLabel4 = new KaupischITC.Shared.SeparatorLabel();
+			this.separatorLabel1 = new KaupischITC.Shared.SeparatorLabel();
+			this.separatorLabel2 = new KaupischITC.Shared.SeparatorLabel();
+			this.separatorLabel6 = new KaupischITC.Shared.SeparatorLabel();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownTop)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownRight)).BeginInit();
@@ -126,7 +129,7 @@
 			this.tableLayoutPanel1.Controls.Add(this.numericUpDownLeft, 1, 1);
 			this.tableLayoutPanel1.Controls.Add(this.numericUpDownBottom, 4, 0);
 			this.tableLayoutPanel1.Controls.Add(this.label6, 2, 1);
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(20, 227);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(20, 272);
 			this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 3;
@@ -267,21 +270,25 @@
 			// 
 			this.tableLayoutPanel7.ColumnCount = 1;
 			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel7.Controls.Add(this.separatorLabel5, 0, 5);
 			this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel3, 0, 0);
 			this.tableLayoutPanel7.Controls.Add(this.separatorLabel3, 0, 1);
 			this.tableLayoutPanel7.Controls.Add(this.comboBoxPrinter, 0, 2);
 			this.tableLayoutPanel7.Controls.Add(this.separatorLabel4, 0, 3);
 			this.tableLayoutPanel7.Controls.Add(this.comboBoxPapersize, 0, 4);
-			this.tableLayoutPanel7.Controls.Add(this.separatorLabel1, 0, 5);
-			this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel1, 0, 6);
-			this.tableLayoutPanel7.Controls.Add(this.separatorLabel2, 0, 7);
-			this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel2, 0, 8);
-			this.tableLayoutPanel7.Controls.Add(this.separatorLabel6, 0, 9);
-			this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel5, 0, 10);
+			this.tableLayoutPanel7.Controls.Add(this.separatorLabel1, 0, 7);
+			this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel1, 0, 8);
+			this.tableLayoutPanel7.Controls.Add(this.separatorLabel2, 0, 9);
+			this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel2, 0, 10);
+			this.tableLayoutPanel7.Controls.Add(this.separatorLabel6, 0, 11);
+			this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel5, 0, 12);
+			this.tableLayoutPanel7.Controls.Add(this.textBoxPages, 0, 6);
 			this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-			this.tableLayoutPanel7.RowCount = 13;
+			this.tableLayoutPanel7.RowCount = 15;
+			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -295,7 +302,7 @@
 			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel7.Size = new System.Drawing.Size(343, 510);
+			this.tableLayoutPanel7.Size = new System.Drawing.Size(343, 572);
 			this.tableLayoutPanel7.TabIndex = 8;
 			// 
 			// tableLayoutPanel3
@@ -376,15 +383,16 @@
 			this.comboBoxColorStyle.TabIndex = 12;
 			this.comboBoxColorStyle.SelectionChangeCommitted += new System.EventHandler(this.ComboBoxColorStyle_SelectionChangeCommitted);
 			// 
-			// separatorLabel3
+			// checkBoxDuplex
 			// 
-			this.separatorLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.separatorLabel3.Location = new System.Drawing.Point(3, 116);
-			this.separatorLabel3.Name = "separatorLabel3";
-			this.separatorLabel3.Size = new System.Drawing.Size(337, 13);
-			this.separatorLabel3.TabIndex = 1;
-			this.separatorLabel3.TabStop = false;
-			this.separatorLabel3.Text = "Drucker";
+			this.checkBoxDuplex.AutoSize = true;
+			this.tableLayoutPanel3.SetColumnSpan(this.checkBoxDuplex, 2);
+			this.checkBoxDuplex.Location = new System.Drawing.Point(134, 66);
+			this.checkBoxDuplex.Name = "checkBoxDuplex";
+			this.checkBoxDuplex.Size = new System.Drawing.Size(163, 17);
+			this.checkBoxDuplex.TabIndex = 10;
+			this.checkBoxDuplex.Text = "doppelseitiger Druck (duplex)";
+			this.checkBoxDuplex.UseVisualStyleBackColor = true;
 			// 
 			// comboBoxPrinter
 			// 
@@ -399,16 +407,6 @@
 			this.comboBoxPrinter.TabIndex = 2;
 			this.comboBoxPrinter.SelectedIndexChanged += new System.EventHandler(this.ComboBoxPrinter_SelectedIndexChanged);
 			// 
-			// separatorLabel4
-			// 
-			this.separatorLabel4.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.separatorLabel4.Location = new System.Drawing.Point(3, 162);
-			this.separatorLabel4.Name = "separatorLabel4";
-			this.separatorLabel4.Size = new System.Drawing.Size(337, 13);
-			this.separatorLabel4.TabIndex = 3;
-			this.separatorLabel4.TabStop = false;
-			this.separatorLabel4.Text = "Papierformat";
-			// 
 			// comboBoxPapersize
 			// 
 			this.comboBoxPapersize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -420,26 +418,6 @@
 			this.comboBoxPapersize.TabIndex = 4;
 			this.comboBoxPapersize.SelectedIndexChanged += new System.EventHandler(this.ComboBoxPapersize_SelectedIndexChanged);
 			// 
-			// separatorLabel1
-			// 
-			this.separatorLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.separatorLabel1.Location = new System.Drawing.Point(3, 208);
-			this.separatorLabel1.Name = "separatorLabel1";
-			this.separatorLabel1.Size = new System.Drawing.Size(337, 13);
-			this.separatorLabel1.TabIndex = 2;
-			this.separatorLabel1.TabStop = false;
-			this.separatorLabel1.Text = "Seitenränder";
-			// 
-			// separatorLabel2
-			// 
-			this.separatorLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.separatorLabel2.Location = new System.Drawing.Point(3, 290);
-			this.separatorLabel2.Name = "separatorLabel2";
-			this.separatorLabel2.Size = new System.Drawing.Size(337, 13);
-			this.separatorLabel2.TabIndex = 5;
-			this.separatorLabel2.TabStop = false;
-			this.separatorLabel2.Text = "Ausrichtung";
-			// 
 			// tableLayoutPanel2
 			// 
 			this.tableLayoutPanel2.ColumnCount = 2;
@@ -449,7 +427,7 @@
 			this.tableLayoutPanel2.Controls.Add(this.label9, 0, 1);
 			this.tableLayoutPanel2.Controls.Add(this.label10, 1, 1);
 			this.tableLayoutPanel2.Controls.Add(this.radioButtonPortrait, 0, 0);
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(20, 309);
+			this.tableLayoutPanel2.Location = new System.Drawing.Point(20, 354);
 			this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 2;
@@ -521,16 +499,6 @@
 			this.radioButtonPortrait.UseVisualStyleBackColor = true;
 			this.radioButtonPortrait.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
 			// 
-			// separatorLabel6
-			// 
-			this.separatorLabel6.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.separatorLabel6.Location = new System.Drawing.Point(3, 385);
-			this.separatorLabel6.Name = "separatorLabel6";
-			this.separatorLabel6.Size = new System.Drawing.Size(337, 13);
-			this.separatorLabel6.TabIndex = 2;
-			this.separatorLabel6.TabStop = false;
-			this.separatorLabel6.Text = "Spaltengröße anpassen";
-			// 
 			// tableLayoutPanel5
 			// 
 			this.tableLayoutPanel5.ColumnCount = 3;
@@ -541,7 +509,7 @@
 			this.tableLayoutPanel5.Controls.Add(this.radioButtonColumnAutoFitPages, 0, 1);
 			this.tableLayoutPanel5.Controls.Add(this.numericUpDownAutoFitPageCount, 1, 1);
 			this.tableLayoutPanel5.Controls.Add(this.label11, 2, 1);
-			this.tableLayoutPanel5.Location = new System.Drawing.Point(20, 404);
+			this.tableLayoutPanel5.Location = new System.Drawing.Point(20, 449);
 			this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
 			this.tableLayoutPanel5.Name = "tableLayoutPanel5";
 			this.tableLayoutPanel5.RowCount = 3;
@@ -611,17 +579,6 @@
 			this.label11.TabIndex = 3;
 			this.label11.Text = "Seiten nebeneinander";
 			// 
-			// checkBoxDuplex
-			// 
-			this.checkBoxDuplex.AutoSize = true;
-			this.tableLayoutPanel3.SetColumnSpan(this.checkBoxDuplex, 2);
-			this.checkBoxDuplex.Location = new System.Drawing.Point(134, 66);
-			this.checkBoxDuplex.Name = "checkBoxDuplex";
-			this.checkBoxDuplex.Size = new System.Drawing.Size(163, 17);
-			this.checkBoxDuplex.TabIndex = 10;
-			this.checkBoxDuplex.Text = "doppelseitiger Druck (duplex)";
-			this.checkBoxDuplex.UseVisualStyleBackColor = true;
-			// 
 			// splitContainer1
 			// 
 			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -636,7 +593,7 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.ultraPrintPreviewControl);
-			this.splitContainer1.Size = new System.Drawing.Size(717, 510);
+			this.splitContainer1.Size = new System.Drawing.Size(717, 572);
 			this.splitContainer1.SplitterDistance = 343;
 			this.splitContainer1.TabIndex = 9;
 			// 
@@ -652,15 +609,95 @@
 			this.ultraPrintPreviewControl.MouseAction = Infragistics.Win.Printing.PreviewMouseAction.DynamicZoom;
 			this.ultraPrintPreviewControl.Name = "ultraPrintPreviewControl";
 			this.ultraPrintPreviewControl.Settings.ZoomMode = Infragistics.Win.Printing.ZoomMode.WholePage;
-			this.ultraPrintPreviewControl.Size = new System.Drawing.Size(370, 510);
+			this.ultraPrintPreviewControl.Size = new System.Drawing.Size(370, 572);
 			this.ultraPrintPreviewControl.TabIndex = 0;
 			this.ultraPrintPreviewControl.UseFlatMode = Infragistics.Win.DefaultableBoolean.True;
+			// 
+			// textBoxPages
+			// 
+			this.textBoxPages.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.textBoxPages.Location = new System.Drawing.Point(20, 227);
+			this.textBoxPages.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
+			this.textBoxPages.Name = "textBoxPages";
+			this.textBoxPages.Size = new System.Drawing.Size(320, 20);
+			this.textBoxPages.TabIndex = 13;
+			this.toolTipPageRange.SetToolTip(this.textBoxPages, "Geben Sie die Seitenzahlen und/oder Seitenbereiche durch Kommas getrennt ein (z.B" +
+        ". 1, 3, 5-12).");
+			// 
+			// toolTipPageRange
+			// 
+			this.toolTipPageRange.AutomaticDelay = 2000;
+			this.toolTipPageRange.AutoPopDelay = 20000;
+			this.toolTipPageRange.InitialDelay = 10;
+			this.toolTipPageRange.ReshowDelay = 400;
+			this.toolTipPageRange.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+			this.toolTipPageRange.ToolTipTitle = "Druckbereich";
+			// 
+			// separatorLabel5
+			// 
+			this.separatorLabel5.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.separatorLabel5.Location = new System.Drawing.Point(3, 208);
+			this.separatorLabel5.Name = "separatorLabel5";
+			this.separatorLabel5.Size = new System.Drawing.Size(337, 13);
+			this.separatorLabel5.TabIndex = 12;
+			this.separatorLabel5.TabStop = false;
+			this.separatorLabel5.Text = "Seiten";
+			// 
+			// separatorLabel3
+			// 
+			this.separatorLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.separatorLabel3.Location = new System.Drawing.Point(3, 116);
+			this.separatorLabel3.Name = "separatorLabel3";
+			this.separatorLabel3.Size = new System.Drawing.Size(337, 13);
+			this.separatorLabel3.TabIndex = 1;
+			this.separatorLabel3.TabStop = false;
+			this.separatorLabel3.Text = "Drucker";
+			// 
+			// separatorLabel4
+			// 
+			this.separatorLabel4.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.separatorLabel4.Location = new System.Drawing.Point(3, 162);
+			this.separatorLabel4.Name = "separatorLabel4";
+			this.separatorLabel4.Size = new System.Drawing.Size(337, 13);
+			this.separatorLabel4.TabIndex = 3;
+			this.separatorLabel4.TabStop = false;
+			this.separatorLabel4.Text = "Papierformat";
+			// 
+			// separatorLabel1
+			// 
+			this.separatorLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.separatorLabel1.Location = new System.Drawing.Point(3, 253);
+			this.separatorLabel1.Name = "separatorLabel1";
+			this.separatorLabel1.Size = new System.Drawing.Size(337, 13);
+			this.separatorLabel1.TabIndex = 2;
+			this.separatorLabel1.TabStop = false;
+			this.separatorLabel1.Text = "Seitenränder";
+			// 
+			// separatorLabel2
+			// 
+			this.separatorLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.separatorLabel2.Location = new System.Drawing.Point(3, 335);
+			this.separatorLabel2.Name = "separatorLabel2";
+			this.separatorLabel2.Size = new System.Drawing.Size(337, 13);
+			this.separatorLabel2.TabIndex = 5;
+			this.separatorLabel2.TabStop = false;
+			this.separatorLabel2.Text = "Ausrichtung";
+			// 
+			// separatorLabel6
+			// 
+			this.separatorLabel6.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.separatorLabel6.Location = new System.Drawing.Point(3, 430);
+			this.separatorLabel6.Name = "separatorLabel6";
+			this.separatorLabel6.Size = new System.Drawing.Size(337, 13);
+			this.separatorLabel6.TabIndex = 2;
+			this.separatorLabel6.TabStop = false;
+			this.separatorLabel6.Text = "Spaltengröße anpassen";
 			// 
 			// PrintUltraGridDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(717, 510);
+			this.ClientSize = new System.Drawing.Size(717, 572);
 			this.Controls.Add(this.splitContainer1);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -736,6 +773,9 @@
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.NumericUpDown numericUpDownCopies;
 		private System.Windows.Forms.ComboBox comboBoxColorStyle;
+		private Shared.SeparatorLabel separatorLabel5;
+		private System.Windows.Forms.TextBox textBoxPages;
+		private System.Windows.Forms.ToolTip toolTipPageRange;
 
 
     }
