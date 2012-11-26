@@ -313,8 +313,11 @@ namespace KaupischITC.InfragisticsControls
 				if (validRoutes.Any()) 
 				{
 					this.ColumnCellContextMenuStrip.Items.Add("-").Tag = this.urlProtocolHandler;
-					foreach (UrlProtocolHandler.ConcreteRoute route in validRoutes)
+					foreach (UrlProtocolHandler.ConcreteRoute r in validRoutes)
+					{
+						UrlProtocolHandler.ConcreteRoute route = r;
 						this.ColumnCellContextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
+					}
 				}
 			};
 		}
