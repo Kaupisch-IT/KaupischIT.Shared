@@ -66,7 +66,7 @@ namespace KaupischITC.InfragisticsControls
 		/// </summary>
 		/// <param name="ultraGridCell">die Zelle, in deren Kontext konkrete URL-Routen ermittelt werden sollen</param>
 		/// <returns>eine Auflistung aller gefundenen konkreten URL-Routen zurück</returns>
-		public IEnumerable<ConcreteRoute> GetValidRoutes(UltraGridCell ultraGridCell)
+		public IEnumerable<ConcreteRoute> GetValidRoutes(UltraGridRow ultraGridRow)
 		{
 			Func<string,string,bool> equals = (patternPart,name) =>
 			{
@@ -74,7 +74,7 @@ namespace KaupischITC.InfragisticsControls
 				return Regex.IsMatch(name,"^"+pattern+"$",RegexOptions.IgnoreCase);
 			};
 
-			if (ultraGridCell!=null)
+			if (ultraGridRow!=null)
 				foreach (Route route in this.Routes)
 				{
 					bool success = true;
@@ -85,34 +85,10 @@ namespace KaupischITC.InfragisticsControls
 						foreach (Match match in Regex.Matches(route.Pattern,@"\{(?<part>[^}]+)\}"))
 						{
 							string[] values = match.Groups["part"].Value.Split(new[] { '|' },StringSplitOptions.RemoveEmptyEntries);
-							UltraGridCell matchedCell = ultraGridCell.Row.Cells.Cast<UltraGridCell>().FirstOrDefault(cell => cell.Value!=null && (values.Any(val => equals(val,cell.Column.Key)) || values.Any(val => equals(val,cell.Column.Header.Caption))));
+							UltraGridCell matchedCell = ultraGridRow.Cells.Cast<UltraGridCell>().FirstOrDefault(cell => cell.Value!=null && (values.Any(val => equals(val,cell.Column.Key)) || values.Any(val => equals(val,cell.Column.Header.Caption))));
 
 							if (matchedCell!=null)
 								result.Url = result.Url.Replace(match.Value,matchedCell.Value.ToString());
-							else
-							{
-								success = false;
-								break;
-							}
-						}
-
-						if (success)
-							yield return result;
-					}
-
-					// Versuchen, die Platzhalter im Pattern durch die Werte aus den Properties des Zellobjekts zu ersetzen
-					if (!success && ultraGridCell!=null && ultraGridCell.Value!=null)
-					{
-						success = true;
-
-						ConcreteRoute result = new ConcreteRoute { Name = route.Name,Pattern = route.Pattern,Url = route.Pattern };
-						foreach (Match match in Regex.Matches(route.Pattern,@"\{(?<part>[^}]+)\}"))
-						{
-							string[] values = match.Groups["part"].Value.Split(new[] { '|' },StringSplitOptions.RemoveEmptyEntries);
-							PropertyInfo matchedProperty = ultraGridCell.Value.GetType().GetProperties().FirstOrDefault(property => values.Any(val => equals(val,property.Name)) && property.GetValue(ultraGridCell.Value,null)!=null);
-
-							if (matchedProperty!=null)
-								result.Url = result.Url.Replace(match.Value,matchedProperty.GetValue(ultraGridCell.Value,null).ToString());
 							else
 							{
 								success = false;
