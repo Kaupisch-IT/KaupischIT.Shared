@@ -63,7 +63,7 @@ namespace KaupischITC.InfragisticsControls
 
 		/// <summary> Gibt die Zeile zurück, auf die in diesem Kontext geklickt wurde </summary>
 		public UltraGridRow ContextUltraGridRow { get; private set; }
-		
+
 		/// <summary> Gibt die Zelle zurück, auf die in diesem Kontext geklickt wurde </summary>
 		public UltraGridCell ContextUltraGridCell { get; private set; }
 
@@ -132,7 +132,7 @@ namespace KaupischITC.InfragisticsControls
 			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("ColumnChooserButtonToolTip","Spalten auswählen");
 			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("FilterClearButtonToolTip_FilterCell","Klicken Sie hier, um den Filterwert für die Spalte '{0}' zu entfernen");
 			Infragistics.Win.UltraWinGrid.Resources.Customizer.SetCustomizedString("FilterClearButtonToolTip_RowSelector","Klicken Sie hier, um alle Filterwerte zu entfernen");
-		
+
 			// Layout initialisieren
 			this.OnInitializeLayout(new InitializeLayoutEventArgs(this.DisplayLayout));
 		}
@@ -219,9 +219,6 @@ namespace KaupischITC.InfragisticsControls
 						if (ultraGridColumn.ValueBasedAppearance==null)
 							ultraGridColumn.ValueBasedAppearance = new ValueAppearance { HighlightNegativeValues = ultraGridColumn.DataType.IsNumeric() };
 
-						if (ultraGridColumn.DataType.IsNumeric()) // numerische Werte rechtsbündig
-							ultraGridColumn.CellAppearance.TextHAlign = HAlign.Right;
-
 						if (ultraGridColumn.Format==null) // voreingestellte Wertformatierungen bei bestimmten Spaltennamen
 						{
 							if (ultraGridColumn.Key.EndsWith("Preis",StringComparison.InvariantCultureIgnoreCase))
@@ -230,8 +227,15 @@ namespace KaupischITC.InfragisticsControls
 								this.SetColumnFormat(ultraGridColumn,"P");
 						}
 
+						if (ultraGridColumn.DataType.IsNumeric())
+						{
+							ultraGridColumn.CellAppearance.TextHAlign = HAlign.Right;// numerische Werte rechtsbündig
+							if (ultraGridColumn.Format==null)
+								this.SetColumnFormat(ultraGridColumn,"#,#.###");
+						}
+
 						// bestimmte Spalten nicht anzeigen: Spezielle Postfixes und komplexe Datentypen
-						string[] hiddenPostfixes = { "ID","Id","Key" };
+						string[] hiddenPostfixes = { "ID","Id","Key","_" };
 						if (hiddenPostfixes.Any(pf => ultraGridColumn.Key.EndsWith(pf)) || ultraGridColumn.PropertyDescriptor.Attributes.OfType<BrowsableAttribute>().Any(ba => !ba.Browsable))
 							ultraGridColumn.Hidden = true;
 						else if (ultraGridColumn.DataType!=typeof(string) && !ultraGridColumn.DataType.IsValueType)
@@ -244,7 +248,7 @@ namespace KaupischITC.InfragisticsControls
 
 			base.OnInitializeLayout(e);
 		}
-		
+
 
 		/// <summary>
 		/// Initialisiert das Kontextmenü, dass beim Klicken in eine Zelle, die zu einer Spalte gehört, angezeigt wird
@@ -300,26 +304,6 @@ namespace KaupischITC.InfragisticsControls
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate { this.ShowChartForm(new BarChartForm()); });
 			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate { this.ShowChartForm(new TreeMapForm()); });
-
-			// Protokoll-Handler
-			this.ColumnCellContextMenuStrip.Opening += delegate
-			{
-				// alle alten Einträge entfernen...
-				foreach (ToolStripItem item in this.ColumnCellContextMenuStrip.Items.Cast<ToolStripItem>().Where(tsi => tsi.Tag==this.urlProtocolHandler).ToList())
-					this.ColumnCellContextMenuStrip.Items.Remove(item);
-
-				// ... und nur Einträge für Protokoll-Handler erzeugen, die ausführbar sind
-				List<UrlProtocolHandler.ConcreteRoute> validRoutes = this.urlProtocolHandler.GetValidRoutes(this.ContextUltraGridCell).ToList();
-				if (validRoutes.Any()) 
-				{
-					this.ColumnCellContextMenuStrip.Items.Add("-").Tag = this.urlProtocolHandler;
-					foreach (UrlProtocolHandler.ConcreteRoute r in validRoutes)
-					{
-						UrlProtocolHandler.ConcreteRoute route = r;
-						this.ColumnCellContextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
-					}
-				}
-			};
 		}
 
 		/// <summary>
@@ -377,7 +361,7 @@ namespace KaupischITC.InfragisticsControls
 		private string GetColumnSummaryFormat(string cellFormat,SummaryType summaryType)
 		{
 			string summarySymbol = this.availableSummaries[summaryType][1];
-			return summarySymbol+": " + ((summaryType!=SummaryType.Count) ? "{0:"+cellFormat+"}" : "{0}");
+			return summarySymbol+": " + ((summaryType!=SummaryType.Count) ? "{0:"+cellFormat+"}" : "{0:N0}");
 		}
 
 
@@ -386,7 +370,7 @@ namespace KaupischITC.InfragisticsControls
 		/// </summary>
 		private void ShowChartForm(ChartForm chartForm)
 		{
-			var elements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => !ugr.Hidden && !ugr.IsFilteredOut).Select(ugr => ugr.ListObject).ToList();
+			List<object> elements = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Where(ugr => !ugr.Hidden && !ugr.IsFilteredOut).Select(ugr => ugr.ListObject).ToList();
 			if (elements.Any())
 			{
 				chartForm.DisplayedType = elements.First().GetType();
@@ -442,7 +426,11 @@ namespace KaupischITC.InfragisticsControls
 						// "Zusammenfassungen"
 						if (this.ContextUltraGridColumn!=null)
 							foreach (ToolStripMenuItem menuItem in this.summaryToolStripMenuItem.DropDownItems)
-								menuItem.Checked = this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Any(ss => ss.SourceColumn==this.ContextUltraGridColumn && ss.SummaryType==(SummaryType)menuItem.Tag);
+							{
+								SummaryType summaryType = (SummaryType)menuItem.Tag;
+								menuItem.Checked = this.ContextUltraGridColumn.Band.Summaries.Cast<SummarySettings>().Any(ss => ss.SourceColumn==this.ContextUltraGridColumn && ss.SummaryType==summaryType);
+								menuItem.Visible = this.ContextUltraGridColumn.DataType.IsNumeric() || summaryType==SummaryType.Count;
+							}
 
 						// "Formatieren als"
 						if (this.ContextUltraGridColumn!=null)
@@ -462,23 +450,59 @@ namespace KaupischITC.InfragisticsControls
 						// "Visualisierung anzeigen"
 						this.visualizationToolStripMenuItem.Enabled = (this.ContextUltraGridRow!=null);
 
+						// Protokoll-Handler
+						this.AddUrlProtocolHandlerItems(this.ColumnCellContextMenuStrip);
+
 						this.ColumnCellContextMenuStrip.Show(this,mousePoint);
 					}
 					// Kontextmenü für Zeilen
 					else if (this.ContextUltraGridRow!=null)
 					{
-						if (this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Any(row => row.IsExpandable))
-						{
-							this.RowSelectorContextMenuStrip.Items[0].Visible = this.ContextUltraGridRow.IsExpandable && !this.ContextUltraGridRow.IsExpanded;
-							this.RowSelectorContextMenuStrip.Items[1].Visible = this.ContextUltraGridRow.IsExpandable && this.ContextUltraGridRow.IsExpanded;
-							this.RowSelectorContextMenuStrip.Items[2].Visible = this.ContextUltraGridRow.IsExpandable;
+						// "Erweitern"/"Reduzieren"
+						bool canExpand = this.ContextUltraGridRow.ParentCollection.Cast<UltraGridRow>().Any(row => row.IsExpandable);
+						this.RowSelectorContextMenuStrip.Items[0].Available = canExpand && this.ContextUltraGridRow.IsExpandable && !this.ContextUltraGridRow.IsExpanded;
+						this.RowSelectorContextMenuStrip.Items[1].Available = canExpand && this.ContextUltraGridRow.IsExpandable && this.ContextUltraGridRow.IsExpanded;
+						this.RowSelectorContextMenuStrip.Items[2].Available = canExpand && this.ContextUltraGridRow.IsExpandable;
+						this.RowSelectorContextMenuStrip.Items[3].Available = canExpand;
+						this.RowSelectorContextMenuStrip.Items[4].Available = canExpand;
+
+						// Protokoll-Handler
+						this.AddUrlProtocolHandlerItems(this.RowSelectorContextMenuStrip);
+
+						if (this.RowSelectorContextMenuStrip.Items.Count>5)
+							this.RowSelectorContextMenuStrip.Items[5].Available = !(this.RowSelectorContextMenuStrip.Items[5] is ToolStripSeparator);
+
+						if (this.RowSelectorContextMenuStrip.Items.Cast<ToolStripItem>().Any(mi => mi.Available))
 							this.RowSelectorContextMenuStrip.Show(this,mousePoint);
-						}
 					}
 				}
 			}
 			base.OnMouseUp(e);
 		}
+
+
+		/// <summary>
+		/// Registriert die verfügbaren UrlProtocolHandler in einem Kontextmenü
+		/// </summary>
+		private void AddUrlProtocolHandlerItems(ContextMenuStrip contextMenuStrip)
+		{
+			// alle alten Einträge entfernen...
+			foreach (ToolStripItem item in contextMenuStrip.Items.Cast<ToolStripItem>().Where(tsi => tsi.Tag==this.urlProtocolHandler).ToList())
+				contextMenuStrip.Items.Remove(item);
+
+			// ... und nur Einträge für Protokoll-Handler erzeugen, die ausführbar sind
+			List<UrlProtocolHandler.ConcreteRoute> validRoutes = this.urlProtocolHandler.GetValidRoutes(this.ContextUltraGridRow).ToList();
+			if (validRoutes.Any())
+			{
+				contextMenuStrip.Items.Add("-").Tag = this.urlProtocolHandler;
+				foreach (UrlProtocolHandler.ConcreteRoute r in validRoutes)
+				{
+					UrlProtocolHandler.ConcreteRoute route = r;
+					contextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
+				}
+			}
+		}
+
 
 
 		/// <summary>
@@ -566,7 +590,7 @@ namespace KaupischITC.InfragisticsControls
 			if (value is bool)
 				value = ((bool)value) ? "Ja" : "Nein";
 
-			e.Row.Description = e.Row.Column.Header.Caption+": "+value+" ("+e.Row.Rows.Count+" "+((e.Row.Rows.Count==1)?"Element":"Elemente")+")";
+			e.Row.Description = e.Row.Column.Header.Caption+": "+value+" ("+e.Row.Rows.Count.ToString("N0")+" "+((e.Row.Rows.Count==1)?"Element":"Elemente")+")";
 			base.OnInitializeGroupByRow(e);
 		}
 
@@ -645,7 +669,7 @@ namespace KaupischITC.InfragisticsControls
 			e.DefaultLogicalPageLayoutInfo.ColumnClipMode = ColumnClipMode.RepeatClippedColumns;
 		}
 
-				
+
 		/// <summary>
 		/// Exportiert den Inhalt des UltraGrids als Excel-Datei
 		/// </summary>
@@ -694,7 +718,7 @@ namespace KaupischITC.InfragisticsControls
 
 			return frameworkFormatStr;
 		}
-		
+
 
 
 		/// <summary>
@@ -735,7 +759,7 @@ namespace KaupischITC.InfragisticsControls
 						point.Offset(0,-image.Height);
 
 					// eigenes Bild für aufsteigend/absteigend
-					drawParams.Graphics.DrawImage(image,point.X,point.Y,image.Width,image.Height); 
+					drawParams.Graphics.DrawImage(image,point.X,point.Y,image.Width,image.Height);
 
 					// bei Sortierung mit mehreren Spalten deren Reihenfolge mit anzeigen
 					List<UltraGridColumn> sortedColumns = column.Band.SortedColumns.Cast<UltraGridColumn>().Where(col => !col.IsGroupByColumn).ToList();
