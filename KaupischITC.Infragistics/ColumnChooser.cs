@@ -71,10 +71,10 @@ namespace KaupischITC.InfragisticsControls
 				// Der TreeNode.Text besteht aus den beiden Teilen, damit das TreeNode selbst die korrekte Breite bekommt
 
 				Color color = (e.State.HasFlag(TreeNodeStates.Focused)) ? SystemColors.HighlightText : SystemColors.ControlText;
-				TextRenderer.DrawText(e.Graphics,column.Header.Caption,font,e.Bounds,color,TextFormatFlags.Left);
+				TextRenderer.DrawText(e.Graphics,column.Header.Caption,font,e.Bounds,color,TextFormatFlags.Left|TextFormatFlags.NoPrefix);
 
 				if (column.Header.Caption!=column.Key)
-					TextRenderer.DrawText(e.Graphics,"("+column.Key+")",font,e.Bounds,SystemColors.GrayText,TextFormatFlags.Right); // der eigentliche Spaltenname grau
+					TextRenderer.DrawText(e.Graphics,"("+column.Key+")",font,e.Bounds,SystemColors.GrayText,TextFormatFlags.Right|TextFormatFlags.NoPrefix); // der eigentliche Spaltenname grau
 			}
 		}
 
