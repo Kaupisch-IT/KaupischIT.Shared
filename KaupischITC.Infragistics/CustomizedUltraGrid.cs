@@ -231,7 +231,7 @@ namespace KaupischITC.InfragisticsControls
 						{
 							ultraGridColumn.CellAppearance.TextHAlign = HAlign.Right;// numerische Werte rechtsbündig
 							if (ultraGridColumn.Format==null)
-								this.SetColumnFormat(ultraGridColumn,"#,#.###");
+								this.SetColumnFormat(ultraGridColumn,"#,0.###");
 						}
 
 						// bestimmte Spalten nicht anzeigen: Spezielle Postfixes und komplexe Datentypen
