@@ -13,14 +13,17 @@ namespace KaupischITC.Extensions
 		/// Ermittelt den Wert der angegebenen Spalte
 		/// </summary>
 		/// <typeparam name="T">der Rückgabetyp, in den der Wert der Spalte gecastet werden soll</typeparam>
-		/// <param name="dataRecord">die Datenzeile, die die Werte enhält</param>
+		/// <param name="dataRecord">die Datenzeile, die die Werte enthält</param>
 		/// <param name="columnName">der Name der Spalte, deren Wert ermittelt werden soll</param>
+		/// <param name="changeType">gibt an, ob versucht werden soll, den Wert der Spalte in den Rückgabetypen zu konvertieren</param>
 		/// <returns>der Wert der Spalte</returns>
 		[DebuggerStepThrough]
-		public static T GetColumnValue<T>(this IDataRecord dataRecord,string columnName)
+		public static T GetColumnValue<T>(this IDataRecord dataRecord,string columnName,bool changeType = false)
 		{
 			object value = dataRecord[columnName];
-			return (value is DBNull) ? default(T) : (T)value;
+			return (value is DBNull) 
+				? default(T) 
+				: (changeType) ? (T)Convert.ChangeType(value,typeof(T)) : (T)value;
 		}
 	}
 }
