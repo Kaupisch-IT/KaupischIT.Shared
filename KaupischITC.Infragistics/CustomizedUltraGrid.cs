@@ -45,6 +45,7 @@ namespace KaupischITC.InfragisticsControls
 		// alle verfügbaren vordefinierten Wertformatierungen mit Beschreibungstext
 		private Dictionary<string,string> availableFormats = new Dictionary<string,string>()
 		{
+			{ "","keine Formatierung" },
 			{ "N0","Zahl (mit Tausendertrennzeichen)" },
 			{ "C", "Währung" },
 			{ "P", "Prozent" },
