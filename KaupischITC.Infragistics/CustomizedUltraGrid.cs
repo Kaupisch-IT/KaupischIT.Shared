@@ -707,6 +707,9 @@ namespace KaupischITC.InfragisticsControls
 			if (frameworkFormatStr=="P")
 				return "0%";
 
+			if (frameworkFormatStr=="#,0.###")
+				return null;
+
 			Match numericMatch = Regex.Match(frameworkFormatStr,@"^N(?<count>\d{1,3})$");
 			if (numericMatch.Success)
 			{
