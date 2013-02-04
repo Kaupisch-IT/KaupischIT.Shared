@@ -59,15 +59,35 @@ namespace KaupischITC.Extensions
 			return ControlExtensions.SendMessage(control.Handle,msg,wParam,lParam);
 		}
 
-		/// <summary>
-		/// Sendet dem Fenster die angegebene Meldung zu
-		/// </summary>
-		/// <param name="hWnd">das Fensterhandle der Meldung</param>
-		/// <param name="Msg">die ID-Nummer der Meldung</param>
-		/// <param name="wParam">das WParam-Feld der Meldung</param>
-		/// <param name="lParam">das LParam-Feld der Meldung</param>
-		/// <returns>das Ergebnis des Meldungsverarbeitens; sein Wert hängt von der gesendeten Nachricht ab</returns>
 		[DllImport("user32.dll",EntryPoint="SendMessage",CharSet = CharSet.Auto)]
 		private static extern IntPtr SendMessage(IntPtr hWnd,Int32 Msg,IntPtr wParam,IntPtr lParam);
+
+
+
+		/// <summary>
+		/// Ermittelt die sichtbaren Bildlaufleisten des Steuerelements
+		/// </summary>
+		/// <param name="control">das Steuerelement, dessen sichtbare Bildlaufleisten ermittelt werden sollen</param>
+		/// <returns>die sichtbaren Bildlaufleisten</returns>
+		public static ScrollBars GetVisibleScrollbars(this Control control)
+		{
+			const int GWL_STYLE = -16; // offset of window style value
+
+			// window style constants for scrollbars
+			const int WS_VSCROLL = 0x00200000;
+			const int WS_HSCROLL = 0x00100000;
+
+			int wndStyle = ControlExtensions.GetWindowLong(control.Handle,GWL_STYLE);
+			bool hsVisible = (wndStyle & WS_HSCROLL) != 0;
+			bool vsVisible = (wndStyle & WS_VSCROLL) != 0;
+
+			if (hsVisible)
+				return vsVisible ? ScrollBars.Both : ScrollBars.Horizontal;
+			else
+				return vsVisible ? ScrollBars.Vertical : ScrollBars.None;
+		}
+
+		[DllImport("user32.dll",EntryPoint="GetWindowLong",SetLastError = true)]
+		private static extern int GetWindowLong(IntPtr hWnd,int nIndex);
 	}
 }
