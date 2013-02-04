@@ -103,8 +103,7 @@ namespace KaupischITC.Extensions
 					Group formatGroup = match.Groups["format"];
 					Group endGroup = match.Groups["end"];
 
-					if (propertyGroup.Value!="0")
-						values.Add(matchEvaluator(propertyGroup.Value));
+					values.Add(matchEvaluator(propertyGroup.Value));
 
 					int openingsCount = startGroup.Captures.Count;
 					int closingsCount = endGroup.Captures.Count;
