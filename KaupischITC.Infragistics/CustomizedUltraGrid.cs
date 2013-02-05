@@ -49,6 +49,7 @@ namespace KaupischITC.InfragisticsControls
 			{ "N0","Zahl (mit Tausendertrennzeichen)" },
 			{ "C", "Währung" },
 			{ "P", "Prozent" },
+			{ "0.##\\%", "Prozent 2" },
 			{ "dd.MM.yyyy", "Datum" },
 			{ "HH:mm", "Uhrzeit" },
 			{ "dd.MM.yyyy HH:mm", "Datum und Uhrzeit" },
