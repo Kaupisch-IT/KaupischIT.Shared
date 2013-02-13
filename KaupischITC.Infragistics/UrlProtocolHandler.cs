@@ -74,7 +74,7 @@ namespace KaupischITC.InfragisticsControls
 				return Regex.IsMatch(name,"^"+pattern+"$",RegexOptions.IgnoreCase);
 			};
 
-			if (ultraGridRow!=null)
+			if (ultraGridRow!=null && ultraGridRow.Cells!=null)
 				foreach (Route route in this.Routes)
 				{
 					bool success = true;

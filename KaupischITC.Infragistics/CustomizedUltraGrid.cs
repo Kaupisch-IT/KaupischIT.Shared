@@ -200,6 +200,7 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.Override.HeaderAppearance.BackColor2 = headerBackColor2;
 				this.DisplayLayout.Override.HeaderAppearance.BackGradientStyle = GradientStyle.Vertical;
 				this.DisplayLayout.Override.BorderStyleSummaryFooter = UIElementBorderStyle.None;
+				this.DisplayLayout.Override.SummaryDisplayArea = SummaryDisplayAreas.GroupByRowsFooter|SummaryDisplayAreas.InGroupByRows|SummaryDisplayAreas.TopFixed;
 				this.DisplayLayout.Override.SummaryValueAppearance.BackColor = summaryBackColor;
 				this.DisplayLayout.Override.SummaryValueAppearance.BorderColor = borderColor;
 				this.DisplayLayout.Override.RowAppearance.BorderColor = borderColor;
@@ -324,7 +325,7 @@ namespace KaupischITC.InfragisticsControls
 		/// <summary> Fügt einer Spalte eine Zusammenfassung hinzu </summary>
 		public void AddColumnSummary(UltraGridColumn column,SummaryType summaryType)
 		{
-			SummarySettings summarySettings =column.Band.Summaries.Add(summaryType,column);
+			SummarySettings summarySettings = column.Band.Summaries.Add(summaryType,column);
 			summarySettings.DisplayFormat = this.GetColumnSummaryFormat(column.Format,summaryType);
 			summarySettings.Appearance.TextHAlign = HAlign.Right;
 		}
