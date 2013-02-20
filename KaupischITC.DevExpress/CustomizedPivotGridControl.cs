@@ -32,6 +32,7 @@ namespace KaupischITC.DevExpressControls
 		/// </summary>
 		public CustomizedPivotGridControl()
 		{
+			this.LookAndFeel.UseDefaultLookAndFeel = false;		
 			this.InitializeLayout();
 
 			// Anpassungen registrieren
