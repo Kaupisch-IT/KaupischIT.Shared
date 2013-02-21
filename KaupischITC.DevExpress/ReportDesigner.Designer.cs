@@ -28,11 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportDesigner));
 			DevExpress.XtraReports.UserDesigner.BarInfo barInfo1 = new DevExpress.XtraReports.UserDesigner.BarInfo();
 			this.bar2 = new DevExpress.XtraBars.Bar();
-			this.xrDesignDockManager = new DevExpress.XtraReports.UserDesigner.XRDesignDockManager(this.components);
+			this.xrDesignDockManager = new DevExpress.XtraReports.UserDesigner.XRDesignDockManager();
 			this.toolBoxDockPanel1 = new DevExpress.XtraReports.UserDesigner.ToolBoxDockPanel();
 			this.toolBoxDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
 			this.xrDesignPanel = new DevExpress.XtraReports.UserDesigner.XRDesignPanel();
@@ -40,7 +39,7 @@
 			this.groupAndSortDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
 			this.errorListDockPanel1 = new DevExpress.XtraReports.UserDesigner.ErrorListDockPanel();
 			this.errorListDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
-			this.xrDesignBarManager = new DevExpress.XtraReports.UserDesigner.XRDesignBarManager(this.components);
+			this.xrDesignBarManager = new DevExpress.XtraReports.UserDesigner.XRDesignBarManager();
 			this.designBar3 = new DevExpress.XtraReports.UserDesigner.DesignBar();
 			this.barEditItem1 = new DevExpress.XtraBars.BarEditItem();
 			this.recentlyUsedItemsComboBox1 = new DevExpress.XtraReports.UserDesigner.RecentlyUsedItemsComboBox();
@@ -134,7 +133,7 @@
 			this.reportExplorerDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
 			this.propertyGridDockPanel1 = new DevExpress.XtraReports.UserDesigner.PropertyGridDockPanel();
 			this.propertyGridDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
-			this.imageList = new System.Windows.Forms.ImageList(this.components);
+			this.imageList = new System.Windows.Forms.ImageList();
 			((System.ComponentModel.ISupportInitialize)(this.xrDesignDockManager)).BeginInit();
 			this.toolBoxDockPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.xrDesignPanel)).BeginInit();
@@ -1296,7 +1295,7 @@
 			this.fieldListDockPanel1.ImageIndex = 0;
 			this.fieldListDockPanel1.Location = new System.Drawing.Point(7, 29);
 			this.fieldListDockPanel1.Name = "fieldListDockPanel1";
-			this.fieldListDockPanel1.OriginalSize = new System.Drawing.Size(242, 228);
+			this.fieldListDockPanel1.OriginalSize = new System.Drawing.Size(236, 220);
 			this.fieldListDockPanel1.Size = new System.Drawing.Size(236, 220);
 			this.fieldListDockPanel1.Text = "Liste der Felder";
 			this.fieldListDockPanel1.XRDesignPanel = this.xrDesignPanel;
@@ -1316,7 +1315,7 @@
 			this.reportExplorerDockPanel1.ImageIndex = 3;
 			this.reportExplorerDockPanel1.Location = new System.Drawing.Point(7, 29);
 			this.reportExplorerDockPanel1.Name = "reportExplorerDockPanel1";
-			this.reportExplorerDockPanel1.OriginalSize = new System.Drawing.Size(242, 228);
+			this.reportExplorerDockPanel1.OriginalSize = new System.Drawing.Size(236, 220);
 			this.reportExplorerDockPanel1.Size = new System.Drawing.Size(236, 220);
 			this.reportExplorerDockPanel1.Text = "Berichts Explorer";
 			this.reportExplorerDockPanel1.XRDesignPanel = this.xrDesignPanel;
@@ -1336,7 +1335,7 @@
 			this.propertyGridDockPanel1.ImageIndex = 2;
 			this.propertyGridDockPanel1.Location = new System.Drawing.Point(0, 283);
 			this.propertyGridDockPanel1.Name = "propertyGridDockPanel1";
-			this.propertyGridDockPanel1.OriginalSize = new System.Drawing.Size(250, 287);
+			this.propertyGridDockPanel1.OriginalSize = new System.Drawing.Size(250, 289);
 			this.propertyGridDockPanel1.Size = new System.Drawing.Size(250, 289);
 			this.propertyGridDockPanel1.Text = "Eigenschaften";
 			this.propertyGridDockPanel1.XRDesignPanel = this.xrDesignPanel;

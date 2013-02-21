@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using DevExpress.Data.Browsing.Design;
 using DevExpress.LookAndFeel;
@@ -26,6 +27,15 @@ namespace KaupischITC.DevExpressControls
 
 
 		/// <summary>
+		/// Gibt den aktutellen Bericht zurück
+		/// </summary>
+		public XtraReport Report
+		{
+			get { return this.xrDesignPanel.Report; }
+		}
+
+
+		/// <summary>
 		/// Erstellt ein neues Benutzersteuerelement zum Entwerfen eines Berichtes
 		/// </summary>
 		public ReportDesigner()
@@ -36,12 +46,20 @@ namespace KaupischITC.DevExpressControls
 
 
 		/// <summary>
-		/// Öffnet den Angegebenen Report
+		/// Öffnet den angegebenen Bericht zum Bearbeiten
 		/// </summary>
-		/// <param name="report">der Report, der geöffnet werden soll</param>
+		/// <param name="report">der Bericht, der geöffnet werden soll</param>
 		public void OpenReport(XtraReport report)
 		{
 			this.xrDesignPanel.OpenReport(report);
+		}
+
+		/// <summary>
+		/// Schließt den aktuell geöffneten Bericht
+		/// </summary>
+		public void CloseReport()
+		{
+			this.xrDesignPanel.CloseReport();
 		}
 
 
