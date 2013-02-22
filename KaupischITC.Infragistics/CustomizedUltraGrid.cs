@@ -726,6 +726,17 @@ namespace KaupischITC.InfragisticsControls
 		}
 
 
+		/// <summary>
+		/// Exportiert den Inhalt des UltraGrids als PDF-Datei
+		/// </summary>
+		/// <param name="path">der Pfad der Datei, die erstellt werden soll</param>
+		public void ExportAsPdf(string path)
+		{
+			using (var documentExporter = new Infragistics.Win.UltraWinGrid.DocumentExport.UltraGridDocumentExporter())
+				documentExporter.Export(this,path,Infragistics.Win.UltraWinGrid.DocumentExport.GridExportFileFormat.PDF);
+		}
+
+
 
 		/// <summary>
 		/// Bestimmte Bereiche selbst zeichnen, um das Aussehen mit den DevExpress-Steuerelementen zu vereinheitlichen
