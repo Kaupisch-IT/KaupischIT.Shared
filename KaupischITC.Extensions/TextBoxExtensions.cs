@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace KaupischITC.Extensions
@@ -9,19 +10,23 @@ namespace KaupischITC.Extensions
 		/// Aktiviert die Möglichkeit, Text aufzunehmen, wenn dieser über das Eingabefeld gezogen wird
 		/// </summary>
 		/// <param name="textBox">das Eingabefeld</param>
-		public static T EnableTextDrop<T>(this T textBox) where T : TextBoxBase
+		public static T EnableTextDrop<T>(this T textBox,Func<string,string> modifyDropText = null) where T : TextBoxBase
 		{
 			textBox.AllowDrop = true;
+			if (modifyDropText==null)
+				modifyDropText = t => t;
 
 			textBox.DragEnter += delegate(object sender,DragEventArgs e)
 			{
-				if (e.Data.GetDataPresent(typeof(string)))
-					e.Effect = DragDropEffects.Copy;
+				string text = modifyDropText((string)e.Data.GetData(typeof(string)));
+				if (!String.IsNullOrEmpty(text))
+					e.Effect = DragDropEffects.Move;
 			};
 
 			textBox.DragOver += delegate(object sender,DragEventArgs e)
 			{
-				if (e.Data.GetDataPresent(typeof(string)))
+				string text = modifyDropText((string)e.Data.GetData(typeof(string)));
+				if (!String.IsNullOrEmpty(text))
 				{
 					textBox.SelectionStart = textBox.GetCaretIndexFromPoint(new Point(e.X,e.Y));
 					textBox.SelectionLength = 0;
@@ -33,8 +38,9 @@ namespace KaupischITC.Extensions
 
 			textBox.DragDrop += delegate(object sender,DragEventArgs e)
 			{
-				if (e.Data.GetDataPresent(typeof(string)))
-					textBox.SelectedText = (string)e.Data.GetData(typeof(string));
+				string text = modifyDropText((string)e.Data.GetData(typeof(string)));
+				if (!String.IsNullOrEmpty(text))
+					textBox.SelectedText = text;
 			};
 
 			return textBox;
