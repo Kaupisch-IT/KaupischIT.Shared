@@ -494,14 +494,17 @@ namespace KaupischITC.InfragisticsControls
 				contextMenuStrip.Items.Remove(item);
 
 			// ... und nur Einträge für Protokoll-Handler erzeugen, die ausführbar sind
-			List<UrlProtocolHandler.ConcreteRoute> validRoutes = this.urlProtocolHandler.GetValidRoutes(this.ContextUltraGridRow).ToList();
-			if (validRoutes.Any())
+			if (this.ContextHeaderUIElement==null)
 			{
-				contextMenuStrip.Items.Add("-").Tag = this.urlProtocolHandler;
-				foreach (UrlProtocolHandler.ConcreteRoute r in validRoutes)
+				List<UrlProtocolHandler.ConcreteRoute> validRoutes = this.urlProtocolHandler.GetValidRoutes(this.ContextUltraGridRow).ToList();
+				if (validRoutes.Any())
 				{
-					UrlProtocolHandler.ConcreteRoute route = r;
-					contextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
+					contextMenuStrip.Items.Add("-").Tag = this.urlProtocolHandler;
+					foreach (UrlProtocolHandler.ConcreteRoute r in validRoutes)
+					{
+						UrlProtocolHandler.ConcreteRoute route = r;
+						contextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
+					}
 				}
 			}
 		}
