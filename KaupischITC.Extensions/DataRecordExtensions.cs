@@ -34,9 +34,13 @@ namespace KaupischITC.Extensions
 		public static T GetColumnValue<T>(this IDataRecord dataRecord,string columnName,bool changeType)
 		{
 			object value = dataRecord[columnName];
+
+			Type type = typeof(T);
+			type = Nullable.GetUnderlyingType(type) ?? type;
+
 			return (value is DBNull) 
 				? default(T) 
-				: (changeType) ? (T)Convert.ChangeType(value,typeof(T)) : (T)value;
+				: (changeType) ? (T)Convert.ChangeType(value,type) : (T)value;
 		}
 	}
 }
