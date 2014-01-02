@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -36,15 +37,29 @@ namespace KaupischITC.Shared
 			this.labelMessage.Text = message.Trim();
 			this.Exception = exception;
 
-			StringBuilder stringBuilder = new StringBuilder();
+			this.textBoxDetails.Text = this.GetCompleteExceptionMessage(exception).Trim();
+		}
+
+
+		/// <summary>
+		/// Ermittelt die vollständige Fehlermeldung der Ausnahme inklusive der InnerExceptions
+		/// </summary>
+		private string GetCompleteExceptionMessage(Exception exception)
+		{
+			StringBuilder result = new StringBuilder();
 			while (exception!=null)
 			{
-				stringBuilder.AppendLine(exception.ToString());
-				stringBuilder.AppendLine();
+				result.AppendLine(exception.ToString());
+				result.AppendLine();
+
+				ReflectionTypeLoadException typeLoadException = exception as ReflectionTypeLoadException;
+				if (typeLoadException!=null)
+					foreach (Exception loaderException in typeLoadException.LoaderExceptions)
+						result.AppendLine(this.GetCompleteExceptionMessage(loaderException));
 
 				exception = exception.InnerException;
 			}
-			this.textBoxDetails.Text = stringBuilder.ToString().Trim();
+			return result.ToString();
 		}
 
 
