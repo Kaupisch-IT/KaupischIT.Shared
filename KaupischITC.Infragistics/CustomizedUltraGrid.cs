@@ -201,6 +201,7 @@ namespace KaupischITC.InfragisticsControls
 				this.DisplayLayout.Override.HeaderAppearance.BackGradientStyle = GradientStyle.Vertical;
 				this.DisplayLayout.Override.BorderStyleSummaryFooter = UIElementBorderStyle.None;
 				this.DisplayLayout.Override.SummaryDisplayArea = SummaryDisplayAreas.GroupByRowsFooter|SummaryDisplayAreas.InGroupByRows|SummaryDisplayAreas.TopFixed;
+				this.DisplayLayout.Override.GroupBySummaryDisplayStyle = GroupBySummaryDisplayStyle.SummaryCells;
 				this.DisplayLayout.Override.SummaryValueAppearance.BackColor = summaryBackColor;
 				this.DisplayLayout.Override.SummaryValueAppearance.BorderColor = borderColor;
 				this.DisplayLayout.Override.RowAppearance.BorderColor = borderColor;
@@ -328,6 +329,7 @@ namespace KaupischITC.InfragisticsControls
 			SummarySettings summarySettings = column.Band.Summaries.Add(summaryType,column);
 			summarySettings.DisplayFormat = this.GetColumnSummaryFormat(column.Format,summaryType);
 			summarySettings.Appearance.TextHAlign = HAlign.Right;
+			summarySettings.GroupBySummaryValueAppearance.TextHAlign = HAlign.Right;
 		}
 		/// <summary> Entfernt die Zusammenfassung einer Spalte </summary>
 		public void RemoveColumnSummary(UltraGridColumn column,SummaryType summaryType)
@@ -746,6 +748,14 @@ namespace KaupischITC.InfragisticsControls
 		/// </summary>
 		public bool DrawElement(DrawPhase drawPhase,ref UIElementDrawParams drawParams)
 		{
+			// Aggregat-Zellöe
+			if (drawParams.Element is SummaryValueUIElement)
+			{
+				Rectangle rectangle =  new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y-1,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height);
+				using (Pen pen = new Pen(Color.FromArgb(202,203,211)))
+					drawParams.Graphics.DrawRectangle(pen,rectangle);
+			}
+
 			// Spaltenkopf & Zeilenselektor
 			if (drawParams.Element is HeaderUIElement || drawParams.Element is RowSelectorUIElement)
 			{
@@ -806,6 +816,8 @@ namespace KaupischITC.InfragisticsControls
 			if (drawParams.Element is SortIndicatorUIElement)
 				return DrawPhase.BeforeDrawElement;
 			if (drawParams.Element is RowSelectorUIElement)
+				return DrawPhase.BeforeDrawBorders;
+			if (drawParams.Element is SummaryValueUIElement)
 				return DrawPhase.BeforeDrawBorders;
 
 			return DrawPhase.None;
