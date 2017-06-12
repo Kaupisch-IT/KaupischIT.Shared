@@ -80,6 +80,7 @@
     <Compile Include="TextBoxExtensions.cs" />
     <Compile Include="TreeViewExtensions.cs" />
     <Compile Include="TypeExtensions.cs" />
+    <Compile Include="XmlDocumentExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
