@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für generische Typen bereit

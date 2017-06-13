@@ -17,7 +17,7 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraPivotGrid;
 using DevExpress.XtraPrinting;
 
-namespace KaupischITC.DevExpressControls
+namespace KaupischIT.DevExpressControls
 {
 	/// <summary>
 	/// Stellt ein angepasstes PivotGridControl dar

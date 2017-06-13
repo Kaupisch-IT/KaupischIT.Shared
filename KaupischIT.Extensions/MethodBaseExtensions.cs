@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die MethodBase-Klasse bereit

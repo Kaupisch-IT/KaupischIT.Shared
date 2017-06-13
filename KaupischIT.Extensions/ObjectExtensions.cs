@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die Object-Klasse bereit

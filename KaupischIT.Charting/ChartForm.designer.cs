@@ -1,4 +1,4 @@
-﻿namespace KaupischITC.Charting
+﻿namespace KaupischIT.Charting
 {
 	partial class ChartForm
 	{
@@ -31,10 +31,10 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChartForm));
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.propertyBrowserValue = new KaupischITC.Shared.PropertyBrowser();
+			this.propertyBrowserValue = new KaupischIT.Shared.PropertyBrowser();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.propertyBrowserDisplay = new KaupischITC.Shared.PropertyBrowser();
+			this.propertyBrowserDisplay = new KaupischIT.Shared.PropertyBrowser();
 			this.pictureBoxPie = new System.Windows.Forms.PictureBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
@@ -211,10 +211,10 @@
 		#endregion
 
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private KaupischITC.Shared.PropertyBrowser propertyBrowserValue;
+		private KaupischIT.Shared.PropertyBrowser propertyBrowserValue;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
-		private KaupischITC.Shared.PropertyBrowser propertyBrowserDisplay;
+		private KaupischIT.Shared.PropertyBrowser propertyBrowserDisplay;
 		private System.Windows.Forms.PictureBox pictureBoxPie;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;

@@ -4,8 +4,8 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-[assembly: KaupischITC.Shared.Subversion("$Id$")]
-namespace KaupischITC.Shared
+[assembly: KaupischIT.Shared.Subversion("$Id$")]
+namespace KaupischIT.Shared
 {
 	/// <summary>
 	/// Liefert Informationen aus dem Versionsverwaltungssystem

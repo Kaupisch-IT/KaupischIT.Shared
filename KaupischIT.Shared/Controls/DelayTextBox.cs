@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	/// <summary>
 	/// Eine Textbox, die schnelle Eingaben berücksichtigt und das TextChanged-Ereignis erst auslöst, wenn nach der letzten Eingabe eine bestimmte Zeit verstrichen ist

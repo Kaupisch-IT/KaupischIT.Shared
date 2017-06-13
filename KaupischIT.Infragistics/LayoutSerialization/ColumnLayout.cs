@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Xml.Serialization;
 using Infragistics.Win.UltraWinGrid;
 
-namespace KaupischITC.InfragisticsControls.LayoutSerialization
+namespace KaupischIT.InfragisticsControls.LayoutSerialization
 {
 	/// <summary>
 	/// Stellt Layout-Informationen einer Spalte bereit

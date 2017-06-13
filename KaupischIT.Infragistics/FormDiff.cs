@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Infragistics.Win.UltraWinGrid;
 
-namespace KaupischITC.InfragisticsControls
+namespace KaupischIT.InfragisticsControls
 {
 	/// <summary>
 	/// Stellt ein Fenster dar, in dem Unterschiede zwischen verschiedenen Zeilen farblich hervorgehoben werden

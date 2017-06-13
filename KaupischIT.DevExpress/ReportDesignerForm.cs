@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 using DevExpress.XtraReports.UI;
-using KaupischITC.DevExpressControls.Properties;
+using KaupischIT.DevExpressControls.Properties;
 
-namespace KaupischITC.DevExpressControls
+namespace KaupischIT.DevExpressControls
 {
 	/// <summary>
 	/// Stellt ein Fenster zum Entwerfen eines Berichtes dar

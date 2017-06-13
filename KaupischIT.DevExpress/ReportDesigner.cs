@@ -7,7 +7,7 @@ using DevExpress.Utils;
 using DevExpress.XtraReports.UI;
 using DevExpress.XtraReports.UserDesigner;
 
-namespace KaupischITC.DevExpressControls
+namespace KaupischIT.DevExpressControls
 {
 	/// <summary>
 	/// Stellt ein Benutzersteuerelement zum Entwerfen eines Berichtes dar

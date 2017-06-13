@@ -10,12 +10,12 @@ using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
 using Infragistics.Win.UltraWinGrid.ExcelExport;
-using KaupischITC.Charting;
-using KaupischITC.Extensions;
-using KaupischITC.InfragisticsControls.ValueAppearances;
-using KaupischITC.Shared;
+using KaupischIT.Charting;
+using KaupischIT.Extensions;
+using KaupischIT.InfragisticsControls.ValueAppearances;
+using KaupischIT.Shared;
 
-namespace KaupischITC.InfragisticsControls
+namespace KaupischIT.InfragisticsControls
 {
 	/// <summary>
 	/// Stellt ein angepasstes UltraGrid-Steuerelement dar

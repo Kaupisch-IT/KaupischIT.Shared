@@ -1,4 +1,4 @@
-﻿namespace KaupischITC.DevExpressControls
+﻿namespace KaupischIT.DevExpressControls
 {
 	partial class ReportDesignerForm
 	{
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.reportDesigner = new KaupischITC.DevExpressControls.ReportDesigner();
+			this.reportDesigner = new KaupischIT.DevExpressControls.ReportDesigner();
 			this.SuspendLayout();
 			// 
 			// reportDesigner

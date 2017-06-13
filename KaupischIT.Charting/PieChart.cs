@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using KaupischITC.Extensions;
+using KaupischIT.Extensions;
 
-namespace KaupischITC.Charting
+namespace KaupischIT.Charting
 {
 	/// <summary>
 	/// Stellt Funktionen bereit, um Kreisdiagramme zu erstellen

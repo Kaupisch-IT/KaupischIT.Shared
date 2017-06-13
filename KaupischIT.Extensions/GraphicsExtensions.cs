@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die Graphics-Klasse bereit

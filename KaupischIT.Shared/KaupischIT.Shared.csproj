@@ -8,8 +8,8 @@
     <ProjectGuid>{5F055FBB-50B1-421C-A80A-2D291210183F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KaupischITC.Shared</RootNamespace>
-    <AssemblyName>KaupischITC.Shared</AssemblyName>
+    <RootNamespace>KaupischIT.Shared</RootNamespace>
+    <AssemblyName>KaupischIT.Shared</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>

@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace KaupischITC.Shared.Controls
+namespace KaupischIT.Shared.Controls
 {
 	/// <summary>
 	/// Sorgt dafür, die die momentane Texteinstellung einer RichTextBox erhalten bleibt

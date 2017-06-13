@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die DateTime-Klasse bereit

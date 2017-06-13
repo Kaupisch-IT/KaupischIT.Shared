@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using System;
 
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	/// <summary>
 	/// Stellt ein ComboBox-Steuerelement dar, das andere Steuerelemente als DropDown anbieten kann

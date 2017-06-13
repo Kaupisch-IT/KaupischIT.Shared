@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	public static class TreeViewExtensions
 	{

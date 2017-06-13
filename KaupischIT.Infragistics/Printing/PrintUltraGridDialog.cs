@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
-using KaupischITC.Extensions;
+using KaupischIT.Extensions;
 
-namespace KaupischITC.InfragisticsControls.Printing
+namespace KaupischIT.InfragisticsControls.Printing
 {
 	/// <summary>
 	/// Stellt ein Druckvorschau-Dialogfenster für ein UltraGrid dar

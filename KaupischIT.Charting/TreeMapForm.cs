@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace KaupischITC.Charting
+namespace KaupischIT.Charting
 {
 	/// <summary>
 	/// Stellt ein Flächendiagramm/eine TreeMap dar

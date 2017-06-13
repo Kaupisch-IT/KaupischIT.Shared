@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Security.Principal;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die NTAccount-Klasse bereit

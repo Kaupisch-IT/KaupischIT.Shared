@@ -4,10 +4,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
-using KaupischITC.Extensions;
-using KaupischITC.Shared;
+using KaupischIT.Extensions;
+using KaupischIT.Shared;
 
-namespace KaupischITC.Charting
+namespace KaupischIT.Charting
 {
 	/// <summary>
 	/// Stellt ein Diagramm dar

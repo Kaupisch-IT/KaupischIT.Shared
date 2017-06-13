@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("KaupischITC.DevExpress")]
+[assembly: AssemblyTitle("KaupischIT.DevExpress")]
 [assembly: AssemblyDescription("Enthält speziell angepasste DevExpress-Controls")]
-[assembly: AssemblyCompany("Kaupisch ITC-Solution")]
-[assembly: AssemblyProduct("KaupischITC.DevExpress")]
+[assembly: AssemblyCompany("Kaupisch IT-Systeme GmbH")]
+[assembly: AssemblyProduct("KaupischIT.DevExpress")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

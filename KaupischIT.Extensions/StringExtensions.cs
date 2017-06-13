@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt einen Satz von static-Methoden als Erweiterung für den string-Typen bereit

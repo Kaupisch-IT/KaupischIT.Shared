@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	public static class TextBoxExtensions
 	{

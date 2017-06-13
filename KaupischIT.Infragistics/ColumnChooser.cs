@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Infragistics.Win.UltraWinGrid;
-using KaupischITC.Extensions;
+using KaupischIT.Extensions;
 
-namespace KaupischITC.InfragisticsControls
+namespace KaupischIT.InfragisticsControls
 {
 	/// <summary>
 	/// Stellt ein Steuerelement zum Ein- und Ausblenden von Spalten eines UltraGrid-Bands bereit

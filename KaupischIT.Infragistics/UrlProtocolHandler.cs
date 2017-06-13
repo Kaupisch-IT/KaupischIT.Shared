@@ -6,10 +6,10 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Infragistics.Win.UltraWinGrid;
-using KaupischITC.InfragisticsControls.Properties;
-using KaupischITC.Shared;
+using KaupischIT.InfragisticsControls.Properties;
+using KaupischIT.Shared;
 
-namespace KaupischITC.InfragisticsControls
+namespace KaupischIT.InfragisticsControls
 {
 	/// <summary>
 	/// Stellt Informationen über eine URL-Route bereit

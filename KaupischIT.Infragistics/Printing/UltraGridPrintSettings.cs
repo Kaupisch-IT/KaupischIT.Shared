@@ -1,5 +1,5 @@
 ﻿
-namespace KaupischITC.InfragisticsControls.Printing
+namespace KaupischIT.InfragisticsControls.Printing
 {
 	/// <summary>
 	/// Stellt Informationen über Druckeinstellungen bereit

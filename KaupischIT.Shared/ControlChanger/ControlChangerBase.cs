@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-[assembly: KaupischITC.Shared.Subversion("$Id$")]
-namespace KaupischITC.Shared
+[assembly: KaupischIT.Shared.Subversion("$Id$")]
+namespace KaupischIT.Shared
 {
 	/// <summary>
 	/// Bietet durch Implementation von IDisposable eine kompakte Möglichkeit, Eigenschaften eines Controls für eine bestimmte Zeit ändern und danach wieder automatisch zurückzusetzen.

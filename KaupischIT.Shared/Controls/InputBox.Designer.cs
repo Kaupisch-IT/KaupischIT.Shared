@@ -1,4 +1,4 @@
-﻿namespace KaupischITC.Shared
+﻿namespace KaupischIT.Shared
 {
 	partial class InputBox
 	{
@@ -32,7 +32,7 @@
 			this.buttonCancel = new System.Windows.Forms.Button();
 			this.labelMessage = new System.Windows.Forms.Label();
 			this.buttonOK = new System.Windows.Forms.Button();
-			this.textBoxValue = new KaupischITC.Shared.Controls.AllowedCharsTextBox();
+			this.textBoxValue = new KaupischIT.Shared.Controls.AllowedCharsTextBox();
 			this.tableLayoutPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -133,7 +133,7 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
 		private System.Windows.Forms.Button buttonCancel;
 		private System.Windows.Forms.Label labelMessage;
-		private KaupischITC.Shared.Controls.AllowedCharsTextBox textBoxValue;
+		private KaupischIT.Shared.Controls.AllowedCharsTextBox textBoxValue;
 		private System.Windows.Forms.Button buttonOK;
 	}
 }

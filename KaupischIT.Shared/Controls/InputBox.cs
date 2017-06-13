@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	/// <summary>
 	/// Stellt ein modales Eingabefenster für Text dar

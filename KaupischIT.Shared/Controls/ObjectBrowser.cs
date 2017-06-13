@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using KaupischITC.Extensions;
+using KaupischIT.Extensions;
 
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	public partial class ObjectBrowser : TreeView
 	{

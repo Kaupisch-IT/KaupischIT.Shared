@@ -8,8 +8,8 @@
     <ProjectGuid>{0C583589-F594-4872-BA74-71EE4025EE80}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KaupischITC.Charting</RootNamespace>
-    <AssemblyName>KaupischITC.Charting</AssemblyName>
+    <RootNamespace>KaupischIT.Charting</RootNamespace>
+    <AssemblyName>KaupischIT.Charting</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

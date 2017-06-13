@@ -1,4 +1,4 @@
-﻿namespace KaupischITC.InfragisticsControls
+﻿namespace KaupischIT.InfragisticsControls
 {
 	partial class CustomizedUltraGrid
 	{

@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace KaupischITC.Shared.Controls
+namespace KaupischIT.Shared.Controls
 {
 	/// <summary>
 	/// Stellt eine Textbox mit Syntaxhervorhebung dar

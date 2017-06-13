@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace KaupischITC.InfragisticsControls.LayoutSerialization
+namespace KaupischIT.InfragisticsControls.LayoutSerialization
 {
 	/// <summary>
 	/// Stellt Layout-Information eines UltraGrids bereit

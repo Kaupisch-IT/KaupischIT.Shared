@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die Color-Klasse bereit

@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-[assembly: KaupischITC.Shared.Subversion("$Id$")]
-namespace KaupischITC.Shared
+[assembly: KaupischIT.Shared.Subversion("$Id$")]
+namespace KaupischIT.Shared
 {
 	/// <summary>
 	/// Stellt Hilfsmethoden für die Control-Klasse bereit

@@ -1,4 +1,4 @@
-﻿namespace KaupischITC.DevExpressControls
+﻿namespace KaupischIT.DevExpressControls
 {
 	partial class ReportDesigner
 	{

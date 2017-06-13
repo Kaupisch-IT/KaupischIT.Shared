@@ -3,7 +3,7 @@ using System.DirectoryServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die Environment-Klasse bereit

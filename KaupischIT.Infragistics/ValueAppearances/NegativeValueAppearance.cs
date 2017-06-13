@@ -2,7 +2,7 @@
 using System.Drawing;
 using Infragistics.Win;
 
-namespace KaupischITC.InfragisticsControls.ValueAppearances
+namespace KaupischIT.InfragisticsControls.ValueAppearances
 {
 	/// <summary>
 	/// Stellt ein wertebasierendes Aussehen bereit, dass negative Werte rot anzeigt

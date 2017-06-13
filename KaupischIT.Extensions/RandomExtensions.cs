@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die Random-Klasse bereit

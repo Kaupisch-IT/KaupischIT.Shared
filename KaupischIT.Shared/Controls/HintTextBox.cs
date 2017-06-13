@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	/// <summary>
 	/// Stellt ein Textbox-Steuerelement dar, dass einen Hinweistext und ein Bild darstellt, wenn der eingegebene Text leer ist und das Textfeld nicht den Fokus hat

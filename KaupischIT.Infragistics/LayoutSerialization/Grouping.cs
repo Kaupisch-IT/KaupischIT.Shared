@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Xml.Serialization;
 
-namespace KaupischITC.InfragisticsControls.LayoutSerialization
+namespace KaupischIT.InfragisticsControls.LayoutSerialization
 {
 	/// <summary>
 	/// Stellt Layout-Informationen über Gruppierungen bereit

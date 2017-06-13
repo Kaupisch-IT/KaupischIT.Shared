@@ -1,5 +1,5 @@
 ﻿
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	partial class ObjectBrowser
 	{

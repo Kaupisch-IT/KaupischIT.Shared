@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die MemberInfo-Klasse bereit

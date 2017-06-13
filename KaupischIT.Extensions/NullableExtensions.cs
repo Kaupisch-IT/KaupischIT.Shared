@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt einen Satz von static-Methoden als Erweiterung für den Nullable-Typen bereit

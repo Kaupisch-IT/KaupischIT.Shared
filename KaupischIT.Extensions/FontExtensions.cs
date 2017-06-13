@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die Font-Klasse bereit

@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Windows.Forms;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die IBindableComponent-Schnittstelle bereit

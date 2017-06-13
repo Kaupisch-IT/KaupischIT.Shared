@@ -2,7 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 
-namespace KaupischITC.Extensions
+namespace KaupischIT.Extensions
 {
 	/// <summary>
 	/// Stellt einen Satz von static-Methoden als Erweiterung für den IDataRecord-Typen bereit

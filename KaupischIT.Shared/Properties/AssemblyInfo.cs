@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("KaupischITC.Shared")]
+[assembly: AssemblyTitle("KaupischIT.Shared")]
 [assembly: AssemblyDescription("Enthält gemeinsam genutzte Komponenten und Funktionen")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Kaupisch ITC-Solution")]
-[assembly: AssemblyProduct("KaupischITC.Shared")]
-[assembly: AssemblyCopyright("Copyright © Kaupisch ITC-Solution 2010")]
+[assembly: AssemblyCompany("Kaupisch IT-Systeme GmbH")]
+[assembly: AssemblyProduct("KaupischIT.Shared")]
+[assembly: AssemblyCopyright("Copyright © Kaupisch IT-Systeme GmbH 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

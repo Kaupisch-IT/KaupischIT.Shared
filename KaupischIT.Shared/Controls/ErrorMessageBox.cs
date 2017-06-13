@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.WindowsAPICodePack.Taskbar;
 
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	/// <summary>
 	/// Zeigt ein Meldungsfeld an, das Text und Details über eine Ausnahme enthält.

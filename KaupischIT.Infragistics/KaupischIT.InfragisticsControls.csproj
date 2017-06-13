@@ -8,8 +8,8 @@
     <ProjectGuid>{4298F588-070F-4048-9E47-315A8CEABD89}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KaupischITC.InfragisticsControls</RootNamespace>
-    <AssemblyName>KaupischITC.InfragisticsControls</AssemblyName>
+    <RootNamespace>KaupischIT.InfragisticsControls</RootNamespace>
+    <AssemblyName>KaupischIT.InfragisticsControls</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

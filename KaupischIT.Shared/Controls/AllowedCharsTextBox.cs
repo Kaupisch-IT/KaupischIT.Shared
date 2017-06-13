@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Forms;
 
-namespace KaupischITC.Shared.Controls
+namespace KaupischIT.Shared.Controls
 {
 	/// <summary>
 	/// Stellt ein Textfeld-Steuerelement dar, in dem nur bestimmte Zeichen als Eingabe zugelassen werden

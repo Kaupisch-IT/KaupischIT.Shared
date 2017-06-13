@@ -4,9 +4,9 @@ using System.Xml;
 using System.Xml.Serialization;
 using Infragistics.Win;
 using Infragistics.Win.UltraWinGrid;
-using KaupischITC.InfragisticsControls.ValueAppearances;
+using KaupischIT.InfragisticsControls.ValueAppearances;
 
-namespace KaupischITC.InfragisticsControls.LayoutSerialization
+namespace KaupischIT.InfragisticsControls.LayoutSerialization
 {
 	/// <summary>
 	/// Stellt Erweiterungsmethoden für die (Customized)UltraGrid-Klasse bereit

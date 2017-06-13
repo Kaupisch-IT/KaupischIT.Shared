@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	public class SeparatorLabel : UserControl
 	{

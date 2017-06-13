@@ -7,8 +7,8 @@
     <ProjectGuid>{19B8F73A-0C16-4780-9CC4-CD3E5C297E48}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KaupischITC.DevExpressControls</RootNamespace>
-    <AssemblyName>KaupischITC.DevExpressControls</AssemblyName>
+    <RootNamespace>KaupischIT.DevExpressControls</RootNamespace>
+    <AssemblyName>KaupischIT.DevExpressControls</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

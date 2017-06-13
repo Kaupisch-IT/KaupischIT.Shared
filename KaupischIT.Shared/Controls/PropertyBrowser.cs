@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Linq;
-using KaupischITC.Extensions;
+using KaupischIT.Extensions;
 
-namespace KaupischITC.Shared
+namespace KaupischIT.Shared
 {
 	[DebuggerDisplay("DisplayedType = {DisplayedType}, SelectedProperty = {SelectedProperty}")]
 	public class PropertyBrowser : ComboBoxControlHost

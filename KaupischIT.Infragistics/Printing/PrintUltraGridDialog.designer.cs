@@ -1,4 +1,4 @@
-﻿namespace KaupischITC.InfragisticsControls.Printing
+﻿namespace KaupischIT.InfragisticsControls.Printing
 {
     partial class PrintUltraGridDialog
     {
@@ -67,12 +67,12 @@
 			this.ultraPrintPreviewControl = new Infragistics.Win.Printing.UltraPrintPreviewControl();
 			this.textBoxPages = new System.Windows.Forms.TextBox();
 			this.toolTipPageRange = new System.Windows.Forms.ToolTip(this.components);
-			this.separatorLabel5 = new KaupischITC.Shared.SeparatorLabel();
-			this.separatorLabel3 = new KaupischITC.Shared.SeparatorLabel();
-			this.separatorLabel4 = new KaupischITC.Shared.SeparatorLabel();
-			this.separatorLabel1 = new KaupischITC.Shared.SeparatorLabel();
-			this.separatorLabel2 = new KaupischITC.Shared.SeparatorLabel();
-			this.separatorLabel6 = new KaupischITC.Shared.SeparatorLabel();
+			this.separatorLabel5 = new KaupischIT.Shared.SeparatorLabel();
+			this.separatorLabel3 = new KaupischIT.Shared.SeparatorLabel();
+			this.separatorLabel4 = new KaupischIT.Shared.SeparatorLabel();
+			this.separatorLabel1 = new KaupischIT.Shared.SeparatorLabel();
+			this.separatorLabel2 = new KaupischIT.Shared.SeparatorLabel();
+			this.separatorLabel6 = new KaupischIT.Shared.SeparatorLabel();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownTop)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDownRight)).BeginInit();
@@ -733,7 +733,7 @@
 
         #endregion
 
-        private KaupischITC.Shared.SeparatorLabel separatorLabel1;
+        private KaupischIT.Shared.SeparatorLabel separatorLabel1;
         private System.Windows.Forms.NumericUpDown numericUpDownTop;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label1;
@@ -749,16 +749,16 @@
 		private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RadioButton radioButtonLandscape;
         private System.Windows.Forms.RadioButton radioButtonPortrait;
-        private KaupischITC.Shared.SeparatorLabel separatorLabel2;
+        private KaupischIT.Shared.SeparatorLabel separatorLabel2;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox comboBoxPrinter;
-		private KaupischITC.Shared.SeparatorLabel separatorLabel3;
+		private KaupischIT.Shared.SeparatorLabel separatorLabel3;
         private System.Windows.Forms.ComboBox comboBoxPapersize;
-		private KaupischITC.Shared.SeparatorLabel separatorLabel4;
-		private KaupischITC.Shared.SeparatorLabel separatorLabel6;
+		private KaupischIT.Shared.SeparatorLabel separatorLabel4;
+		private KaupischIT.Shared.SeparatorLabel separatorLabel6;
         private System.Windows.Forms.RadioButton radioButtonColumnAutoFitPages;
         private System.Windows.Forms.RadioButton radioButtonColumnDefaultSize;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;

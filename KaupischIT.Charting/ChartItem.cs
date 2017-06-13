@@ -1,5 +1,5 @@
 ﻿
-namespace KaupischITC.Charting
+namespace KaupischIT.Charting
 {
 	/// <summary>
 	/// Stellt Informationen über eine Diagrammelement bereit.
