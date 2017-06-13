@@ -35,7 +35,7 @@ namespace KaupischITC.Extensions
 			if (xmlNode==null)
 			{
 				// Element mit Attribut-Filter
-				Match match = Regex.Match(nextNode,@"^(?<elementName>\w+)\[@(?<attributeName>\w+)='?(?<attributeValue>[^\]]+)\]'?$");
+				Match match = Regex.Match(nextNode,@"^(?<elementName>\w+)\[@(?<attributeName>\w+)='?(?<attributeValue>[^\]]+?)'?\]$");
 				if (match.Success)
 				{
 					xmlNode = parentNode.AppendChild(parentNode.OwnerDocument.CreateElement(match.Groups["elementName"].Value));
