@@ -167,9 +167,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KaupischITC.Extensions\KaupischITC.Extensions.csproj">
+    <ProjectReference Include="..\KaupischIT.Extensions\KaupischIT.Extensions.csproj">
       <Project>{6E4F8863-7A8C-4163-B95A-AB413017A7F7}</Project>
-      <Name>KaupischITC.Extensions</Name>
+      <Name>KaupischIT.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

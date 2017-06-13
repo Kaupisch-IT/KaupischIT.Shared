@@ -78,13 +78,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KaupischITC.Extensions\KaupischITC.Extensions.csproj">
+    <ProjectReference Include="..\KaupischIT.Extensions\KaupischIT.Extensions.csproj">
       <Project>{6E4F8863-7A8C-4163-B95A-AB413017A7F7}</Project>
-      <Name>KaupischITC.Extensions</Name>
+      <Name>KaupischIT.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KaupischITC.Shared\KaupischITC.Shared.csproj">
+    <ProjectReference Include="..\KaupischIT.Shared\KaupischIT.Shared.csproj">
       <Project>{5F055FBB-50B1-421C-A80A-2D291210183F}</Project>
-      <Name>KaupischITC.Shared</Name>
+      <Name>KaupischIT.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
