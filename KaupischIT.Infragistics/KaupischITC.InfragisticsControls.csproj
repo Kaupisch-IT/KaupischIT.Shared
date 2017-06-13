@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4298F588-070F-4048-9E47-315A8CEABD89}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KaupischITC.InfragisticsControls</RootNamespace>
+    <AssemblyName>KaupischITC.InfragisticsControls</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Infragistics4.Shared.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Win.Misc.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Win.UltraWinEditors.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Win.UltraWinGrid.DocumentExport.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Infragistics4.Win.UltraWinGrid.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Win.UltraWinTabControl.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Win.UltraWinToolbars.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Win.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Documents.Excel.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Win.UltraWinGrid.ExcelExport.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Documents.Core.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2013.1\Windows Forms\CLR4.0\Bin\Infragistics4.Documents.Core.v13.1.dll</HintPath>
+      <Name>Infragistics4.Documents.Core.v13.1</Name>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColumnChooser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomizedUltraGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomizedUltraGrid.Designer.cs">
+      <DependentUpon>CustomizedUltraGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDiff.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDiff.designer.cs">
+      <DependentUpon>FormDiff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayoutSerialization\BandLayout.cs" />
+    <Compile Include="LayoutSerialization\ColumnLayout.cs" />
+    <Compile Include="LayoutSerialization\ColumnSummary.cs" />
+    <Compile Include="LayoutSerialization\GridLayout.cs" />
+    <Compile Include="LayoutSerialization\Grouping.cs" />
+    <Compile Include="Printing\PrintUltraGridDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Printing\PrintUltraGridDialog.designer.cs">
+      <DependentUpon>PrintUltraGridDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="LayoutSerialization\CustomizedUltraGridExtensions.cs" />
+    <Compile Include="Printing\UltraGridPrintSettings.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="UrlProtocolHandler.cs" />
+    <Compile Include="ValueAppearances\IconValueAppearance.cs" />
+    <Compile Include="ValueAppearances\NegativeValueAppearance.cs" />
+    <Compile Include="ValueAppearances\ValueAppearance.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CustomizedUltraGrid.resx">
+      <DependentUpon>CustomizedUltraGrid.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDiff.resx">
+      <DependentUpon>FormDiff.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Printing\PrintUltraGridDialog.resx">
+      <DependentUpon>PrintUltraGridDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KaupischITC.Charting\KaupischITC.Charting.csproj">
+      <Project>{0C583589-F594-4872-BA74-71EE4025EE80}</Project>
+      <Name>KaupischITC.Charting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KaupischITC.Extensions\KaupischITC.Extensions.csproj">
+      <Project>{6E4F8863-7A8C-4163-B95A-AB413017A7F7}</Project>
+      <Name>KaupischITC.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KaupischITC.Shared\KaupischITC.Shared.csproj">
+      <Project>{5F055FBB-50B1-421C-A80A-2D291210183F}</Project>
+      <Name>KaupischITC.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Key.snk" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Down.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\Release.Build.targets" Condition=" '$(Configuration)' == 'Release' " />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
