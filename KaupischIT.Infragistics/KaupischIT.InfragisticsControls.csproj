@@ -40,46 +40,46 @@
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Infragistics4.Documents.Core.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <HintPath>C:\Program Files (x86)\Infragistics\NetAdvantage 2013.1\Windows Forms\CLR4.0\Bin\Infragistics4.Documents.Core.v13.1.dll</HintPath>
-      <Name>Infragistics4.Documents.Core.v13.1</Name>
+    <Reference Include="Infragistics4.Documents.Core.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Infragistics\2013.2\Windows Forms\CLR4.0\Bin\Infragistics4.Documents.Core.v13.2.dll</HintPath>
+      <Name>Infragistics4.Documents.Core.v13.2</Name>
     </Reference>
-    <Reference Include="Infragistics4.Win.UltraWinGrid.ExcelExport.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Win.UltraWinGrid.ExcelExport.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Infragistics4.Documents.Excel.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Documents.Excel.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Infragistics4.Win.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Win.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Infragistics4.Win.UltraWinToolbars.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Win.UltraWinToolbars.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Infragistics4.Win.UltraWinTabControl.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Win.UltraWinTabControl.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Infragistics4.Win.UltraWinGrid.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Win.UltraWinGrid.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Infragistics4.Win.UltraWinGrid.DocumentExport.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Win.UltraWinGrid.DocumentExport.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Infragistics4.Win.UltraWinEditors.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Infragistics4.Win.Misc.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Win.UltraWinEditors.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Infragistics4.Shared.v13.1, Version=13.1.20131.2124, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+    <Reference Include="Infragistics4.Win.Misc.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics4.Shared.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>

@@ -162,7 +162,6 @@
       <DependentUpon>ReportDesigner.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="ReportDesignerForm.resx">
       <DependentUpon>ReportDesignerForm.cs</DependentUpon>
     </EmbeddedResource>
