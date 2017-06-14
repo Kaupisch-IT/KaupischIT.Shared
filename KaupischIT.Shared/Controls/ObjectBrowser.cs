@@ -17,7 +17,7 @@ namespace KaupischIT.Shared
 
 		public Func<Type,bool> TypeFilter { get; set; }
 
-		
+
 		public ObjectBrowser()
 		{
 			this.InitializeComponent();
@@ -34,7 +34,7 @@ namespace KaupischIT.Shared
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SelectedProperty
 		{
-			get { return (this.SelectedNode!=null) ? this.SelectedNode.Name.TrimStart('.') : null; }
+			get => this.SelectedNode?.Name.TrimStart('.');
 			set
 			{
 				if (!this.DesignMode)
@@ -46,7 +46,7 @@ namespace KaupischIT.Shared
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Type DisplayedType
 		{
-			get { return this.displayedType; }
+			get => this.displayedType;
 			set
 			{
 				if (!this.DesignMode && !this.AreEquivalentTypes(this.displayedType,value))
@@ -87,7 +87,7 @@ namespace KaupischIT.Shared
 
 			if (first.ImplementsInterface(typeof(IEnumerable<>)) && second.ImplementsInterface(typeof(IEnumerable<>)))
 			{
-				Func<Type,Type> getElementType = (type) =>  type.GetInterfaces().Concat(new[] { type }).First(itype => itype.IsGenericType && itype.GetGenericTypeDefinition()==typeof(IEnumerable<>)).GetGenericArguments()[0];
+				Func<Type,Type> getElementType = (type) => type.GetInterfaces().Concat(new[] { type }).First(itype => itype.IsGenericType && itype.GetGenericTypeDefinition()==typeof(IEnumerable<>)).GetGenericArguments()[0];
 				return this.AreEquivalentTypes(getElementType(first),getElementType(second));
 			}
 
@@ -133,7 +133,7 @@ namespace KaupischIT.Shared
 										this.AddMemberNodes(treeNode,propertyInfo.PropertyType,deferredLoading);
 
 									if (!isNavigation || treeNode.Nodes.Count>0)
-										targetTreeNodeCollection.Add(treeNode);								
+										targetTreeNodeCollection.Add(treeNode);
 								}
 							}
 		}
@@ -146,7 +146,7 @@ namespace KaupischIT.Shared
 			else
 			{
 				TreeViewCancelEventHandler treeViewCancelEventHandler = null;
-				treeViewCancelEventHandler = delegate(object sender,TreeViewCancelEventArgs e)
+				treeViewCancelEventHandler = delegate (object sender,TreeViewCancelEventArgs e)
 				{
 					if (e.Node==parentTreeNode.Parent)
 					{

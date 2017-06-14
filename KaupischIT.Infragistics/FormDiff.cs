@@ -28,7 +28,7 @@ namespace KaupischIT.InfragisticsControls
 			appearance.BackColor = Color.Yellow;
 
 			UltraGridBand ultraGridBand = this.customizedUltraGrid.DisplayLayout.Bands[0];
-			for (int i=0;i<this.customizedUltraGrid.Rows.Count-1;i++)
+			for (int i = 0;i<this.customizedUltraGrid.Rows.Count-1;i++)
 			{
 				UltraGridRow previousRow = this.customizedUltraGrid.Rows[i];
 				UltraGridRow currentRow = this.customizedUltraGrid.Rows[i+1];

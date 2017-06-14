@@ -20,15 +20,15 @@ namespace KaupischIT.InfragisticsControls
 	/// <summary>
 	/// Stellt ein angepasstes UltraGrid-Steuerelement dar
 	/// </summary>
-	public partial class CustomizedUltraGrid : UltraGrid,IUIElementDrawFilter
+	public partial class CustomizedUltraGrid : UltraGrid, IUIElementDrawFilter
 	{
 		private static ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
-		private Timer timer = new Timer();						// Timer für den WaitCursor
-		private List<ExpandedGroupByRow> expandedRowsState;		// enthält ggf. die gespeicherten ausgeklappten Gruppierungszeilen
+		private Timer timer = new Timer();                      // Timer für den WaitCursor
+		private List<ExpandedGroupByRow> expandedRowsState;     // enthält ggf. die gespeicherten ausgeklappten Gruppierungszeilen
 
-		private ToolStripMenuItem summaryToolStripMenuItem;		// Kontextmenüeintrag für Zusammenfassungen
-		private ToolStripMenuItem formatToolStripMenuItem;		// Kontextmenüeintrag für Wertformatierungen
-		private ToolStripMenuItem fontToolStripMenuItem;		// Kontextmenüeintrag für Schriftformatierungen
+		private ToolStripMenuItem summaryToolStripMenuItem;     // Kontextmenüeintrag für Zusammenfassungen
+		private ToolStripMenuItem formatToolStripMenuItem;      // Kontextmenüeintrag für Wertformatierungen
+		private ToolStripMenuItem fontToolStripMenuItem;        // Kontextmenüeintrag für Schriftformatierungen
 		private ToolStripMenuItem visualizationToolStripMenuItem; // Kontextmenüeintrag für Visualisierungen
 		private UrlProtocolHandler urlProtocolHandler = new UrlProtocolHandler(); // der UrlProtocolHandler für benutzerdefinierte Kontextmenüeinträge
 
@@ -101,7 +101,7 @@ namespace KaupischIT.InfragisticsControls
 		/// </summary>
 		public bool AllowRowFiltering
 		{
-			get { return (this.DisplayLayout.Override.AllowRowFiltering==DefaultableBoolean.True); }
+			get => (this.DisplayLayout.Override.AllowRowFiltering==DefaultableBoolean.True);
 			set
 			{
 				this.DisplayLayout.Override.AllowRowFiltering = (value) ? DefaultableBoolean.True : DefaultableBoolean.False;
@@ -275,39 +275,48 @@ namespace KaupischIT.InfragisticsControls
 
 			// Werte formatieren als
 			this.formatToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Werte formatieren als");
-			foreach (string formatString in availableFormats.Keys)
-				this.formatToolStripMenuItem.DropDownItems.Add(availableFormats[formatString],null,FormatMenuItem_Click).Tag = formatString; // vordefinierte Formate
-			// eigenes Format
+			foreach (string formatString in this.availableFormats.Keys)
+				this.formatToolStripMenuItem.DropDownItems.Add(this.availableFormats[formatString],null,this.FormatMenuItem_Click).Tag = formatString; // vordefinierte Formate
+																																					   // eigenes Format
 			ToolStripTextBox toolStripTextBox = new ToolStripTextBox("Custom");
 			toolStripTextBox.TextChanged += delegate
 			{
 				toolStripTextBox.Tag = toolStripTextBox.Text;
 				this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty);
 			};
-			toolStripTextBox.Click += delegate { this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty); };
+			toolStripTextBox.Click += delegate
+			{ this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty); };
 			this.formatToolStripMenuItem.DropDownItems.Add(toolStripTextBox);
 
 			// Zusammenfassungen
 			this.summaryToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Zusammenfassung hinzufügen");
-			foreach (SummaryType summaryType in availableSummaries.Keys)
-				this.summaryToolStripMenuItem.DropDownItems.Add(availableSummaries[summaryType][0],null,SummaryMenuItem_Click).Tag = summaryType;
+			foreach (SummaryType summaryType in this.availableSummaries.Keys)
+				this.summaryToolStripMenuItem.DropDownItems.Add(this.availableSummaries[summaryType][0],null,this.SummaryMenuItem_Click).Tag = summaryType;
 
 			// Formatierungen
 			this.fontToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Text formatieren");
-			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate(object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate (object sender,EventArgs e)
+			{ this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate (object sender,EventArgs e)
+			{ this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate (object sender,EventArgs e)
+			{ this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
 
 			// wertbasierte Formatierungen
 			this.fontToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
-			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues = !((ToolStripMenuItem)sender).Checked; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate(object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators = !((ToolStripMenuItem)sender).Checked; });
+			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate (object sender,EventArgs e)
+			{ ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues = !((ToolStripMenuItem)sender).Checked; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate (object sender,EventArgs e)
+			{ ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators = !((ToolStripMenuItem)sender).Checked; });
 
 			// Visualisierungen
 			this.visualizationToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Visualisierung");
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate { this.ShowChartForm(new BarChartForm()); });
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate { this.ShowChartForm(new TreeMapForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate
+			{ this.ShowChartForm(new PieChartForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate
+			{ this.ShowChartForm(new BarChartForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate
+			{ this.ShowChartForm(new TreeMapForm()); });
 		}
 
 		/// <summary>
@@ -356,8 +365,7 @@ namespace KaupischIT.InfragisticsControls
 			foreach (SummarySettings summarySettings in column.Band.Summaries.Cast<SummarySettings>().Where(ss => ss.SourceColumn==column))
 				summarySettings.DisplayFormat = this.GetColumnSummaryFormat(format,summarySettings.SummaryType);
 
-			if (this.ColumnFormatChanged!=null)
-				this.ColumnFormatChanged(this,new UltraGridColumnEventArgs { Column = column });
+			this.ColumnFormatChanged?.Invoke(this,new UltraGridColumnEventArgs { Column = column });
 		}
 
 		/// <summary>
@@ -398,11 +406,15 @@ namespace KaupischIT.InfragisticsControls
 		{
 			this.RowSelectorContextMenuStrip = new ContextMenuStrip();
 
-			this.RowSelectorContextMenuStrip.Items.Add("Erweitern",null,delegate { this.ContextUltraGridRow.Expanded = true; });
-			this.RowSelectorContextMenuStrip.Items.Add("Reduzieren",null,delegate { this.ContextUltraGridRow.Expanded = false; });
+			this.RowSelectorContextMenuStrip.Items.Add("Erweitern",null,delegate
+			{ this.ContextUltraGridRow.Expanded = true; });
+			this.RowSelectorContextMenuStrip.Items.Add("Reduzieren",null,delegate
+			{ this.ContextUltraGridRow.Expanded = false; });
 			this.RowSelectorContextMenuStrip.Items.Add("-");
-			this.RowSelectorContextMenuStrip.Items.Add("Alles erweitern",null,delegate { this.ContextUltraGridRow.ParentCollection.ExpandAll(false); });
-			this.RowSelectorContextMenuStrip.Items.Add("Alles reduzieren",null,delegate { this.ContextUltraGridRow.ParentCollection.CollapseAll(false); });
+			this.RowSelectorContextMenuStrip.Items.Add("Alles erweitern",null,delegate
+			{ this.ContextUltraGridRow.ParentCollection.ExpandAll(false); });
+			this.RowSelectorContextMenuStrip.Items.Add("Alles reduzieren",null,delegate
+			{ this.ContextUltraGridRow.ParentCollection.CollapseAll(false); });
 		}
 
 
@@ -417,16 +429,16 @@ namespace KaupischIT.InfragisticsControls
 				UIElement element = this.DisplayLayout.UIElement.ElementFromPoint(mousePoint);
 				if (element!=null)
 				{
-					this.ContextUltraGridRow = (UltraGridRow)element.GetContext(typeof(UltraGridRow));				// geklickte Zeile
-					this.ContextUltraGridCell = (UltraGridCell)element.GetContext(typeof(UltraGridCell));			// geklickte Zelle
-					this.ContextHeaderUIElement = (HeaderUIElement)element.GetAncestor(typeof(HeaderUIElement));	// geklickter Spaltenkopf
-					this.ContextUltraGridColumn = (UltraGridColumn)element.GetContext(typeof(UltraGridColumn));		// geklickte Spalte
+					this.ContextUltraGridRow = (UltraGridRow)element.GetContext(typeof(UltraGridRow));              // geklickte Zeile
+					this.ContextUltraGridCell = (UltraGridCell)element.GetContext(typeof(UltraGridCell));           // geklickte Zelle
+					this.ContextHeaderUIElement = (HeaderUIElement)element.GetAncestor(typeof(HeaderUIElement));    // geklickter Spaltenkopf
+					this.ContextUltraGridColumn = (UltraGridColumn)element.GetContext(typeof(UltraGridColumn));     // geklickte Spalte
 					this.ContextSummaryFooterUIElement = (SummaryFooterUIElement)element.GetAncestor(typeof(SummaryFooterUIElement)); // geklickter Spaltenfuß
 
 					// Kontextmenü für Spalten
 					if (this.ContextUltraGridColumn!=null)
 					{
-						this.ColumnCellContextMenuStrip.Items["HeaderCaption"].Text = (this.ContextUltraGridColumn!=null) ? this.ContextUltraGridColumn.Header.Caption : null;
+						this.ColumnCellContextMenuStrip.Items["HeaderCaption"].Text = this.ContextUltraGridColumn?.Header.Caption;
 
 						// "Zusammenfassungen"
 						if (this.ContextUltraGridColumn!=null)
@@ -505,7 +517,8 @@ namespace KaupischIT.InfragisticsControls
 					foreach (UrlProtocolHandler.ConcreteRoute r in validRoutes)
 					{
 						UrlProtocolHandler.ConcreteRoute route = r;
-						contextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
+						contextMenuStrip.Items.Add(route.Name,null,delegate
+						{ route.Invoke(); }).Tag = this.urlProtocolHandler;
 					}
 				}
 			}
@@ -598,7 +611,7 @@ namespace KaupischIT.InfragisticsControls
 			if (value is bool)
 				value = ((bool)value) ? "Ja" : "Nein";
 
-			e.Row.Description = e.Row.Column.Header.Caption+": "+value+" ("+e.Row.Rows.Count.ToString("N0")+" "+((e.Row.Rows.Count==1)?"Element":"Elemente")+")";
+			e.Row.Description = e.Row.Column.Header.Caption+": "+value+" ("+e.Row.Rows.Count.ToString("N0")+" "+((e.Row.Rows.Count==1) ? "Element" : "Elemente")+")";
 			base.OnInitializeGroupByRow(e);
 		}
 
@@ -690,7 +703,7 @@ namespace KaupischIT.InfragisticsControls
 				excelExporter.InitializeColumn += (sender,initializeColumnEventArgs) => initializeColumnEventArgs.ExcelFormatStr = this.GetExcelFormatStr(initializeColumnEventArgs.FrameworkFormatStr,initializeColumnEventArgs.Column.DataType);
 
 				int lastOutlineLevel = -1;
-				excelExporter.HeaderRowExporting += delegate(object sender,HeaderRowExportingEventArgs e) // Header nur über der ersten Zeile eines ausgeklappten Bereichs exportieren 
+				excelExporter.HeaderRowExporting += delegate (object sender,HeaderRowExportingEventArgs e) // Header nur über der ersten Zeile eines ausgeklappten Bereichs exportieren 
 				{
 					if (lastOutlineLevel>=e.CurrentOutlineLevel)
 						e.Cancel = true;
@@ -737,7 +750,7 @@ namespace KaupischIT.InfragisticsControls
 		/// <param name="path">der Pfad der Datei, die erstellt werden soll</param>
 		public void ExportAsPdf(string path)
 		{
-			using (var documentExporter = new Infragistics.Win.UltraWinGrid.DocumentExport.UltraGridDocumentExporter())
+			using (Infragistics.Win.UltraWinGrid.DocumentExport.UltraGridDocumentExporter documentExporter = new Infragistics.Win.UltraWinGrid.DocumentExport.UltraGridDocumentExporter())
 				documentExporter.Export(this,path,Infragistics.Win.UltraWinGrid.DocumentExport.GridExportFileFormat.PDF);
 		}
 
@@ -751,7 +764,7 @@ namespace KaupischIT.InfragisticsControls
 			// Aggregat-Zellöe
 			if (drawParams.Element is SummaryValueUIElement)
 			{
-				Rectangle rectangle =  new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y-1,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height);
+				Rectangle rectangle = new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y-1,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height);
 				using (Pen pen = new Pen(Color.FromArgb(202,203,211)))
 					drawParams.Graphics.DrawRectangle(pen,rectangle);
 			}
@@ -766,7 +779,7 @@ namespace KaupischIT.InfragisticsControls
 				Color color2 = (isHighlight) ? Color.FromArgb(248,248,248) : Color.FromArgb(242,242,242);
 
 				Rectangle rectangle = (headerUIElement!=null)
-					? new Rectangle(x: drawParams.Element.Rect.X-1,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width,height: drawParams.Element.Rect.Height-((headerUIElement.Header.Column!=null)?1:0))
+					? new Rectangle(x: drawParams.Element.Rect.X-1,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width,height: drawParams.Element.Rect.Height-((headerUIElement.Header.Column!=null) ? 1 : 0))
 					: new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y-1,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height);
 
 				using (LinearGradientBrush brush = new LinearGradientBrush(rectangle,color1,color2,LinearGradientMode.Vertical))
@@ -778,8 +791,7 @@ namespace KaupischIT.InfragisticsControls
 			// Markierung für die Sortierung
 			if (drawParams.Element is SortIndicatorUIElement)
 			{
-				UltraGridColumn column = drawParams.Element.GetContext(typeof(UltraGridColumn)) as UltraGridColumn;
-				if (column!=null)
+				if (drawParams.Element.GetContext(typeof(UltraGridColumn)) is UltraGridColumn column)
 				{
 					Rectangle rectangle = new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height-1);
 					Image image = (column.SortIndicator==SortIndicator.Ascending) ? this.SortIndicatorImageAscending : this.SortIndicatorImageDescending;

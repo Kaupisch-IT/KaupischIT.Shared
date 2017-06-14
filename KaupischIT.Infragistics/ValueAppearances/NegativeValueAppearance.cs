@@ -23,8 +23,7 @@ namespace KaupischIT.InfragisticsControls.ValueAppearances
 		/// </summary>
 		public void ResolveAppearance(ref AppearanceData appData,ref AppearancePropFlags flags,object dataValue,IConditionContextProvider context)
 		{
-			double value;
-			if (Double.TryParse(Convert.ToString(dataValue),out value))
+			if (Double.TryParse(Convert.ToString(dataValue),out double value))
 				if (value<0)
 					NegativeValueAppearance.negativeAppearance.MergeData(ref appData,ref flags);
 		}
@@ -33,9 +32,6 @@ namespace KaupischIT.InfragisticsControls.ValueAppearances
 		/// <summary>
 		/// Erzeugt eine Kopie des Objektes
 		/// </summary>
-		public object Clone()
-		{
-			return this.MemberwiseClone();
-		}
+		public object Clone() => this.MemberwiseClone();
 	}
 }

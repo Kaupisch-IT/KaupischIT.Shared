@@ -18,52 +18,49 @@ namespace KaupischIT.InfragisticsControls.LayoutSerialization
 		/// </summary>
 		/// <param name="ultraGrid">das Grid, dessen Layout-Informationen bereitgestellt werden sollen</param>
 		/// <returns>die Layout-Informationen des angegebenen UltraGrids</returns>
-		public static GridLayout GetLayout(this UltraGrid ultraGrid)
+		public static GridLayout GetLayout(this UltraGrid ultraGrid) => new GridLayout
 		{
-			return new GridLayout
+			// alle Band-Layouts
+			Bands = ultraGrid.DisplayLayout.Bands.Cast<UltraGridBand>().Select(band => new BandLayout
 			{
-				// alle Band-Layouts
-				Bands = ultraGrid.DisplayLayout.Bands.Cast<UltraGridBand>().Select(band => new BandLayout 
+				Key = band.GetKey(),
+				Hidden = band.Hidden,
+				Caption = band.Header.Caption,
+
+				// alle Spalten-Layouts
+				Columns = band.Columns.Cast<UltraGridColumn>().Select(column => new ColumnLayout
 				{
-					Key = band.GetKey(),
-					Hidden = band.Hidden,
-					Caption = band.Header.Caption,
+					Key = column.Key,
+					Caption = column.Header.Caption,
+					Hidden = column.Hidden,
+					Width = column.Width,
+					Position = column.Header.VisiblePosition,
+					Format = column.Format,
+					IsBold = column.CellAppearance.FontData.Bold==DefaultableBoolean.True,
+					IsItalic = column.CellAppearance.FontData.Italic==DefaultableBoolean.True,
+					IsUnderlined = column.CellAppearance.FontData.Underline==DefaultableBoolean.True,
+					HighlightNegativeValues = ((ValueAppearance)column.ValueBasedAppearance).HighlightNegativeValues,
+					ShowTrend = ((ValueAppearance)column.ValueBasedAppearance).ShowTrendIndicators,
+					Sorting = column.SortIndicator,
+					SortIndex = band.SortedColumns.IndexOf(column),
 
-					// alle Spalten-Layouts
-					Columns = band.Columns.Cast<UltraGridColumn>().Select(column => new ColumnLayout 
-					{
-						Key = column.Key,
-						Caption = column.Header.Caption,
-						Hidden = column.Hidden,
-						Width = column.Width,
-						Position = column.Header.VisiblePosition,
-						Format = column.Format,
-						IsBold = column.CellAppearance.FontData.Bold==DefaultableBoolean.True,
-						IsItalic = column.CellAppearance.FontData.Italic==DefaultableBoolean.True,
-						IsUnderlined = column.CellAppearance.FontData.Underline==DefaultableBoolean.True,
-						HighlightNegativeValues = ((ValueAppearance)column.ValueBasedAppearance).HighlightNegativeValues,
-						ShowTrend = ((ValueAppearance)column.ValueBasedAppearance).ShowTrendIndicators,
-						Sorting = column.SortIndicator,
-						SortIndex = band.SortedColumns.IndexOf(column),
+				}).ToArray(),
 
-					}).ToArray(),
+				// alle Spalten-Zusammenfassungen
+				Summaries = band.Summaries.Cast<SummarySettings>().Select(summary => new ColumnSummary // alle 
+				{
+					ColumnKey = summary.SourceColumn.Key,
+					SummaryType = summary.SummaryType
+				}).ToArray(),
 
-					// alle Spalten-Zusammenfassungen
-					Summaries = band.Summaries.Cast<SummarySettings>().Select(summary => new ColumnSummary // alle 
-					{
-						ColumnKey = summary.SourceColumn.Key,
-						SummaryType = summary.SummaryType
-					}).ToArray(),
+				// alle Spalten-Gruppierungen
+				Groups = band.SortedColumns.Cast<UltraGridColumn>().Where(col => col.IsGroupByColumn).Select(group => new Grouping
+				{
+					ColumnKey = group.Key
+				}).ToArray(),
 
-					// alle Spalten-Gruppierungen
-					Groups = band.SortedColumns.Cast<UltraGridColumn>().Where(col => col.IsGroupByColumn).Select(group => new Grouping
-					{
-						ColumnKey = group.Key
-					}).ToArray(),
-
-				}).ToArray()
-			};
-		}
+			}).ToArray()
+		};
 
 
 		/// <summary>
@@ -171,7 +168,7 @@ namespace KaupischIT.InfragisticsControls.LayoutSerialization
 			return result;
 		}
 
-		
+
 		/// <summary>
 		/// Speichert die Layout-Informationen des UltraGrids in ein XML-Dokument
 		/// </summary>

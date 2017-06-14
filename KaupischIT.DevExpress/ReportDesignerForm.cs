@@ -16,8 +16,8 @@ namespace KaupischIT.DevExpressControls
 		/// </summary>
 		public XtraReport Report
 		{
-			get { return this.reportDesigner.Report; }
-			set { this.reportDesigner.OpenReport(value); }
+			get => this.reportDesigner.Report;
+			set => this.reportDesigner.OpenReport(value);
 		}
 
 
@@ -41,9 +41,6 @@ namespace KaupischIT.DevExpressControls
 		/// <summary>
 		/// Beim Schließen des Fensters den Bericht wieder freigeben
 		/// </summary>
-		private void ReportDesignerForm_FormClosed(object sender,FormClosedEventArgs e)
-		{
-			this.reportDesigner.CloseReport();
-		}
+		private void ReportDesignerForm_FormClosed(object sender,FormClosedEventArgs e) => this.reportDesigner.CloseReport();
 	}
 }

@@ -15,7 +15,7 @@ namespace KaupischIT.Shared
 		private const int BCM_SETSHIELD = (BCM_FIRST + 0x000C);
 
 		[DllImport("user32")]
-		public static extern UInt32 SendMessage(IntPtr hWnd,UInt32 msg,UInt32 wParam,UInt32 lParam);
+		public static extern uint SendMessage(IntPtr hWnd,uint msg,uint wParam,uint lParam);
 
 
 

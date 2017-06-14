@@ -22,7 +22,7 @@ namespace KaupischIT.Extensions
 			foreach (FieldInfo fieldInfo in typeof(OpCodes).GetFields(BindingFlags.Public|BindingFlags.Static))
 			{
 				OpCode opCode = (OpCode)fieldInfo.GetValue(null);
-				UInt16 value = (UInt16)opCode.Value;
+				ushort value = (ushort)opCode.Value;
 				if (value < 0x100)
 					oneByteOpCodes[value] = opCode;
 				else if ((value & 0xff00) == 0xfe00)
@@ -42,7 +42,7 @@ namespace KaupischIT.Extensions
 			if (methodBody!=null)
 			{
 				byte[] ilBytes = methodBody.GetILAsByteArray();
-				for (int position=0;position<ilBytes.Length;position++)
+				for (int position = 0;position<ilBytes.Length;position++)
 				{
 					OpCode opCode = (ilBytes[position]!=0xFE) ? oneByteOpCodes[ilBytes[position]] : twoByteOpCodes[ilBytes[++position]];
 
@@ -58,23 +58,23 @@ namespace KaupischIT.Extensions
 						case OperandType.InlineNone:
 							break;
 						case OperandType.ShortInlineBrTarget:
-							position += sizeof(SByte);
+							position += sizeof(sbyte);
 							break;
 						case OperandType.ShortInlineI:
 						case OperandType.ShortInlineVar:
-							position += sizeof(Byte);
+							position += sizeof(byte);
 							break;
 						case OperandType.InlineI8:
-							position += sizeof(Int64);
+							position += sizeof(long);
 							break;
 						case OperandType.ShortInlineR:
-							position += sizeof(Single);
+							position += sizeof(float);
 							break;
 						case OperandType.InlineR:
-							position += sizeof(Double);
+							position += sizeof(double);
 							break;
 						case OperandType.InlineVar:
-							position += sizeof(UInt16);
+							position += sizeof(ushort);
 							break;
 						case OperandType.InlineBrTarget:
 						case OperandType.InlineField:
@@ -83,13 +83,13 @@ namespace KaupischIT.Extensions
 						case OperandType.InlineSig:
 						case OperandType.InlineString:
 						case OperandType.InlineType:
-							position += sizeof(Int32);
+							position += sizeof(int);
 							break;
 						case OperandType.InlineSwitch:
-							position += sizeof(Int32) + sizeof(Int32)*BitConverter.ToInt32(ilBytes,position);
+							position += sizeof(int) + sizeof(int)*BitConverter.ToInt32(ilBytes,position);
 							break;
 						case OperandType.InlineTok:
-							position += sizeof(Int32);
+							position += sizeof(int);
 							break;
 						default:
 							throw new NotSupportedException("Unerwarteter Operandentyp "+opCode.OperandType);

@@ -20,7 +20,7 @@ namespace KaupischIT.Extensions
 		/// <param name="dataMemberSelector">die Eigenschaft, an die die Bindung erfolgen soll</param>
 		/// <param name="dataSourceUpdateMode"></param>
 		/// <returns>das neu erstellte System.Windows.Forms.Binding</returns>
-		public static Binding SetBinding<TBindable,TSource>(this TBindable bindable,Expression<Func<TBindable,object>> propertySelector,TSource dataSource,Expression<Func<TSource,object>> dataMemberSelector,DataSourceUpdateMode dataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged) where TBindable : IBindableComponent
+		public static Binding SetBinding<TBindable, TSource>(this TBindable bindable,Expression<Func<TBindable,object>> propertySelector,TSource dataSource,Expression<Func<TSource,object>> dataMemberSelector,DataSourceUpdateMode dataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged) where TBindable : IBindableComponent
 		{
 			string propertyName = propertySelector.GetMemberName();
 			string memberName = dataMemberSelector.GetMemberName();

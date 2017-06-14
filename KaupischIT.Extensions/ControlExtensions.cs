@@ -15,10 +15,7 @@ namespace KaupischIT.Extensions
 		/// </summary>
 		/// <param name="control">das Steuerelement, dessen Zeichenbereich ermittelt werden soll</param>
 		/// <returns>true, wenn sich der Mauszeiger im Zeichenbereich des angegebenen Steuerelements befindet; andernfalls false</returns>
-		public static bool ContainsMousePosition(this Control control)
-		{
-			return ControlExtensions.ContainsMousePosition(control,0);
-		}
+		public static bool ContainsMousePosition(this Control control) => ControlExtensions.ContainsMousePosition(control,0);
 
 
 		/// <summary>
@@ -41,10 +38,7 @@ namespace KaupischIT.Extensions
 		/// <param name="control">das Fenster, an das die Meldung geschickt werden soll</param>
 		/// <param name="message">die Meldung</param>
 		/// <returns>das Ergebnis des Meldungsverarbeitens; sein Wert hängt von der gesendeten Nachricht ab</returns>
-		public static IntPtr SendMessage(this Control control,Message message)
-		{
-			return ControlExtensions.SendMessage(control,message.Msg,message.WParam,message.LParam);
-		}
+		public static IntPtr SendMessage(this Control control,Message message) => ControlExtensions.SendMessage(control,message.Msg,message.WParam,message.LParam);
 
 		/// <summary>
 		/// Sendet dem Fenster die angegebene Meldung zu
@@ -54,13 +48,10 @@ namespace KaupischIT.Extensions
 		/// <param name="wParam">das WParam-Feld der Meldung</param>
 		/// <param name="lParam">das LParam-Feld der Meldung</param>
 		/// <returns>das Ergebnis des Meldungsverarbeitens; sein Wert hängt von der gesendeten Nachricht ab</returns>
-		public static IntPtr SendMessage(this Control control,Int32 msg,IntPtr wParam,IntPtr lParam)
-		{
-			return ControlExtensions.SendMessage(control.Handle,msg,wParam,lParam);
-		}
+		public static IntPtr SendMessage(this Control control,int msg,IntPtr wParam,IntPtr lParam) => ControlExtensions.SendMessage(control.Handle,msg,wParam,lParam);
 
-		[DllImport("user32.dll",EntryPoint="SendMessage",CharSet = CharSet.Auto)]
-		private static extern IntPtr SendMessage(IntPtr hWnd,Int32 Msg,IntPtr wParam,IntPtr lParam);
+		[DllImport("user32.dll",EntryPoint = "SendMessage",CharSet = CharSet.Auto)]
+		private static extern IntPtr SendMessage(IntPtr hWnd,int Msg,IntPtr wParam,IntPtr lParam);
 
 
 
@@ -87,17 +78,15 @@ namespace KaupischIT.Extensions
 				return vsVisible ? ScrollBars.Vertical : ScrollBars.None;
 		}
 
-		[DllImport("user32.dll",EntryPoint="GetWindowLong",SetLastError = true)]
+		[DllImport("user32.dll",EntryPoint = "GetWindowLong",SetLastError = true)]
 		private static extern int GetWindowLong(IntPtr hWnd,int nIndex);
 
 
 		/// <summary>
 		/// Unterbricht vorübergehend die Zeichnenvorgangslogik für das Steuerelement.
 		/// </summary>
-		public static void SuspendDrawing(this Control control)
-		{
-			control.SendMessage(WM_SETREDRAW,IntPtr.Zero,IntPtr.Zero);
-		}
+		public static void SuspendDrawing(this Control control) => control.SendMessage(WM_SETREDRAW,IntPtr.Zero,IntPtr.Zero);
+		
 		/// <summary>
 		/// Nimmt die übliche Zeichnenvorgangslogik wieder auf.
 		/// </summary>

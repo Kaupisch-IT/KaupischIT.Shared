@@ -27,15 +27,15 @@ namespace KaupischIT.Charting
 			public float EndAngle { get; set; }
 
 			/// <summary> Ruft den Winkel, der vom Kuchenstück aufgespannt wird, ab. </summary>
-			public float SweepAngle { get { return (this.EndAngle-this.StartAngle+360)%360; } }
-
+			public float SweepAngle => (this.EndAngle-this.StartAngle+360)%360;
+			
 			/// <summary> Ruft die Farbe des Kuchenstücks ab oder legt diese fest. </summary>
 			public Color Color { get; set; }
 
 			/// <summary> Ruft die Verschiebung des Kuchenstücks aus der Mittelpunkt des Kreisdiagramms ab oder legt diese fest. </summary>
 			public int Offset { get; set; }
 		}
-		
+
 
 		/// <summary> Ruft die Breite des Kreisdiagramms ab oder legt diese fest. </summary>
 		public int EllipseWidth { get; set; }
@@ -60,7 +60,7 @@ namespace KaupischIT.Charting
 
 		/// <summary> Ruft die Höhe der gesamten Zeichenfläche ab. </summary>
 		public int Height { get; private set; }
-		
+
 
 		/// <summary>
 		/// Erzeugt ein neues PieChart-Objekt
@@ -74,7 +74,7 @@ namespace KaupischIT.Charting
 			this.Opacity = 130;
 			this.PieHeight = 15;
 		}
-		
+
 
 		/// <summary>
 		/// Zeichnet ein neues Kreisdiagramm
@@ -108,14 +108,14 @@ namespace KaupischIT.Charting
 				// Kuchenstücke zeichnen
 				graphics.TranslateTransform(maxWidthOffset,maxHeightOffset+this.PieHeight); // Koordinatensystem so schieben, dass die Beschriftungen links und oben ranpassen
 				if (pieSlices.Count==1 && pieSlices[0].StartAngle==pieSlices[0].EndAngle)
-					this.DrawLonelySlice(graphics,pieSlices[0]);		// 100%-Stück
+					this.DrawLonelySlice(graphics,pieSlices[0]);        // 100%-Stück
 				else
 				{
-					this.DrawBottoms(graphics,pieSlices);				// Kreisausschnitte unten
-					this.DrawBackgroundSurfaces(graphics,pieSlices);	// hintere Seitenflächen
-					this.DrawCuttingEdges(graphics,pieSlices);			// Schnittflächen
-					this.DrawForegroundSurfaces(graphics,pieSlices);	// vordere Seitenflächen
-					this.DrawTops(graphics,pieSlices);					// Kreisausschnitte oben
+					this.DrawBottoms(graphics,pieSlices);               // Kreisausschnitte unten
+					this.DrawBackgroundSurfaces(graphics,pieSlices);    // hintere Seitenflächen
+					this.DrawCuttingEdges(graphics,pieSlices);          // Schnittflächen
+					this.DrawForegroundSurfaces(graphics,pieSlices);    // vordere Seitenflächen
+					this.DrawTops(graphics,pieSlices);                  // Kreisausschnitte oben
 				}
 
 				// Beschriftungen hinzufügen
@@ -124,7 +124,7 @@ namespace KaupischIT.Charting
 
 			return bitmap;
 		}
-		
+
 
 		/// <summary>
 		/// Zeichnet ein einzelnes 100%-Stück
@@ -158,20 +158,14 @@ namespace KaupischIT.Charting
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
-		private void DrawBottoms(Graphics graphics,IEnumerable<Slice> pieSlices)
-		{
-			this.DrawPlanes(graphics,pieSlices,0);
-		}
+		private void DrawBottoms(Graphics graphics,IEnumerable<Slice> pieSlices) => this.DrawPlanes(graphics,pieSlices,0);
 
 		/// <summary>
 		/// Zeichnet die Oberseiten aller Kuchenstücke
 		/// </summary>
 		/// <param name="graphics">Zeichnungsoberfläche, auf die gezeichnet werden soll</param>
 		/// <param name="pieSlices">Kuchenstücke, die gezeichnet werden sollen</param>
-		private void DrawTops(Graphics graphics,IEnumerable<Slice> pieSlices)
-		{
-			this.DrawPlanes(graphics,pieSlices,this.PieHeight);
-		}
+		private void DrawTops(Graphics graphics,IEnumerable<Slice> pieSlices) => this.DrawPlanes(graphics,pieSlices,this.PieHeight);
 
 
 		/// <summary>
@@ -196,7 +190,7 @@ namespace KaupischIT.Charting
 					graphics.DrawPie(pen,sliceFocus.X,sliceFocus.Y-altitude,this.EllipseWidth,this.EllipseHeight,startAngleT,sweepAngleT);
 				}
 		}
-		
+
 
 		/// <summary>
 		/// Zeichnet alle Seitenflächen der Kuchenstücke, die im Hintergrund liegen
@@ -249,13 +243,13 @@ namespace KaupischIT.Charting
 					ColorBlend colorBlend = new ColorBlend();
 					Color color = Color.FromArgb(this.Opacity,pieSlice.Color);
 					colorBlend.Colors = new Color[]
-                    {
-                        color.ChangeBrightness(0.5f),
-                        color.ChangeBrightness(0.8f),
-                        color,
-                        color.ChangeBrightness(0.8f),
-                        color.ChangeBrightness(0.5f)
-                    };
+					{
+						color.ChangeBrightness(0.5f),
+						color.ChangeBrightness(0.8f),
+						color,
+						color.ChangeBrightness(0.8f),
+						color.ChangeBrightness(0.5f)
+					};
 					colorBlend.Positions = new float[] { 0f,0.15f,0.5f,0.85f,1.0f };
 					using (LinearGradientBrush linearGradientBrush = new LinearGradientBrush(new Point(0,0),new Point(this.EllipseWidth,0),Color.Blue,Color.White))
 					{
@@ -281,7 +275,7 @@ namespace KaupischIT.Charting
 				}
 		}
 
-		
+
 		/// <summary>
 		/// Zeichnet die Schnittflächen der Kuchenstücke
 		/// </summary>
@@ -329,12 +323,12 @@ namespace KaupischIT.Charting
 
 					// Umriss der Seitenfläche erstellen, Fläche und Kontur zeichnen
 					PointF[] points = new PointF[]
-                    {
-                        new PointF(0,0),
-                        new PointF(0,-this.PieHeight),
-                        new PointF(x,y-this.PieHeight),
-                        new PointF(x,y)
-                    };
+					{
+						new PointF(0,0),
+						new PointF(0,-this.PieHeight),
+						new PointF(x,y-this.PieHeight),
+						new PointF(x,y)
+					};
 					graphics.FillPolygon(brush,points);
 					graphics.DrawPolygon(pen,points);
 				}
@@ -343,7 +337,7 @@ namespace KaupischIT.Charting
 			graphics.TranslateTransform(-newPointOfOrigin.X,-newPointOfOrigin.Y);
 		}
 
-		
+
 		/// <summary>
 		/// Zeichnet die Beschriftung der Kuchenstücke
 		/// </summary>
@@ -385,7 +379,7 @@ namespace KaupischIT.Charting
 					}
 		}
 
-		
+
 		/// <summary>
 		/// Transformiert einen Winkel in einem Kreis so, dass die Flächenverhältnisse in der perspektivischen Projektion (Ellipse) gewahrt bleiben
 		/// </summary>
@@ -397,7 +391,7 @@ namespace KaupischIT.Charting
 			double y = this.EllipseHeight * Math.Sin(Radian(angle));
 			return (float)(Math.Atan2(y,x)*180/Math.PI + 360)%360;
 		}
-		
+
 
 		/// <summary>
 		/// Berechnet den Winkel im Bogenmaß
@@ -408,7 +402,7 @@ namespace KaupischIT.Charting
 		{
 			return (float)(degree*Math.PI/180f);
 		}
-		
+
 
 		/// <summary>
 		/// Ermittelt den Mittelpunkt eines Kreisausschnitts (also den Mittelpunkt des eigentlichen Kreises)
@@ -427,7 +421,7 @@ namespace KaupischIT.Charting
 			float y = (float)Math.Sin(Radian(bisectorAngleT))*pieSlice.Offset;
 			return new PointF(x,y);
 		}
-		
+
 
 		/// <summary>
 		/// Bestimmt den "Radius" einer Ellipse an einem bestimmten Winkel

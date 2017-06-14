@@ -16,14 +16,14 @@ namespace KaupischIT.Extensions
 			if (modifyDropText==null)
 				modifyDropText = t => t;
 
-			textBox.DragEnter += delegate(object sender,DragEventArgs e)
+			textBox.DragEnter += delegate (object sender,DragEventArgs e)
 			{
 				string text = modifyDropText((string)e.Data.GetData(typeof(string)));
 				if (!String.IsNullOrEmpty(text))
 					e.Effect = DragDropEffects.Move;
 			};
 
-			textBox.DragOver += delegate(object sender,DragEventArgs e)
+			textBox.DragOver += delegate (object sender,DragEventArgs e)
 			{
 				string text = modifyDropText((string)e.Data.GetData(typeof(string)));
 				if (!String.IsNullOrEmpty(text))
@@ -36,7 +36,7 @@ namespace KaupischIT.Extensions
 				}
 			};
 
-			textBox.DragDrop += delegate(object sender,DragEventArgs e)
+			textBox.DragDrop += delegate (object sender,DragEventArgs e)
 			{
 				string text = modifyDropText((string)e.Data.GetData(typeof(string)));
 				if (!String.IsNullOrEmpty(text))

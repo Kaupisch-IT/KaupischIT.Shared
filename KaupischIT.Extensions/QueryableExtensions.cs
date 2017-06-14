@@ -22,7 +22,7 @@ namespace KaupischIT.Extensions
 		/// <param name="innerKeySelector"> Eine Funktion zum Extrahieren des Joinschlüssels aus jedem Element der zweiten Sequenz.</param>
 		/// <param name="resultSelector">Eine Funktion zum Erstellen eines Ergebniselements anhand eines Element aus der ersten Sequenz und einer Auflistung von übereinstimmenden Elementen aus der zweiten Sequenz.</param>
 		/// <returns>Ein System.Linq.IQueryable, das Elemente vom Typ TResult enthält, die durch Ausführen eines Group Joins von zwei Sequenzen ermittelt werden.</returns>
-		public static IQueryable<TResult> SelfJoin<TSource,TKey,TResult>(this IQueryable<TSource> source,Expression<Func<TSource,TKey>> outerKeySelector,Expression<Func<TSource,TKey>> innerKeySelector,Expression<Func<TSource,TSource,TResult>> resultSelector)
+		public static IQueryable<TResult> SelfJoin<TSource, TKey, TResult>(this IQueryable<TSource> source,Expression<Func<TSource,TKey>> outerKeySelector,Expression<Func<TSource,TKey>> innerKeySelector,Expression<Func<TSource,TSource,TResult>> resultSelector)
 		{
 			return source.Join(source,outerKeySelector,innerKeySelector,resultSelector);
 		}
@@ -40,7 +40,7 @@ namespace KaupischIT.Extensions
 		/// <param name="innerKeySelector"> Eine Funktion zum Extrahieren des Joinschlüssels aus jedem Element der zweiten Sequenz.</param>
 		/// <param name="resultSelector">Eine Funktion zum Erstellen eines Ergebniselements anhand eines Element aus der ersten Sequenz und einer Auflistung von übereinstimmenden Elementen aus der zweiten Sequenz.</param>
 		/// <returns>Ein System.Linq.IQueryable, das Elemente vom Typ TResult enthält, die durch Ausführen eines Group Joins von zwei Sequenzen ermittelt werden.</returns>
-		public static IQueryable<TResult> SelfLeftOuterJoin<TSource,TKey,TResult>(this IQueryable<TSource> source,Expression<Func<TSource,TKey>> outerKeySelector,Expression<Func<TSource,TKey>> innerKeySelector,Expression<Func<TSource,TSource,TResult>> resultSelector)
+		public static IQueryable<TResult> SelfLeftOuterJoin<TSource, TKey, TResult>(this IQueryable<TSource> source,Expression<Func<TSource,TKey>> outerKeySelector,Expression<Func<TSource,TKey>> innerKeySelector,Expression<Func<TSource,TSource,TResult>> resultSelector)
 		{
 			return source.LeftOuterJoin(source,outerKeySelector,innerKeySelector,resultSelector);
 		}
@@ -59,11 +59,11 @@ namespace KaupischIT.Extensions
 		/// <param name="innerKeySelector"> Eine Funktion zum Extrahieren des Joinschlüssels aus jedem Element der zweiten Sequenz.</param>
 		/// <param name="resultSelector">Eine Funktion zum Erstellen eines Ergebniselements anhand eines Element aus der ersten Sequenz und einer Auflistung von übereinstimmenden Elementen aus der zweiten Sequenz.</param>
 		/// <returns>Ein System.Linq.IQueryable, das Elemente vom Typ TResult enthält, die durch Ausführen eines Group Joins von zwei Sequenzen ermittelt werden.</returns>
-		public static IQueryable<TResult> LeftOuterJoin<TOuter,TInner,TKey,TResult>(this IQueryable<TOuter> outer,IQueryable<TInner> inner,Expression<Func<TOuter,TKey>> outerKeySelector,Expression<Func<TInner,TKey>> innerKeySelector,Expression<Func<TOuter,TInner,TResult>> resultSelector)
+		public static IQueryable<TResult> LeftOuterJoin<TOuter, TInner, TKey, TResult>(this IQueryable<TOuter> outer,IQueryable<TInner> inner,Expression<Func<TOuter,TKey>> outerKeySelector,Expression<Func<TInner,TKey>> innerKeySelector,Expression<Func<TOuter,TInner,TResult>> resultSelector)
 		{
 			// Das soll erstellt werden: (outerItem,innerGroup) => innerGroup.DefaultIfEmpty().Select(innerGroupItem => resultSelector(outerItem,innerGroupItem))
 			// Dabei muss "innerGroupItem => resultSelector(outerItem,innerGroupItem)" direkt in den Aufruf von resultSelector aufgelöst werden 
-			
+
 			ParameterExpression outerItemParameterExpression = resultSelector.Parameters[0]; // Expression.Parameter(typeof(TOuter),"outerItem");
 			ParameterExpression innerGroupParameterExpression = Expression.Parameter(typeof(IEnumerable<TInner>),"innerGroup");
 			ParameterExpression innerGroupItemParameterExpression = resultSelector.Parameters[1]; // Expression.Parameter(typeof(TInner),"innerGroupItem");
@@ -71,14 +71,14 @@ namespace KaupischIT.Extensions
 			MethodInfo enumerableSelectMethodInfo = typeof(Enumerable).GetGenericMethod("Select",typeof(IEnumerable<>),typeof(Func<,>)).MakeGenericMethod(typeof(TInner),typeof(TResult));
 			MethodInfo enumerableDefaultIfEmptyMethodInfo = typeof(Enumerable).GetGenericMethod("DefaultIfEmpty",typeof(IEnumerable<>)).MakeGenericMethod(typeof(TInner));
 
-			var callResultSelectorExpression = Expression.Invoke(resultSelector,outerItemParameterExpression,innerGroupItemParameterExpression);
-			var callDefaultIfEmtptyExpression = Expression.Call(null,enumerableDefaultIfEmptyMethodInfo,innerGroupParameterExpression);
-			var callSelectExpression = Expression.Call(null,enumerableSelectMethodInfo,callDefaultIfEmtptyExpression,Expression.Lambda<Func<TInner,TResult>>(callResultSelectorExpression,innerGroupItemParameterExpression));
-			var expandedResultSelectionExpression = Expression.Lambda<Func<TOuter,IEnumerable<TInner>,IEnumerable<TResult>>>(callSelectExpression,outerItemParameterExpression,innerGroupParameterExpression);
+			InvocationExpression callResultSelectorExpression = Expression.Invoke(resultSelector,outerItemParameterExpression,innerGroupItemParameterExpression);
+			MethodCallExpression callDefaultIfEmtptyExpression = Expression.Call(null,enumerableDefaultIfEmptyMethodInfo,innerGroupParameterExpression);
+			MethodCallExpression callSelectExpression = Expression.Call(null,enumerableSelectMethodInfo,callDefaultIfEmtptyExpression,Expression.Lambda<Func<TInner,TResult>>(callResultSelectorExpression,innerGroupItemParameterExpression));
+			Expression<Func<TOuter,IEnumerable<TInner>,IEnumerable<TResult>>> expandedResultSelectionExpression = Expression.Lambda<Func<TOuter,IEnumerable<TInner>,IEnumerable<TResult>>>(callSelectExpression,outerItemParameterExpression,innerGroupParameterExpression);
 
 			return outer
 				.GroupJoin(inner,outerKeySelector,innerKeySelector,expandedResultSelectionExpression)
 				.SelectMany(value => value);
-		}		
+		}
 	}
 }

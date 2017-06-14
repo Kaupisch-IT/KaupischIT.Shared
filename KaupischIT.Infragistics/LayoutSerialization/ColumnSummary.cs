@@ -15,7 +15,7 @@ namespace KaupischIT.InfragisticsControls.LayoutSerialization
 		/// </summary>
 		[XmlAttribute("columnKey")]
 		public string ColumnKey { get; set; }
-		
+
 		/// <summary>
 		/// Gibt den Typ der Zusammenfassung zurück oder legt diesen fest
 		/// </summary>

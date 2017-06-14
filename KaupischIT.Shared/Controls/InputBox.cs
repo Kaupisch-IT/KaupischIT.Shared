@@ -14,8 +14,8 @@ namespace KaupischIT.Shared
 		/// </summary>
 		public string Description
 		{
-			get { return this.labelMessage.Text; }
-			set { this.labelMessage.Text = value; }
+			get => this.labelMessage.Text;
+			set => this.labelMessage.Text = value;
 		}
 
 		/// <summary>
@@ -23,8 +23,8 @@ namespace KaupischIT.Shared
 		/// </summary>
 		public string Value
 		{
-			get { return this.textBoxValue.Text; }
-			set { this.textBoxValue.Text = value; }
+			get => this.textBoxValue.Text;
+			set => this.textBoxValue.Text = value;
 		}
 
 		/// <summary>
@@ -37,8 +37,8 @@ namespace KaupischIT.Shared
 		/// </summary>
 		public Func<char,bool> IsValidInputChar
 		{
-			get { return this.textBoxValue.IsValidChar; }
-			set { this.textBoxValue.IsValidChar = value; }
+			get => this.textBoxValue.IsValidChar;
+			set => this.textBoxValue.IsValidChar = value;
 		}
 
 
@@ -53,32 +53,23 @@ namespace KaupischIT.Shared
 			this.CanClickOK = (value) => !String.IsNullOrEmpty(value);
 			this.IsValidInputChar = _ => true;
 
-			this.Shown += delegate { this.TextBoxValue_TextChanged(this,EventArgs.Empty); };
+			this.Shown += (s,e) => this.TextBoxValue_TextChanged(this,EventArgs.Empty);
 		}
 
 
 		/// <summary>
 		/// Klick auf "OK"
 		/// </summary>
-		private void ButtonOK_Click(object sender,EventArgs e)
-		{
-			this.DialogResult = DialogResult.OK;
-		}
+		private void ButtonOK_Click(object sender,EventArgs e) => this.DialogResult = DialogResult.OK;
 
 		/// <summary>
 		/// Klick auf "Abbrechen"
 		/// </summary>
-		private void ButtonCancel_Click(object sender,EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-		}
+		private void ButtonCancel_Click(object sender,EventArgs e) => this.DialogResult = DialogResult.Cancel;
 
 		/// <summary>
 		/// Eingabetext validieren, sobald er geändert wird
 		/// </summary>
-		private void TextBoxValue_TextChanged(object sender,EventArgs e)
-		{
-			this.buttonOK.Enabled = this.CanClickOK(this.textBoxValue.Text);
-		}
+		private void TextBoxValue_TextChanged(object sender,EventArgs e) => this.buttonOK.Enabled = this.CanClickOK(this.textBoxValue.Text);
 	}
 }

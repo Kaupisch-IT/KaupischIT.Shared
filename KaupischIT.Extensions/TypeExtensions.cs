@@ -10,8 +10,8 @@ namespace KaupischIT.Extensions
 	/// </summary>
 	public static class TypeExtensions
 	{
-		private static readonly Type[] numericTypes = new[] { typeof(Byte),typeof(Decimal),typeof(Double),typeof(Int16),typeof(Int32),typeof(Int64),typeof(SByte),typeof(Single),typeof(UInt16),typeof(UInt32),typeof(UInt64) };
-		private static readonly Type[] numericNullableTypes = new[] { typeof(Byte?),typeof(Decimal?),typeof(Double?),typeof(Int16?),typeof(Int32?),typeof(Int64?),typeof(SByte?),typeof(Single?),typeof(UInt16?),typeof(UInt32?),typeof(UInt64) };
+		private static readonly Type[] numericTypes = new[] { typeof(byte),typeof(decimal),typeof(double),typeof(short),typeof(int),typeof(long),typeof(sbyte),typeof(float),typeof(ushort),typeof(uint),typeof(ulong) };
+		private static readonly Type[] numericNullableTypes = new[] { typeof(byte?),typeof(decimal?),typeof(double?),typeof(short?),typeof(int?),typeof(long?),typeof(sbyte?),typeof(float?),typeof(ushort?),typeof(uint?),typeof(ulong) };
 
 
 		/// <summary>

@@ -10,7 +10,7 @@ namespace KaupischIT.InfragisticsControls.Printing
 		/// Gibt den oberen Seitenrand zurück oder legt diesen fest
 		/// </summary>
 		public int MarginTop { get; set; }
-		
+
 		/// <summary>
 		/// Gibt den unteren Seitenrand zurück oder legt diesen fest
 		/// </summary>

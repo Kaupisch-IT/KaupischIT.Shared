@@ -21,7 +21,7 @@ namespace KaupischIT.Extensions
 				return ((MethodInfo)memberInfo).ReturnType;
 			else if (memberInfo is FieldInfo)
 				return ((FieldInfo)memberInfo).FieldType;
-			
+
 			throw new ArgumentException(memberInfo.ToString());
 		}
 	}

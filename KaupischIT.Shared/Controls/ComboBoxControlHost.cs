@@ -8,8 +8,8 @@ namespace KaupischIT.Shared
 	/// </summary>
 	public class ComboBoxControlHost : ComboBox
 	{
-		private ToolStripControlHost toolStripControlHost;						// kann Controls hosten
-		private ToolStripDropDown toolStripDropDown = new ToolStripDropDown();	// DropDown, das den ToolStripControlHost enthalten kann
+		private ToolStripControlHost toolStripControlHost;                      // kann Controls hosten
+		private ToolStripDropDown toolStripDropDown = new ToolStripDropDown();  // DropDown, das den ToolStripControlHost enthalten kann
 
 		// WindowMessages
 		private const int WM_USER = 0x0400;
@@ -25,7 +25,7 @@ namespace KaupischIT.Shared
 		/// </summary>
 		public Control HostedControl
 		{
-			get { return (toolStripControlHost!=null) ? this.toolStripControlHost.Control : null; }
+			get => (toolStripControlHost!=null) ? this.toolStripControlHost.Control : null;
 			set
 			{
 				this.toolStripDropDown.Items.Clear();
@@ -64,10 +64,7 @@ namespace KaupischIT.Shared
 		}
 
 
-		public void HideDropDown()
-		{
-			this.toolStripDropDown.Hide();
-		}
+		public void HideDropDown() => this.toolStripDropDown.Hide();
 
 
 		/// <summary>

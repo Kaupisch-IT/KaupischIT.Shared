@@ -10,7 +10,7 @@ namespace KaupischIT.Shared
 	[Subversion("$Id$")]
 	public class FormDisabler : ControlChangerBase
 	{
-		private readonly List<Control> disabledControls = new List<Control>();	// Liste der Controls, die deaktiviert wurden
+		private readonly List<Control> disabledControls = new List<Control>();  // Liste der Controls, die deaktiviert wurden
 
 
 		/// <summary>
@@ -20,13 +20,13 @@ namespace KaupischIT.Shared
 		/// <param name="control"></param>
 		public FormDisabler(Control control)
 			: this(control,true)
-		{}
+		{ }
 
 		public FormDisabler(Control control,bool useRootControl)
 			: base(control,useRootControl)
-		{}
+		{ }
 
-		
+
 		/// <summary>
 		/// Alle aktierten Kindcontrols des Basiscontrols deaktivieren
 		/// </summary>

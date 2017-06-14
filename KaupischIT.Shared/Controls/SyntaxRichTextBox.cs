@@ -11,9 +11,9 @@ namespace KaupischIT.Shared.Controls
 	/// </summary>
 	public class SyntaxRichTextBox : RichTextBox
 	{
-		private bool isProcessing = false;	// gibt ab, ob die Syntaxhervorhebung gerade durchgeführt wird
-		private string highlightedWord;		// gibt das momentan (durch eine Hintergrundfarbe) hervorgehobene Wort an
-		private Timer timerCurrentWord = new Timer { Interval = 1000 };	// der Timer für die verzögerte Hervorhebung des momentanen Wortes 
+		private bool isProcessing = false;  // gibt ab, ob die Syntaxhervorhebung gerade durchgeführt wird
+		private string highlightedWord;     // gibt das momentan (durch eine Hintergrundfarbe) hervorgehobene Wort an
+		private Timer timerCurrentWord = new Timer { Interval = 1000 }; // der Timer für die verzögerte Hervorhebung des momentanen Wortes 
 
 
 		/// <summary>
@@ -51,18 +51,14 @@ namespace KaupischIT.Shared.Controls
 		/// <summary>
 		/// Initialisiert die Hervorhebungsregeln mit Standardwerten
 		/// </summary>
-		protected virtual void InitializeRules()
-		{
-			this
-				.AddStyle("Numbers",Color.Magenta,@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfFmM]?\b|\b0x[a-fA-F\d]+\b")
-				.AddStyle("Strings",Color.Brown,@"""[^""\\\r\n]*(?:\\.[^\""\\\r\n]*)*""")
-				.AddStyle("Chars",Color.Brown,@"'\\?.'")
-				.AddStyle("InitializedProperties",Color.FromArgb(43,145,175),@"\s[\w_][\w\d_]*(?=\s*= )")
-				.AddStyle("InitializedProperties",Color.FromArgb(43,145,175),@"(?<=(^|,)[^,=]*\b([a-zA-Z_]\w*\.)+)([a-zA-Z_]\w*)(?=\s*(,|$))")
-				.AddStyle("Keywords",Color.Blue,@"\b(as|base|bool|break|byte|char|decimal|default|delegate|double|false|float|int|is|long|new|null|object|ref|return|sbyte|short|string|this|throw|true|typeof|uint|ulong|ushort)\b")
-				.AddStyle("Comments",Color.Green,@"(//.*$)|(/\*.*?\*/)");
-
-		}
+		protected virtual void InitializeRules() => this
+			.AddStyle("Numbers",Color.Magenta,@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfFmM]?\b|\b0x[a-fA-F\d]+\b")
+			.AddStyle("Strings",Color.Brown,@"""[^""\\\r\n]*(?:\\.[^\""\\\r\n]*)*""")
+			.AddStyle("Chars",Color.Brown,@"'\\?.'")
+			.AddStyle("InitializedProperties",Color.FromArgb(43,145,175),@"\s[\w_][\w\d_]*(?=\s*= )")
+			.AddStyle("InitializedProperties",Color.FromArgb(43,145,175),@"(?<=(^|,)[^,=]*\b([a-zA-Z_]\w*\.)+)([a-zA-Z_]\w*)(?=\s*(,|$))")
+			.AddStyle("Keywords",Color.Blue,@"\b(as|base|bool|break|byte|char|decimal|default|delegate|double|false|float|int|is|long|new|null|object|ref|return|sbyte|short|string|this|throw|true|typeof|uint|ulong|ushort)\b")
+			.AddStyle("Comments",Color.Green,@"(//.*$)|(/\*.*?\*/)");
 
 
 		/// <summary>
@@ -122,7 +118,7 @@ namespace KaupischIT.Shared.Controls
 		/// </summary>
 		public override string Text
 		{
-			get { return base.Text; }
+			get => base.Text;
 			set
 			{
 				base.Text = value;
@@ -134,10 +130,7 @@ namespace KaupischIT.Shared.Controls
 		/// <summary>
 		/// Führt die Syntaxhervorhebung für den gesamten Text durch 
 		/// </summary>
-		public void ProcessText()
-		{
-			this.ProcessText(0,this.Text.Length);
-		}
+		public void ProcessText() => this.ProcessText(0,this.Text.Length);
 
 
 		/// <summary>

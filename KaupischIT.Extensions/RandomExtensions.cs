@@ -15,10 +15,7 @@ namespace KaupischIT.Extensions
 		/// <param name="minValue">die inklusive untere Grenze der zurückgegebenen Zufallszahl</param>
 		/// <param name="maxValue">die exklusive obere Grenze der zurückgegebenen Zufallszahl.</param>
 		/// <returns>eine normalverteilte Zufallszahl im angegebenen Bereich</returns>
-		public static int NextNormal(this Random random,int minValue,int maxValue)
-		{
-			return (int)((maxValue-minValue) * Enumerable.Range(0,12).Average(_ => random.NextDouble())) + minValue;
-		}
+		public static int NextNormal(this Random random,int minValue,int maxValue) => (int)((maxValue-minValue) * Enumerable.Range(0,12).Average(_ => random.NextDouble())) + minValue;
 
 
 		/// <summary>
@@ -26,9 +23,6 @@ namespace KaupischIT.Extensions
 		/// </summary>
 		/// <param name="random">das Random-Objekt zum Bestimmen von Zufallszahlen</param>
 		/// <returns>eine normalverteilte Zufallszahl zwischen 0,0 und 1,0</returns>
-		public static double NextNormalDouble(this Random random)
-		{
-			return Enumerable.Range(0,12).Average(_ => random.NextDouble());
-		}
+		public static double NextNormalDouble(this Random random) => Enumerable.Range(0,12).Average(_ => random.NextDouble());
 	}
 }

@@ -17,10 +17,7 @@ namespace KaupischIT.Extensions
 		/// <param name="value">die Zeichenfolge, die ggf. gekürzt werden soll</param>
 		/// <param name="maxLength">die maximale Länge der Zeichenfolge</param>
 		/// <returns>die gekürzte Zeichenfolge, falls die Länge die angegebene Maximallänge überschreitet; andernfalls die unveränderte Zeichenfolge</returns>
-		public static string WithMaxLength(this string value,int maxLength)
-		{
-			return (value!=null && value.Length>maxLength) ? value.Substring(0,maxLength) : value;
-		}
+		public static string WithMaxLength(this string value,int maxLength) => (value!=null && value.Length>maxLength) ? value.Substring(0,maxLength) : value;
 
 
 
@@ -33,12 +30,10 @@ namespace KaupischIT.Extensions
 		public static Nullable<T> AsNullable<T>(this string value) where T : struct
 		{
 			if (typeof(T)==typeof(int))
-			{
-				int result;
-				return (int.TryParse(value,out result)) ? (T)(object)result : (Nullable<T>)null;
-			}
+				return (Int32.TryParse(value,out int result)) ? (T)(object)result : (Nullable<T>)null;
 			else
-				try { return (Nullable<T>)Convert.ChangeType(value,typeof(T)); }
+				try
+				{ return (Nullable<T>)Convert.ChangeType(value,typeof(T)); }
 				catch { return null; }
 		}
 
@@ -49,10 +44,7 @@ namespace KaupischIT.Extensions
 		/// </summary>
 		/// <param name="value">die Zeichenkette</param>
 		/// <returns>null, falls die Zeichenkette null oder leer ist, andernfalls die Zeichenkette selbst</returns>
-		public static string AsNullIfEmpty(this string value)
-		{
-			return (String.IsNullOrEmpty(value)) ? null : value;
-		}
+		public static string AsNullIfEmpty(this string value) => (String.IsNullOrEmpty(value)) ? null : value;
 
 
 
@@ -71,7 +63,10 @@ namespace KaupischIT.Extensions
 				if (propertyName=="0")
 					return value;
 				else
-					try { return DataBinder.Eval(value,propertyName); }
+					try
+					{
+						return DataBinder.Eval(value,propertyName);
+					}
 					catch (HttpException e) { throw new FormatException(null,e); }
 			};
 
@@ -96,7 +91,7 @@ namespace KaupischIT.Extensions
 
 			Regex regex = new Regex(@"(?<start>\{)+(?<property>[\w\.\[\]]+)(?<format>:[^}]+)?(?<end>\})+",RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 			string rewrittenFormat = regex.Replace(format,
-				delegate(Match match)
+				delegate (Match match)
 				{
 					Group startGroup = match.Groups["start"];
 					Group propertyGroup = match.Groups["property"];
@@ -114,7 +109,7 @@ namespace KaupischIT.Extensions
 						return new string('{',openingsCount) + (values.Count-1) + formatGroup.Value + new string('}',closingsCount);
 				});
 
-			return string.Format(provider,rewrittenFormat,values.ToArray());
+			return String.Format(provider,rewrittenFormat,values.ToArray());
 		}
 	}
 }

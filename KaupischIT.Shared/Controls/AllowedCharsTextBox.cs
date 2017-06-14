@@ -17,7 +17,7 @@ namespace KaupischIT.Shared.Controls
 
 		public Func<char,bool> IsValidChar
 		{
-			get { return this.isValidChar; }
+			get => this.isValidChar;
 			set
 			{
 				this.isValidChar = value;
@@ -27,7 +27,7 @@ namespace KaupischIT.Shared.Controls
 
 		public override string Text
 		{
-			get { return base.Text; }
+			get => base.Text;
 			set
 			{
 				StringBuilder onlyValid = new StringBuilder();

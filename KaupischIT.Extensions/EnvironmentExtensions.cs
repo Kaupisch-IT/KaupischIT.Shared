@@ -13,11 +13,7 @@ namespace KaupischIT.Extensions
 		/// <summary>
 		/// Ruft den Anzeigenamen der Person ab, die derzeit beim Windows-Betriebssystem angemeldet ist.
 		/// </summary>
-		public static string UserDisplayName
-		{
-			get { return EnvironmentExtensions.GetUserFullName(Environment.UserDomainName,Environment.UserName); }
-		}
-
+		public static string UserDisplayName => EnvironmentExtensions.GetUserFullName(Environment.UserDomainName,Environment.UserName);
 
 		/// <summary>
 		/// Ermittelt den Anzeigenamen des angegebenen Benutzers
@@ -39,11 +35,12 @@ namespace KaupischIT.Extensions
 				catch { }
 
 			// ActiveDirectory fragen
-			try { return new DirectoryEntry("WinNT://"+userDomainName+"/"+userName).Properties["fullName"].Value.ToString(); }
+			try
+			{ return new DirectoryEntry("WinNT://"+userDomainName+"/"+userName).Properties["fullName"].Value.ToString(); }
 			catch { return userDomainName+"\\"+userName; }
 		}
 
-		[DllImport("secur32.dll",EntryPoint="GetUserNameEx",CharSet=CharSet.Auto)]
+		[DllImport("secur32.dll",EntryPoint = "GetUserNameEx",CharSet = CharSet.Auto)]
 		private static extern int GetUserNameEx(int nameFormat,StringBuilder userName,ref int userNameSize);
 	}
 }

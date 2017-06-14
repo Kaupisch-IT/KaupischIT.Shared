@@ -16,10 +16,7 @@ namespace KaupischIT.Extensions
 		/// <param name="value">das Objekt, das konvertiert werden soll</param>
 		/// <param name="formatProvider">ein FormatProvider-Schnittstelle, die kulturabhängige Formatierungsinformationen liefert</param>
 		/// <returns>das in den Zieltypen konvertierte Objekt</returns>
-		public static T ConvertTo<T>(this object value,IFormatProvider formatProvider)
-		{
-			return (T)ObjectExtensions.ConvertTo(value,typeof(T),formatProvider);
-		}
+		public static T ConvertTo<T>(this object value,IFormatProvider formatProvider) => (T)ObjectExtensions.ConvertTo(value,typeof(T),formatProvider);
 
 
 		/// <summary>
@@ -41,7 +38,7 @@ namespace KaupischIT.Extensions
 
 			if (targetType.IsEnum)
 				return Enum.Parse(targetType,value.ToString());
-			
+
 			return Convert.ChangeType(value,targetType,formatProvider);
 		}
 

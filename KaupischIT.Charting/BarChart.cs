@@ -90,7 +90,7 @@ namespace KaupischIT.Charting
 					graphics.DrawLine(pen,baseLine,this.LineHeight,baseLine,bitmap.Height-this.LineHeight);
 
 				// alle Balken zeichnen
-				for (int i=0;i<bars.Count;i++)
+				for (int i = 0;i<bars.Count;i++)
 				{
 					Item bar = bars[i];
 
@@ -115,8 +115,8 @@ namespace KaupischIT.Charting
 						{
 							Color backColor = Color.FromArgb(this.Opacity,bar.Color);
 							using (LinearGradientBrush linearGradientBrush = new LinearGradientBrush(rectangle,backColor.ChangeBrightness(0.6f),backColor,0f))
-								graphics.FillRectangle(linearGradientBrush,rectangle);	// Hintergrund mit Farbverlauf
-							graphics.DrawRectangle(pen,rectangle);						// Rahmen
+								graphics.FillRectangle(linearGradientBrush,rectangle);  // Hintergrund mit Farbverlauf
+							graphics.DrawRectangle(pen,rectangle);                      // Rahmen
 						}
 
 						// Text für Bezeichnung 

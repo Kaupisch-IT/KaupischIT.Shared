@@ -82,10 +82,7 @@ namespace KaupischIT.InfragisticsControls
 		/// <summary>
 		/// Ermittelt die Spalte an der angegebenen Position
 		/// </summary>
-		private UltraGridColumn GetColumnAt(int index)
-		{
-			return (UltraGridColumn)this.Nodes[index].Tag;
-		}
+		private UltraGridColumn GetColumnAt(int index) => (UltraGridColumn)this.Nodes[index].Tag;
 
 
 		/// <summary>

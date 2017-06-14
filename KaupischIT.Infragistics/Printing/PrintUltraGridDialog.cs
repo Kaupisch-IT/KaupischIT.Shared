@@ -47,9 +47,9 @@ namespace KaupischIT.InfragisticsControls.Printing
 		/// </summary>
 		private void PrintUltraGridDialog_Shown(object sender,EventArgs e)
 		{
-			radioButtonPortrait.Checked = true;
+			this.radioButtonPortrait.Checked = true;
 
-			numericUpDownTop.Value = numericUpDownBottom.Value = numericUpDownLeft.Value = numericUpDownRight.Value = 2;
+			this.numericUpDownTop.Value = this.numericUpDownBottom.Value = this.numericUpDownLeft.Value = this.numericUpDownRight.Value = 2;
 
 			//Auslesen der Systemdrucker und Hinzufügen zur ComboBox
 			foreach (string drucker in PrinterSettings.InstalledPrinters)
@@ -63,13 +63,14 @@ namespace KaupischIT.InfragisticsControls.Printing
 			this.ultraPrintDocument.Page.BorderStyle = UIElementBorderStyle.None;
 			this.ultraPrintDocument.Header.Margins.Bottom = 10;
 			this.ultraPrintDocument.Footer.TextLeft = "[Date Printed] [Time Printed]";
-			this.ultraPrintDocument.BeginPrint += delegate { this.pageNumber = 0; };
+			this.ultraPrintDocument.BeginPrint += delegate
+			{ this.pageNumber = 0; };
 			this.ultraPrintDocument.PagePrinting += delegate
 			{
 				this.ultraPrintDocument.Footer.TextRight = (this.ultraPrintDocument.PrinterSettings.PrintRange==PrintRange.AllPages) ? "Seite <#> von <##>" : "Seite "+(this.ultraPrintDocument.PrinterSettings.FromPage+this.pageNumber);
 				this.pageNumber++;
 			};
-			
+
 			this.preventRefreshFlag = false;
 			this.RefreshPreview();
 		}
@@ -134,13 +135,13 @@ namespace KaupischIT.InfragisticsControls.Printing
 			this.ultraPrintDocument.PrinterSettings.PrinterName = (string)this.comboBoxPrinter.SelectedItem;
 			this.ultraPrintDocument.PrinterSettings.Duplex = (this.checkBoxDuplex.Checked) ? Duplex.Default : Duplex.Simplex;
 			this.ultraPrintDocument.PrinterSettings.Copies = (short)this.numericUpDownCopies.Value;
-			this.ultraPrintDocument.PrintColorStyle = (ColorRenderMode)comboBoxColorStyle.SelectedValue;
+			this.ultraPrintDocument.PrintColorStyle = (ColorRenderMode)this.comboBoxColorStyle.SelectedValue;
 			this.ultraPrintDocument.DefaultPageSettings.PaperSize = (PaperSize)this.comboBoxPapersize.SelectedItem;
-			this.ultraPrintDocument.DefaultPageSettings.Margins.Top = CmToPrintInch(numericUpDownTop.Value);
-			this.ultraPrintDocument.DefaultPageSettings.Margins.Bottom = CmToPrintInch(numericUpDownBottom.Value);
-			this.ultraPrintDocument.DefaultPageSettings.Margins.Left = CmToPrintInch(numericUpDownLeft.Value);
-			this.ultraPrintDocument.DefaultPageSettings.Margins.Right = CmToPrintInch(numericUpDownRight.Value);
-			this.ultraPrintDocument.DefaultPageSettings.Landscape = radioButtonLandscape.Checked;
+			this.ultraPrintDocument.DefaultPageSettings.Margins.Top = CmToPrintInch(this.numericUpDownTop.Value);
+			this.ultraPrintDocument.DefaultPageSettings.Margins.Bottom = CmToPrintInch(this.numericUpDownBottom.Value);
+			this.ultraPrintDocument.DefaultPageSettings.Margins.Left = CmToPrintInch(this.numericUpDownLeft.Value);
+			this.ultraPrintDocument.DefaultPageSettings.Margins.Right = CmToPrintInch(this.numericUpDownRight.Value);
+			this.ultraPrintDocument.DefaultPageSettings.Landscape = this.radioButtonLandscape.Checked;
 			this.ultraPrintDocument.FitWidthToPages = (this.radioButtonColumnDefaultSize.Checked) ? 0 : (int)this.numericUpDownAutoFitPageCount.Value;
 		}
 
@@ -151,7 +152,7 @@ namespace KaupischIT.InfragisticsControls.Printing
 		private void ComboBoxPrinter_SelectedIndexChanged(object sender,EventArgs e)
 		{
 			PrintDocument printDocument = new PrintDocument();
-			printDocument.PrinterSettings.PrinterName = comboBoxPrinter.SelectedItem.ToString();
+			printDocument.PrinterSettings.PrinterName = this.comboBoxPrinter.SelectedItem.ToString();
 			List<PaperSize> paperSizes = printDocument.PrinterSettings.PaperSizes.OfType<PaperSize>().ToList();
 			this.comboBoxPapersize.DataSource =  paperSizes;
 			this.comboBoxPapersize.DisplayMember = "PaperName";
@@ -160,7 +161,7 @@ namespace KaupischIT.InfragisticsControls.Printing
 			if (!this.checkBoxDuplex.Visible)
 				this.checkBoxDuplex.Checked = false;
 
-			var colorStyles = new[]
+			ColorStyleViewModel[] colorStyles = new[]
 			{
 				new ColorStyleViewModel { ColorRenderMode = ColorRenderMode.GrayScale, Name = "Graustufen" },
 				new ColorStyleViewModel { ColorRenderMode = ColorRenderMode.Monochrome,Name = "Schwarzweiß" }
@@ -188,18 +189,12 @@ namespace KaupischIT.InfragisticsControls.Printing
 		/// <summary>
 		/// Wandelt Drucker-Zoll in Zentimeter um
 		/// </summary>
-		private decimal PrintInchToCm(int inch)
-		{
-			return (decimal)(inch / 39.37);
-		}
+		private decimal PrintInchToCm(int inch) => (decimal)(inch / 39.37);
 
 		/// <summary>
 		/// Wandelt Zentimeter in Drucker-Zoll 
 		/// </summary>
-		private int CmToPrintInch(decimal cm)
-		{
-			return (int)((float)cm / 0.0254);
-		}
+		private int CmToPrintInch(decimal cm) => (int)((float)cm / 0.0254);
 
 
 		/// <summary>
@@ -218,22 +213,13 @@ namespace KaupischIT.InfragisticsControls.Printing
 			this.radioButtonColumnAutoFitPages.Checked = true;
 			this.RefreshPreview();
 		}
-		private void ComboBoxPapersize_SelectedIndexChanged(object sender,EventArgs e)
-		{
-			this.RefreshPreview();
-		}
-		private void NumericUpDownTop_ValueChanged(object sender,EventArgs e)
-		{
-			this.RefreshPreview();
-		}
+		private void ComboBoxPapersize_SelectedIndexChanged(object sender,EventArgs e) => this.RefreshPreview();
+		private void NumericUpDownTop_ValueChanged(object sender,EventArgs e) => this.RefreshPreview();
 		private void RadioButton_CheckedChanged(object sender,EventArgs e)
 		{
 			if (((RadioButton)sender).Checked)
 				this.RefreshPreview();
 		}
-		private void ComboBoxColorStyle_SelectionChangeCommitted(object sender,EventArgs e)
-		{
-			this.RefreshPreview();
-		}
+		private void ComboBoxColorStyle_SelectionChangeCommitted(object sender,EventArgs e) => this.RefreshPreview();
 	}
 }

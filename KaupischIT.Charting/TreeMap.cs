@@ -105,7 +105,7 @@ namespace KaupischIT.Charting
 					rectangle.Inflate(-1,-1); // 1-Pixel-Abstand von rechts und unten
 					if (rectangle.Height==0 || rectangle.Width==0)
 						return;
-					
+
 					// Hintergrundfläche zeichnen
 					Color backColor = Color.FromArgb(this.Opacity,treeItem.Color);
 					using (LinearGradientBrush linearGradientBrush = new LinearGradientBrush(rectangle,backColor.ChangeBrightness(0.6f),backColor,270f))
@@ -139,7 +139,7 @@ namespace KaupischIT.Charting
 					else
 						secondBars.Add(item);
 
-				double factor = firstBars.Sum(b => b.Value) / sum; 
+				double factor = firstBars.Sum(b => b.Value) / sum;
 
 				if (rectangle.Width>rectangle.Height)
 				{

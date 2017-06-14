@@ -11,10 +11,10 @@ namespace KaupischIT.Shared
 	[Subversion("$Id$")]
 	public abstract class ControlChangerBase : IDisposable
 	{
-		private static readonly object lockingObject = new object();	// Lock-Objekt für threadübergreifende Zugriffe
-		private static readonly Dictionary<Type,Dictionary<Control,int>> nestingMap = new Dictionary<Type,Dictionary<Control,int>>();	// Verzeichnis für die Verschachtelungstiefen 
-		private readonly Control baseControl;							// das Basiscontrol des übergebenen Controls
-		private volatile bool isDisposed = false;						// gibt an, schon disposed wurde
+		private static readonly object lockingObject = new object();    // Lock-Objekt für threadübergreifende Zugriffe
+		private static readonly Dictionary<Type,Dictionary<Control,int>> nestingMap = new Dictionary<Type,Dictionary<Control,int>>();   // Verzeichnis für die Verschachtelungstiefen 
+		private readonly Control baseControl;                           // das Basiscontrol des übergebenen Controls
+		private volatile bool isDisposed = false;                       // gibt an, schon disposed wurde
 
 
 		/// <summary>
@@ -63,10 +63,11 @@ namespace KaupischIT.Shared
 				if (ControlChangerBase.nestingMap[type][this.baseControl]==0 && !this.isDisposed)
 					ControlHelper.InvokeAsync(this.baseControl,delegate
 					{
-						try { this.DisableChanger(baseControl); }
-						catch (ObjectDisposedException)
+						try
 						{
+							this.DisableChanger(this.baseControl);
 						}
+						catch (ObjectDisposedException) { }
 						this.isDisposed = true;
 					});
 
@@ -88,9 +89,6 @@ namespace KaupischIT.Shared
 		/// </summary>
 		/// <param name="control">Control, dessen Root-Control ermittelt werden soll</param>
 		/// <returns>das Root-Control des übergebenen Controls</returns>
-		private static Control GetRootControl(Control control)
-		{
-			return (control.Parent==null) ? control : GetRootControl(control.Parent);
-		}
+		private static Control GetRootControl(Control control) => (control.Parent==null) ? control : GetRootControl(control.Parent);
 	}
 }

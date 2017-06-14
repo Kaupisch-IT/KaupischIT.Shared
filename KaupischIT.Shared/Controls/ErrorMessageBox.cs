@@ -52,8 +52,7 @@ namespace KaupischIT.Shared
 				result.AppendLine(exception.ToString());
 				result.AppendLine();
 
-				ReflectionTypeLoadException typeLoadException = exception as ReflectionTypeLoadException;
-				if (typeLoadException!=null)
+				if (exception is ReflectionTypeLoadException typeLoadException)
 					foreach (Exception loaderException in typeLoadException.LoaderExceptions)
 						result.AppendLine(this.GetCompleteExceptionMessage(loaderException));
 
@@ -66,10 +65,7 @@ namespace KaupischIT.Shared
 		/// <summary>
 		/// Klick auf "OK"
 		/// </summary>
-		private void ButtonOk_Click(object sender,EventArgs e)
-		{
-			this.Close();
-		}
+		private void ButtonOk_Click(object sender,EventArgs e) => this.Close();
 
 		/// <summary>
 		/// Klick auf "Details anzeigen"
@@ -102,7 +98,8 @@ namespace KaupischIT.Shared
 				result.AppendLine();
 				result.AppendLine(this.textBoxDetails.Text);
 
-				try { Clipboard.SetText(result.ToString()); }
+				try
+				{ Clipboard.SetText(result.ToString()); }
 				catch { }
 			}
 		}
@@ -142,10 +139,7 @@ namespace KaupischIT.Shared
 		/// </summary>
 		/// <param name="exception">die Ausnahme, deren Meldung und Details ausgegeben werden sollen</param>
 		/// <returns>das angezeigte Meldungsfeld</returns>
-		public static ErrorMessageBox Show(Exception exception)
-		{
-			return ErrorMessageBox.Show(exception.Message,exception);
-		}
+		public static ErrorMessageBox Show(Exception exception) => ErrorMessageBox.Show(exception.Message,exception);
 
 
 		/// <summary>
@@ -154,10 +148,7 @@ namespace KaupischIT.Shared
 		/// <param name="message">der im Meldungsfeld anzuzeigende Text</param>
 		/// <param name="exception">die Ausnahme, deren Details ausgegeben werden sollen</param>
 		/// <returns>das angezeigte Meldungsfeld</returns>
-		public static ErrorMessageBox Show(string message,Exception exception)
-		{
-			return ErrorMessageBox.Show(message,Application.ProductName,exception);
-		}
+		public static ErrorMessageBox Show(string message,Exception exception) => ErrorMessageBox.Show(message,Application.ProductName,exception);
 
 
 		/// <summary>
@@ -176,11 +167,12 @@ namespace KaupischIT.Shared
 			{
 				errorMessageBox.StartPosition = FormStartPosition.CenterParent;
 				errorMessageBox.ShowInTaskbar = false;
-				activeForm.Invoke((MethodInvoker)delegate { errorMessageBox.ShowDialog(activeForm); });
+				activeForm.Invoke((MethodInvoker)delegate
+				{ errorMessageBox.ShowDialog(activeForm); });
 			}
 			else
 				errorMessageBox.ShowDialog();
-			
+
 			return errorMessageBox;
 		}
 	}

@@ -13,11 +13,7 @@ namespace KaupischIT.Extensions
 		/// <param name="eventHandler">das Ereignis, das ausgelöst werden soll</param>
 		/// <param name="sender">die Quelle des Ereignisses</param>
 		/// <param name="eventArgs">ein System.EventArgs, das die Ereignisdaten enthält</param>
-		public static void Raise(this EventHandler eventHandler,object sender,EventArgs eventArgs)
-		{
-			if (eventHandler!=null)
-				eventHandler(sender,eventArgs);
-		}
+		public static void Raise(this EventHandler eventHandler,object sender,EventArgs eventArgs) => eventHandler?.Invoke(sender,eventArgs);
 
 		/// <summary>
 		/// Löst ein Ereignis aus
@@ -26,10 +22,6 @@ namespace KaupischIT.Extensions
 		/// <param name="eventHandler">das Ereignis, das ausgelöst werden soll</param>
 		/// <param name="sender">die Quelle des Ereignisses</param>
 		/// <param name="eventArgs">ein System.EventArgs, das die Ereignisdaten enthält</param>
-		public static void Raise<T>(this EventHandler<T> eventHandler,object sender,T eventArgs) where T : EventArgs
-		{
-			if (eventHandler!=null)
-				eventHandler(sender,eventArgs);
-		}
+		public static void Raise<T>(this EventHandler<T> eventHandler,object sender,T eventArgs) where T : EventArgs => eventHandler?.Invoke(sender,eventArgs);
 	}
 }

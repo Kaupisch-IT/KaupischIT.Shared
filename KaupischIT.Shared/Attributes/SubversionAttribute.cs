@@ -11,16 +11,16 @@ namespace KaupischIT.Shared
 	/// Liefert Informationen aus dem Versionsverwaltungssystem
 	/// </summary>
 	[Serializable]
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Assembly,AllowMultiple=true)]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Assembly,AllowMultiple = true)]
 	[Subversion("$Id$")]
 	public class SubversionAttribute : Attribute
 	{
 		// Regex zum parsen der ID
 		private static readonly Regex regex = new Regex(@"\$ id: \s*"
-            +@"(?<headUrl>[^" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + @"]+) \s+"
-            +@"(?<revision>\d+) \s+"
-            +@"(?<date>\d\d\d\d-\d\d-\d\d \s+ \d\d:\d\d:\d\dZ) \s+"
-            +@"(?<author>\w+)",
+			+@"(?<headUrl>[^" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + @"]+) \s+"
+			+@"(?<revision>\d+) \s+"
+			+@"(?<date>\d\d\d\d-\d\d-\d\d \s+ \d\d:\d\d:\d\dZ) \s+"
+			+@"(?<author>\w+)",
 			RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
 
@@ -79,10 +79,7 @@ namespace KaupischIT.Shared
 		/// </summary>
 		/// <param name="assembly">die Assembly, die durchsucht werden soll</param>
 		/// <returns>das SubversionAttribute, das Informationen über die aktuellste Revision enthält, oder null</returns>
-		public static SubversionAttribute FindLatest(Assembly assembly)
-		{
-			return SubversionAttribute.findLatest(assembly);
-		}
+		public static SubversionAttribute FindLatest(Assembly assembly) => SubversionAttribute.FindLatest((ICustomAttributeProvider)assembly);
 
 
 		/// <summary>
@@ -90,10 +87,7 @@ namespace KaupischIT.Shared
 		/// </summary>
 		/// <param name="type">der Typ, der durchsucht werden soll</param>
 		/// <returns>das SubversionAttribute, das Informationen über die aktuellste Revision enthält, oder null</returns>
-		public static SubversionAttribute FindLatest(Type type)
-		{
-			return SubversionAttribute.findLatest(type);
-		}
+		public static SubversionAttribute FindLatest(Type type) => SubversionAttribute.FindLatest((ICustomAttributeProvider)type);
 
 
 		/// <summary>
@@ -101,9 +95,9 @@ namespace KaupischIT.Shared
 		/// </summary>
 		/// <param name="customAttributeProvider">der CustomAttributeProvider zum Ermitteln der Attribute</param>
 		/// <returns>das SubversionAttribute, das Informationen über die aktuellste Revision enthält, oder null</returns>
-		private static SubversionAttribute findLatest(ICustomAttributeProvider customAttributeProvider)
+		private static SubversionAttribute FindLatest(ICustomAttributeProvider customAttributeProvider)
 		{
-			SubversionAttribute[] subversionAttributes = SubversionAttribute.findAll(customAttributeProvider).ToArray();
+			SubversionAttribute[] subversionAttributes = SubversionAttribute.FindAll(customAttributeProvider).ToArray();
 			if (subversionAttributes.Length>0)
 			{
 				Comparison<SubversionAttribute> comparer = (first,second) => second.Revision.CompareTo(first.Revision);
@@ -121,10 +115,7 @@ namespace KaupischIT.Shared
 		/// </summary>
 		/// <param name="assembly">die Assembly, die durchsucht werden soll</param>
 		/// <returns>alle SubversionAttribute, die Informationen über die verwendeten Revisionen erhalten</returns>
-		public static List<SubversionAttribute> FindAll(Assembly assembly)
-		{
-			return SubversionAttribute.findAll(assembly);
-		}
+		public static List<SubversionAttribute> FindAll(Assembly assembly) => SubversionAttribute.FindAll((ICustomAttributeProvider)assembly);
 
 
 		/// <summary>
@@ -132,10 +123,7 @@ namespace KaupischIT.Shared
 		/// </summary>
 		/// <param name="type">der Typ, der durchsucht werden soll</param>
 		/// <returns>alle SubversionAttribute, die Informationen über die verwendeten Revisionen erhalten</returns>
-		public static List<SubversionAttribute> FindAll(Type type)
-		{
-			return SubversionAttribute.findAll(type);
-		}
+		public static List<SubversionAttribute> FindAll(Type type) => SubversionAttribute.FindAll((ICustomAttributeProvider)type);
 
 
 		/// <summary>
@@ -143,7 +131,7 @@ namespace KaupischIT.Shared
 		/// </summary>
 		/// <param name="customAttributeProvider">der CustomAttributeProvider zum Ermitteln der Attribute</param>
 		/// <returns>alle SubversionAttribute, die Informationen über die verwendeten Revisionen erhalten</returns>
-		private static List<SubversionAttribute> findAll(ICustomAttributeProvider customAttributeProvider)
+		private static List<SubversionAttribute> FindAll(ICustomAttributeProvider customAttributeProvider)
 		{
 			List<SubversionAttribute> result = new List<SubversionAttribute>();
 			foreach (SubversionAttribute subversionAttribute in customAttributeProvider.GetCustomAttributes(typeof(SubversionAttribute),false))
@@ -158,9 +146,6 @@ namespace KaupischIT.Shared
 		/// Gibt die Zeichenkettenrepräsentation dieses SubversionAttributes zurück
 		/// </summary>
 		/// <returns>die Zeichenkettenrepräsentation dieses SubversionAttributes</returns>
-		public override string ToString()
-		{
-			return this.ID;
-		}
+		public override string ToString() => this.ID;
 	}
 }

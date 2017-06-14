@@ -132,8 +132,8 @@
 			this.pictureBoxPie.Size = new System.Drawing.Size(380, 221);
 			this.pictureBoxPie.TabIndex = 4;
 			this.pictureBoxPie.TabStop = false;
-			this.pictureBoxPie.MouseEnter += new System.EventHandler(this.pictureBoxPie_MouseEnter);
-			this.pictureBoxPie.MouseLeave += new System.EventHandler(this.pictureBoxPie_MouseLeave);
+			this.pictureBoxPie.MouseEnter += new System.EventHandler(this.PictureBoxPie_MouseEnter);
+			this.pictureBoxPie.MouseLeave += new System.EventHandler(this.PictureBoxPie_MouseLeave);
 			// 
 			// label3
 			// 
@@ -182,7 +182,7 @@
 			this.toolTip.SetToolTip(this.buttonToClipboard, "aktuelle Anzeige in die Zwischenablage kopieren");
 			this.buttonToClipboard.UseVisualStyleBackColor = true;
 			this.buttonToClipboard.Visible = false;
-			this.buttonToClipboard.Click += new System.EventHandler(this.buttonToClipboard_Click);
+			this.buttonToClipboard.Click += new System.EventHandler(this.ButtonToClipboard_Click);
 			// 
 			// ChartForm
 			// 

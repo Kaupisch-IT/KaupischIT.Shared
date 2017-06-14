@@ -19,7 +19,7 @@ namespace KaupischIT.Shared
 		/// </summary>
 		public string EmptyText
 		{
-			get { return this.emptyText; }
+			get => this.emptyText;
 			set
 			{
 				this.emptyText = value;
@@ -57,7 +57,7 @@ namespace KaupischIT.Shared
 					if (!String.IsNullOrEmpty(this.EmptyText))
 					{
 						TextFormatFlags textFormatFlags = TextFormatFlags.Left|TextFormatFlags.VerticalCenter|TextFormatFlags.PathEllipsis|TextFormatFlags.NoPrefix;
-						TextRenderer.DrawText(graphics,this.EmptyText,this.Font,new Rectangle(bounds.X,bounds.X,bounds.Width-((this.EmptyImage!=null)?this.EmptyImage.Width:0),bounds.Height),SystemColors.GrayText,textFormatFlags);
+						TextRenderer.DrawText(graphics,this.EmptyText,this.Font,new Rectangle(bounds.X,bounds.X,bounds.Width-((this.EmptyImage!=null) ? this.EmptyImage.Width : 0),bounds.Height),SystemColors.GrayText,textFormatFlags);
 					}
 
 					// Bild

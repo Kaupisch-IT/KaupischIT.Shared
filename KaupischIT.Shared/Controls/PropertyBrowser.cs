@@ -16,7 +16,7 @@ namespace KaupischIT.Shared
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SelectedProperty
 		{
-			get { return this.objectBrowser.SelectedProperty; }
+			get => this.objectBrowser.SelectedProperty;
 			set
 			{
 				if (!this.DesignMode)
@@ -31,7 +31,7 @@ namespace KaupischIT.Shared
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Type DisplayedType
 		{
-			get { return this.objectBrowser.DisplayedType; }
+			get => this.objectBrowser.DisplayedType;
 			set
 			{
 				if (this.DisplayedType!=value)
@@ -42,8 +42,8 @@ namespace KaupischIT.Shared
 
 		public Func<Type,bool> TypeFilter
 		{
-			get { return this.objectBrowser.TypeFilter; }
-			set { this.objectBrowser.TypeFilter = value; }
+			get => this.objectBrowser.TypeFilter;
+			set => this.objectBrowser.TypeFilter = value;
 		}
 
 
@@ -56,21 +56,18 @@ namespace KaupischIT.Shared
 			this.objectBrowser.FullRowSelect = true;
 			this.objectBrowser.BorderStyle = BorderStyle.None;
 			this.objectBrowser.CheckBoxes = false;
-			this.objectBrowser.VisibleChanged += objectBrowser_VisibleChanged;
-			this.objectBrowser.AfterSelect += objectBrowser_AfterSelect;
-			this.SelectedValueChanged += PropertyBrowser_SelectedValueChanged;
+			this.objectBrowser.VisibleChanged += this.ObjectBrowser_VisibleChanged;
+			this.objectBrowser.AfterSelect += this.ObjectBrowser_AfterSelect;
+			this.SelectedValueChanged += this.PropertyBrowser_SelectedValueChanged;
 
-			this.HostedControl = objectBrowser;
+			this.HostedControl = this.objectBrowser;
 		}
 
 
-		private void PropertyBrowser_SelectedValueChanged(object sender,EventArgs e)
-		{
-			this.SelectedProperty = this.Text;
-		}
+		private void PropertyBrowser_SelectedValueChanged(object sender,EventArgs e) => this.SelectedProperty = this.Text;
 
 
-		private void objectBrowser_AfterSelect(object sender,TreeViewEventArgs e)
+		private void ObjectBrowser_AfterSelect(object sender,TreeViewEventArgs e)
 		{
 			if (!this.DesignMode)
 			{
@@ -80,22 +77,16 @@ namespace KaupischIT.Shared
 		}
 
 
-		private void objectBrowser_VisibleChanged(object sender,EventArgs e)
+		private void ObjectBrowser_VisibleChanged(object sender,EventArgs e)
 		{
 			if (!this.objectBrowser.Visible)
 				this.objectBrowser.Focus(); // TODO: Warum? Wegen Focus und so!?
 		}
 
 
-		public PropertyInfo GetSelectedPropertyInfo(Type type)
-		{
-			return this.objectBrowser.GetSelectedPropertyInfo(type);
-		}
+		public PropertyInfo GetSelectedPropertyInfo(Type type) => this.objectBrowser.GetSelectedPropertyInfo(type);
 
 
-		public object GetSelectedPropertyValue(object value)
-		{
-			return this.objectBrowser.GetSelectedPropertyValue(value);
-		}
+		public object GetSelectedPropertyValue(object value) => this.objectBrowser.GetSelectedPropertyValue(value);
 	}
 }

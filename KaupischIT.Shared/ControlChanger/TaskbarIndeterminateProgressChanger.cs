@@ -17,13 +17,13 @@ namespace KaupischIT.Shared
 		/// <param name="control"></param>
 		public TaskbarIndeterminateProgressChanger(Control control)
 			: this(control,true)
-		{}
+		{ }
 
 		public TaskbarIndeterminateProgressChanger(Control control,bool useRootControl)
 			: base(control,useRootControl)
 		{ }
 
-		
+
 		protected override void EnableChanger(Control baseControl)
 		{
 			if (TaskbarManager.IsPlatformSupported)

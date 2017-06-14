@@ -211,7 +211,7 @@
 			this.xrDesignPanel.LookAndFeel.SkinName = "Seven Classic";
 			this.xrDesignPanel.LookAndFeel.UseDefaultLookAndFeel = false;
 			this.xrDesignPanel.Name = "xrDesignPanel";
-			this.xrDesignPanel.ShowComponentTray = false;
+			this.xrDesignPanel.ComponentVisibility = DevExpress.XtraReports.Design.ComponentVisibility.None;
 			this.xrDesignPanel.Size = new System.Drawing.Size(881, 572);
 			this.xrDesignPanel.TabIndex = 9;
 			// 

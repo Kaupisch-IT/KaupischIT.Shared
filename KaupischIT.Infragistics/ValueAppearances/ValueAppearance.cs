@@ -23,8 +23,8 @@ namespace KaupischIT.InfragisticsControls.ValueAppearances
 		/// </summary>
 		public bool HighlightNegativeValues
 		{
-			get { return this.highlightNegativeValues; }
-			set { this.ChangePropertyAndNotify(() => this.highlightNegativeValues = value); }
+			get => this.highlightNegativeValues;
+			set => this.ChangePropertyAndNotify(() => this.highlightNegativeValues = value);
 		}
 		private bool highlightNegativeValues;
 
@@ -33,8 +33,8 @@ namespace KaupischIT.InfragisticsControls.ValueAppearances
 		/// </summary>
 		public bool ShowTrendIndicators
 		{
-			get { return this.showTrendIndicators; }
-			set { this.ChangePropertyAndNotify(() => this.showTrendIndicators = value); }
+			get => this.showTrendIndicators;
+			set => this.ChangePropertyAndNotify(() => this.showTrendIndicators = value);
 		}
 		private bool showTrendIndicators;
 
@@ -59,17 +59,13 @@ namespace KaupischIT.InfragisticsControls.ValueAppearances
 		private void ChangePropertyAndNotify(Action setter)
 		{
 			setter();
-			if (this.PropertyChanged!=null)
-				this.PropertyChanged(this,EventArgs.Empty);
+			this.PropertyChanged?.Invoke(this,EventArgs.Empty);
 		}
 
 
 		/// <summary>
 		/// Erzeugt eine Kopie des Objektes
 		/// </summary>
-		public object Clone()
-		{
-			return this.MemberwiseClone();
-		}
+		public object Clone() => this.MemberwiseClone();
 	}
 }

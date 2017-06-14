@@ -16,10 +16,7 @@ namespace KaupischIT.Extensions
 		/// <typeparam name="T">Der Typ der Elemente von source.</typeparam>
 		/// <param name="source">Die Sequenz, für die eine leere Sequenz zurückgegeben werden soll, wenn sie null ist.</param>
 		/// <returns>Eine leere Auflistung, wenn source null ist; andernfalls source selbst.</returns>
-		public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T> source)
-		{
-			return source ?? Enumerable.Empty<T>();
-		}
+		public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T> source) => source ?? Enumerable.Empty<T>();
 
 
 		/// <summary>
@@ -33,7 +30,7 @@ namespace KaupischIT.Extensions
 		/// <param name="innerKeySelector"> Eine Funktion zum Extrahieren des Joinschlüssels aus jedem Element der zweiten Sequenz.</param>
 		/// <param name="resultSelector">Eine Funktion zum Erstellen eines Ergebniselements anhand eines Element aus der ersten Sequenz und einer Auflistung von übereinstimmenden Elementen aus der zweiten Sequenz.</param>
 		/// <returns>Ein System.Collections.Generic.IEnumerable, das Elemente vom Typ TResult enthält, die durch Ausführen eines Group Joins von zwei Sequenzen ermittelt werden.</returns>
-		public static IEnumerable<TResult> SelfJoin<TSource,TKey,TResult>(this IEnumerable<TSource> source,Func<TSource,TKey> outerKeySelector,Func<TSource,TKey> innerKeySelector,Func<TSource,TSource,TResult> resultSelector)
+		public static IEnumerable<TResult> SelfJoin<TSource, TKey, TResult>(this IEnumerable<TSource> source,Func<TSource,TKey> outerKeySelector,Func<TSource,TKey> innerKeySelector,Func<TSource,TSource,TResult> resultSelector)
 		{
 			return source.Join(source,outerKeySelector,innerKeySelector,resultSelector);
 		}
@@ -50,7 +47,7 @@ namespace KaupischIT.Extensions
 		/// <param name="innerKeySelector"> Eine Funktion zum Extrahieren des Joinschlüssels aus jedem Element der zweiten Sequenz.</param>
 		/// <param name="resultSelector">Eine Funktion zum Erstellen eines Ergebniselements anhand eines Element aus der ersten Sequenz und einer Auflistung von übereinstimmenden Elementen aus der zweiten Sequenz.</param>
 		/// <returns>Ein System.Collections.Generic.IEnumerable, das Elemente vom Typ TResult enthält, die durch Ausführen eines Group Joins von zwei Sequenzen ermittelt werden.</returns>
-		public static IEnumerable<TResult> SelfLeftOuterJoin<TSource,TKey,TResult>(this IEnumerable<TSource> source,Func<TSource,TKey> outerKeySelector,Func<TSource,TKey> innerKeySelector,Func<TSource,TSource,TResult> resultSelector)
+		public static IEnumerable<TResult> SelfLeftOuterJoin<TSource, TKey, TResult>(this IEnumerable<TSource> source,Func<TSource,TKey> outerKeySelector,Func<TSource,TKey> innerKeySelector,Func<TSource,TSource,TResult> resultSelector)
 		{
 			return source.LeftOuterJoin(source,outerKeySelector,innerKeySelector,resultSelector);
 		}
@@ -69,7 +66,7 @@ namespace KaupischIT.Extensions
 		/// <param name="innerKeySelector"> Eine Funktion zum Extrahieren des Joinschlüssels aus jedem Element der zweiten Sequenz.</param>
 		/// <param name="resultSelector">Eine Funktion zum Erstellen eines Ergebniselements anhand eines Element aus der ersten Sequenz und einer Auflistung von übereinstimmenden Elementen aus der zweiten Sequenz.</param>
 		/// <returns>Ein System.Collections.Generic.IEnumerable, das Elemente vom Typ TResult enthält, die durch Ausführen eines Group Joins von zwei Sequenzen ermittelt werden.</returns>
-		public static IEnumerable<TResult> LeftOuterJoin<TOuter,TInner,TKey,TResult>(this IEnumerable<TOuter> outer,IEnumerable<TInner> inner,Func<TOuter,TKey> outerKeySelector,Func<TInner,TKey> innerKeySelector,Func<TOuter,TInner,TResult> resultSelector)
+		public static IEnumerable<TResult> LeftOuterJoin<TOuter, TInner, TKey, TResult>(this IEnumerable<TOuter> outer,IEnumerable<TInner> inner,Func<TOuter,TKey> outerKeySelector,Func<TInner,TKey> innerKeySelector,Func<TOuter,TInner,TResult> resultSelector)
 		{
 			return outer
 				.GroupJoin(inner,outerKeySelector,innerKeySelector,(outerItem,innerGroup) => innerGroup.DefaultIfEmpty().Select(innerGroupItem => resultSelector(outerItem,innerGroupItem)))
@@ -88,8 +85,8 @@ namespace KaupischIT.Extensions
 		/// <returns>Eine Sequenz mit den gruppierten Elementen der Eingabesequenz</returns>
 		public static IEnumerable<IGrouping<DateTime,TElement>> FullDateGroupBy<TElement>(this IEnumerable<TElement> source,Func<TElement,DateTime?> dateSelector)
 		{
-			source = source.Where(item => dateSelector(item).HasValue).ToList();	// für Performance (sonst wird source jeweils bei Min,Max und GroupJoin evaluiert)
-			
+			source = source.Where(item => dateSelector(item).HasValue).ToList();    // für Performance (sonst wird source jeweils bei Min,Max und GroupJoin evaluiert)
+
 			if (!source.Any())
 				return Enumerable.Empty<IGrouping<DateTime,TElement>>();
 
@@ -128,7 +125,7 @@ namespace KaupischIT.Extensions
 		/// </summary>
 		/// <typeparam name="TKey">Der Typ des Schlüssels</typeparam>
 		/// <typeparam name="TValue">Der Typ der Werte</typeparam>
-		private class Grouping<TKey,TValue> : IGrouping<TKey,TValue>
+		private class Grouping<TKey, TValue> : IGrouping<TKey,TValue>
 		{
 			public TKey Key { get; set; }
 			public IEnumerable<TValue> Values { get; set; }
@@ -139,7 +136,7 @@ namespace KaupischIT.Extensions
 				this.Values = values;
 			}
 
-			public IEnumerator<TValue> GetEnumerator() { return this.Values.GetEnumerator(); }
+			public IEnumerator<TValue> GetEnumerator() => this.Values.GetEnumerator();
 			IEnumerator IEnumerable.GetEnumerator() { return this.Values.GetEnumerator(); ; }
 		}
 	}

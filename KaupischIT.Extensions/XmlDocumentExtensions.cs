@@ -28,7 +28,7 @@ namespace KaupischIT.Extensions
 			string[] xpathParts = xpath.Trim('/').Split('/');
 			string nextNode = xpathParts.First();
 
-			if (string.IsNullOrEmpty(nextNode))
+			if (String.IsNullOrEmpty(nextNode))
 				return parentNode;
 
 			XmlNode xmlNode = parentNode.SelectSingleNode(nextNode);

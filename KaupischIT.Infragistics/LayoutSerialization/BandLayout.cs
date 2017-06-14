@@ -15,36 +15,36 @@ namespace KaupischIT.InfragisticsControls.LayoutSerialization
 		/// </summary>
 		[XmlAttribute("key")]
 		public string Key { get; set; }
-		
+
 		/// <summary>
 		/// Gibt die Beschriftung des Bands zurück oder legt diese fest
 		/// </summary>
 		[XmlAttribute("caption")]
 		public string Caption { get; set; }
-		
+
 		/// <summary>
 		/// Gibt an, ob das Band sichtbar ist, oder legt dies fest
 		/// </summary>
-		[XmlAttribute("hidden"),DefaultValue(false)]
+		[XmlAttribute("hidden"), DefaultValue(false)]
 		public bool Hidden { get; set; }
 
 
 		/// <summary>
 		/// Gibt die Layout-Informationen über die Spalten des Bandes zurück oder legt diese fest
 		/// </summary>
-		[XmlArray("columns"),XmlArrayItem("column")]
+		[XmlArray("columns"), XmlArrayItem("column")]
 		public ColumnLayout[] Columns { get; set; }
-		
+
 		/// <summary>
 		/// Gibt die Layout-Informationen über die Zusammenfassungen der Spalten des Bandes zurück oder legt diese fest
 		/// </summary>
-		[XmlArray("summaries"),XmlArrayItem("summary")]
+		[XmlArray("summaries"), XmlArrayItem("summary")]
 		public ColumnSummary[] Summaries { get; set; }
-		
+
 		/// <summary>
 		/// Gibt die Layout-Informationen über die Gruppierungen des Bandes zurück oder legt diese fest
 		/// </summary>
-		[XmlArray("groups"),XmlArrayItem("group")]
+		[XmlArray("groups"), XmlArrayItem("group")]
 		public Grouping[] Groups { get; set; }
 	}
 }

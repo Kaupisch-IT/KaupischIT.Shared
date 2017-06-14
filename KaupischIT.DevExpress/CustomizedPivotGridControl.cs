@@ -22,7 +22,7 @@ namespace KaupischIT.DevExpressControls
 	/// <summary>
 	/// Stellt ein angepasstes PivotGridControl dar
 	/// </summary>
-	public class CustomizedPivotGridControl : PivotGridControl,IMessageFilter
+	public class CustomizedPivotGridControl : PivotGridControl, IMessageFilter
 	{
 		private MemoryStream collapsedState; // enthält den gespeicherten Zustand der ausgeklappten Elemente
 
@@ -32,7 +32,7 @@ namespace KaupischIT.DevExpressControls
 		/// </summary>
 		public CustomizedPivotGridControl()
 		{
-			this.LookAndFeel.UseDefaultLookAndFeel = false;		
+			this.LookAndFeel.UseDefaultLookAndFeel = false;
 			this.InitializeLayout();
 
 			// Anpassungen registrieren
@@ -43,20 +43,24 @@ namespace KaupischIT.DevExpressControls
 			this.FieldValueDisplayText += this.OnFieldValueDisplayText;
 
 			// negative Werte rot anzeigen
-			PivotGridStyleFormatCondition formatCondition = new PivotGridStyleFormatCondition();
-			formatCondition.ApplyToGrandTotalCell = true;
-			formatCondition.Condition = FormatConditionEnum.Less;
-			formatCondition.Value1 = 0;
+			PivotGridStyleFormatCondition formatCondition = new PivotGridStyleFormatCondition()
+			{
+				ApplyToGrandTotalCell = true,
+				Condition = FormatConditionEnum.Less,
+				Value1 = 0
+			};
 			formatCondition.Appearance.ForeColor = Color.Red;
 			formatCondition.Appearance.Options.UseForeColor = true;
 			this.FormatConditions.Add(formatCondition);
 
 			// Klick in ein Zelle selektiert diese
-			this.CellClick += delegate(object sender,PivotCellEventArgs e) { this.Cells.MultiSelection.SetSelection(new Point(e.ColumnIndex,e.RowIndex)); };
+			this.CellClick += delegate (object sender,PivotCellEventArgs e)
+			{ this.Cells.MultiSelection.SetSelection(new Point(e.ColumnIndex,e.RowIndex)); };
 
 			// Diagramm-Einstellungen
 			this.OptionsChartDataSource.SelectionOnly = false;
-			this.CellSelectionChanged += delegate { this.OptionsChartDataSource.SelectionOnly = this.Cells.MultiSelection.SelectedCells.Count()>1; };
+			this.CellSelectionChanged += delegate
+			{ this.OptionsChartDataSource.SelectionOnly = this.Cells.MultiSelection.SelectedCells.Count()>1; };
 			this.OptionsChartDataSource.AutoTransposeChart = true;
 		}
 		protected override void Dispose(bool disposing)
@@ -98,10 +102,7 @@ namespace KaupischIT.DevExpressControls
 		/// <summary>
 		/// Mehrzeilige Texte (bzw. mit Zeilenumbruch) verhindern
 		/// </summary>
-		private void OnFieldValueDisplayText(object sender,PivotFieldDisplayTextEventArgs e)
-		{
-			e.DisplayText = Regex.Replace(e.DisplayText,@"\s+"," ");
-		}
+		private void OnFieldValueDisplayText(object sender,PivotFieldDisplayTextEventArgs e) => e.DisplayText = Regex.Replace(e.DisplayText,@"\s+"," ");
 
 
 		/// <summary>
@@ -160,16 +161,15 @@ namespace KaupischIT.DevExpressControls
 			Control control = Control.FromHandle(message.HWnd);
 			// System.Diagnostics.Debug.WriteLineIf(control!=null,control);
 
-			ScrollBarBase scrollBar = control as ScrollBarBase; // hässliche Scrollbalken durch Systemstandard ersetzen
-			if (scrollBar!=null && scrollBar.LookAndFeel.UseDefaultLookAndFeel)
+			// hässliche Scrollbalken durch Systemstandard ersetzen
+			if (control is ScrollBarBase scrollBar&& scrollBar.LookAndFeel.UseDefaultLookAndFeel)
 			{
 				scrollBar.LookAndFeel.UseDefaultLookAndFeel = false;
 				scrollBar.LookAndFeel.UseWindowsXPTheme = true;
 				scrollBar.LookAndFeel.SetWindowsXPStyle();
 			}
 
-			XtraForm xtraForm = control as XtraForm;
-			if (xtraForm!=null)
+			if (control is XtraForm xtraForm)
 				foreach (ISupportLookAndFeel supportLookAndFeel in xtraForm.Controls.OfType<ISupportLookAndFeel>()) // hässliche Buttons & Checkboxen
 					if (supportLookAndFeel.LookAndFeel.UseDefaultLookAndFeel)
 					{
@@ -192,8 +192,7 @@ namespace KaupischIT.DevExpressControls
 			PrintingSystem printingSystem = new PrintingSystem();
 			printingSystem.Document.Name = title;
 
-			PrintableComponentLink printableComponentLink = new PrintableComponentLink(printingSystem);
-			printableComponentLink.Component = this;
+			PrintableComponentLink printableComponentLink = new PrintableComponentLink(printingSystem) { Component = this };
 
 			PageHeaderFooter pageHeaderFooter = printableComponentLink.PageHeaderFooter as PageHeaderFooter;
 			pageHeaderFooter.Header.Content.AddRange(new[] { " \r\n \r\n "+description,title,"" });
@@ -219,7 +218,7 @@ namespace KaupischIT.DevExpressControls
 				// PivotSummaryType
 				DXSubMenuItem summaryMenuItem = new DXSubMenuItem { Caption = "Zusammenfassung",BeginGroup = true };
 				e.Menu.Items.Add(summaryMenuItem);
-				var summaryTypes = new Dictionary<string,PivotSummaryType>
+				Dictionary<string,PivotSummaryType> summaryTypes = new Dictionary<string,PivotSummaryType>
 				{
 					{ "Summe",PivotSummaryType.Sum },
 					{ "Durchschnitt",PivotSummaryType.Average },
@@ -231,14 +230,15 @@ namespace KaupischIT.DevExpressControls
 				{
 					PivotSummaryType summaryType = summaryTypes[key];
 					DXMenuCheckItem menuItem = new DXMenuCheckItem { Caption = key,Checked = pivotGridField.SummaryType==summaryType };
-					menuItem.Click += delegate { this.DuplicatePivotGridField(pivotGridField,summaryType,pivotGridField.SummaryDisplayType); };
+					menuItem.Click += delegate
+					{ this.DuplicatePivotGridField(pivotGridField,summaryType,pivotGridField.SummaryDisplayType); };
 					summaryMenuItem.Items.Add(menuItem);
 				}
 
 				// PivotSummaryDisplayType
 				DXSubMenuItem summaryDisplayMenuItem = new DXSubMenuItem { Caption = "Anzeigen als" };
 				e.Menu.Items.Add(summaryDisplayMenuItem);
-				var summaryDisplayTypes = new Dictionary<string,PivotSummaryDisplayType>
+				Dictionary<string,PivotSummaryDisplayType> summaryDisplayTypes = new Dictionary<string,PivotSummaryDisplayType>
 				{
 					{ "Standard",PivotSummaryDisplayType.Default },
 					{ "Varianz zum Vorgänger (absolut)",PivotSummaryDisplayType.AbsoluteVariation },
@@ -252,7 +252,8 @@ namespace KaupischIT.DevExpressControls
 				{
 					PivotSummaryDisplayType summaryDisplayType = summaryDisplayTypes[key];
 					DXMenuCheckItem menuItem = new DXMenuCheckItem { Caption = key,Checked = pivotGridField.SummaryDisplayType==summaryDisplayType };
-					menuItem.Click += delegate { this.DuplicatePivotGridField(pivotGridField,pivotGridField.SummaryType,summaryDisplayType); };
+					menuItem.Click += delegate
+					{ this.DuplicatePivotGridField(pivotGridField,pivotGridField.SummaryType,summaryDisplayType); };
 					summaryDisplayMenuItem.Items.Add(menuItem);
 				}
 			}
@@ -266,15 +267,17 @@ namespace KaupischIT.DevExpressControls
 		/// <param name="summaryDisplayType">die Anzeige des Aggregattyps, der für das duplizierte Feld verwendet werden soll</param>
 		private void DuplicatePivotGridField(PivotGridField pivotGridField,PivotSummaryType summaryType,PivotSummaryDisplayType summaryDisplayType)
 		{
-			PivotGridField duplicatedField = new PivotGridField(pivotGridField.Name+" "+summaryDisplayType+" "+summaryType,pivotGridField.Area);
-			duplicatedField.Name = pivotGridField.Name+"-"+summaryDisplayType+"-"+summaryType;
-			duplicatedField.Caption = (!String.IsNullOrEmpty(pivotGridField.Caption)) ? pivotGridField.Caption : pivotGridField.FieldName;
-			duplicatedField.SummaryType = summaryType;
-			duplicatedField.SummaryDisplayType = summaryDisplayType;
-			duplicatedField.UnboundType = pivotGridField.UnboundType;
-			duplicatedField.UnboundExpression = pivotGridField.UnboundExpression;
-			duplicatedField.AllowedAreas = pivotGridField.AllowedAreas;
-			duplicatedField.FieldName = pivotGridField.FieldName;
+			PivotGridField duplicatedField = new PivotGridField(pivotGridField.Name+" "+summaryDisplayType+" "+summaryType,pivotGridField.Area)
+			{
+				Name = pivotGridField.Name+"-"+summaryDisplayType+"-"+summaryType,
+				Caption = (!String.IsNullOrEmpty(pivotGridField.Caption)) ? pivotGridField.Caption : pivotGridField.FieldName,
+				SummaryType = summaryType,
+				SummaryDisplayType = summaryDisplayType,
+				UnboundType = pivotGridField.UnboundType,
+				UnboundExpression = pivotGridField.UnboundExpression,
+				AllowedAreas = pivotGridField.AllowedAreas,
+				FieldName = pivotGridField.FieldName
+			};
 			duplicatedField.CellFormat.FormatType = pivotGridField.CellFormat.FormatType;
 			duplicatedField.CellFormat.FormatString = (summaryDisplayType.ToString().StartsWith("Percent")) ? "P" : pivotGridField.CellFormat.FormatString;
 

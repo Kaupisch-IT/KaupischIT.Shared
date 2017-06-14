@@ -46,10 +46,7 @@ namespace KaupischIT.Extensions
 		/// <param name="dbCommand">die Abfrage, die ausgeführt werden soll</param>
 		/// <param name="parameterObject">das Objekt, dessen Eigenschaftswerte der IDbParameterCollection hinzugefügt werden sollen</param>
 		/// <returns>die Anzahl der betroffenen Zeilen</returns>
-		public static int ExecuteNonQuery(this IDbCommand dbCommand,object parameterObject)
-		{
-			return dbCommand.AddParamtersWithPropertiesOf(parameterObject).ExecuteNonQuery();
-		}
+		public static int ExecuteNonQuery(this IDbCommand dbCommand,object parameterObject) => dbCommand.AddParamtersWithPropertiesOf(parameterObject).ExecuteNonQuery();
 
 
 		/// <summary>
@@ -59,10 +56,7 @@ namespace KaupischIT.Extensions
 		/// <param name="dbCommand">die Abfrage, die ausgeführt werden soll</param>
 		/// <param name="parameterObject">das Objekt, dessen Eigenschaftswerte der IDbParameterCollection hinzugefügt werden sollen</param>
 		/// <returns>die erste Spalte der ersten Zeile in der Ergebnismenge</returns>
-		public static T ExecuteScalar<T>(this IDbCommand dbCommand,object parameterObject)
-		{
-			return (T)dbCommand.AddParamtersWithPropertiesOf(parameterObject).ExecuteScalar();
-		}
+		public static T ExecuteScalar<T>(this IDbCommand dbCommand,object parameterObject) => (T)dbCommand.AddParamtersWithPropertiesOf(parameterObject).ExecuteScalar();
 
 
 		/// <summary>
@@ -71,9 +65,6 @@ namespace KaupischIT.Extensions
 		/// <param name="dbCommand">die Abfrage, die ausgeführt werden soll</param>
 		/// <param name="parameterObject">das Objekt, dessen Eigenschaftswerte der IDbParameterCollection hinzugefügt werden sollen</param>
 		/// <returns>ein System.Data.IDataReader-Objekt</returns>
-		public static IDataReader ExecuteReader(this IDbCommand dbCommand,object parameterObject)
-		{
-			return dbCommand.AddParamtersWithPropertiesOf(parameterObject).ExecuteReader();
-		}
+		public static IDataReader ExecuteReader(this IDbCommand dbCommand,object parameterObject) => dbCommand.AddParamtersWithPropertiesOf(parameterObject).ExecuteReader();
 	}
 }

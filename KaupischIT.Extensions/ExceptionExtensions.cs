@@ -35,9 +35,9 @@ namespace KaupischIT.Extensions
 			// ansonsten die Remoting-Funktionalitäten benutzen, um den ursprünglichen Aufrufstapel zu behalten
 			else
 			{
-				var streamingContext = new StreamingContext(StreamingContextStates.CrossAppDomain);
-				var objectManager = new ObjectManager(null,streamingContext);
-				var serializationInfo  = new SerializationInfo(exception.GetType(),new FormatterConverter());
+				StreamingContext streamingContext = new StreamingContext(StreamingContextStates.CrossAppDomain);
+				ObjectManager objectManager = new ObjectManager(null,streamingContext);
+				SerializationInfo serializationInfo = new SerializationInfo(exception.GetType(),new FormatterConverter());
 
 				exception.GetObjectData(serializationInfo,streamingContext);
 				objectManager.RegisterObject(exception,1,serializationInfo); // prepare for SetObjectData

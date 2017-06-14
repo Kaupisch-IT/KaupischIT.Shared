@@ -8,7 +8,7 @@ namespace KaupischIT.Shared
 	/// </summary>
 	public class DelayTextBox : TextBox
 	{
-		private Timer timer = new Timer();	// Timer, der nach einer bestimmten Zeit das OnTextChanged-Ereignis auslöst
+		private Timer timer = new Timer();  // Timer, der nach einer bestimmten Zeit das OnTextChanged-Ereignis auslöst
 
 
 		/// <summary>
@@ -16,18 +16,15 @@ namespace KaupischIT.Shared
 		/// </summary>
 		public int TextChangedDelay
 		{
-			get { return this.timer.Interval; }
-			set { this.timer.Interval = value; }
+			get => this.timer.Interval;
+			set => this.timer.Interval = value;
 		}
 
 
 		/// <summary>
 		/// Erstellt eine neue Textbox, die schnelle Eingaben berücksichtigt und das OnTextChanged-Ereignis erst auslöst, wenn nach der letzten Eingabe eine bestimmte Zeit verstrichen ist
 		/// </summary>
-		public DelayTextBox()
-		{
-			this.timer.Tick += this.OnTimerTick;
-		}
+		public DelayTextBox() => this.timer.Tick += this.OnTimerTick;
 
 		/// <summary>
 		/// Timerablauf, der das OnTextChanged-Event auslöst
@@ -38,7 +35,7 @@ namespace KaupischIT.Shared
 			base.OnTextChanged(new EventArgs());
 		}
 
-		
+
 		/// <summary>
 		/// OnTextChanged abfangen und Timer (neu)starten
 		/// </summary>
@@ -60,7 +57,7 @@ namespace KaupischIT.Shared
 		protected override void OnLeave(EventArgs e)
 		{
 			if (this.timer.Enabled)
-				this.OnTimerTick(this,e);			
+				this.OnTimerTick(this,e);
 			base.OnLeave(e);
 		}
 	}

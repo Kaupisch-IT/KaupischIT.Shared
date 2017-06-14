@@ -17,10 +17,7 @@ namespace KaupischIT.Extensions
 		/// <param name="columnName">der Name der Spalte, deren Wert ermittelt werden soll</param>
 		/// <returns>der Wert der Spalte</returns>
 		[DebuggerStepThrough]
-		public static T GetColumnValue<T>(this IDataRecord dataRecord,string columnName)
-		{
-			return DataRecordExtensions.GetColumnValue<T>(dataRecord,columnName,false);
-		}
+		public static T GetColumnValue<T>(this IDataRecord dataRecord,string columnName) => DataRecordExtensions.GetColumnValue<T>(dataRecord,columnName,false);
 
 		/// <summary>
 		/// Ermittelt den Wert der angegebenen Spalte
@@ -38,8 +35,8 @@ namespace KaupischIT.Extensions
 			Type type = typeof(T);
 			type = Nullable.GetUnderlyingType(type) ?? type;
 
-			return (value is DBNull) 
-				? default(T) 
+			return (value is DBNull)
+				? default(T)
 				: (changeType) ? (T)Convert.ChangeType(value,type) : (T)value;
 		}
 	}

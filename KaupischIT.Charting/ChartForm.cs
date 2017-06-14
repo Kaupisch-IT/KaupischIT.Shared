@@ -39,7 +39,7 @@ namespace KaupischIT.Charting
 		/// </summary>
 		public Type DisplayedType
 		{
-			get { return this.propertyBrowserDisplay.DisplayedType; }
+			get => this.propertyBrowserDisplay.DisplayedType;
 			set
 			{
 				this.propertyBrowserDisplay.DisplayedType = value;
@@ -52,8 +52,8 @@ namespace KaupischIT.Charting
 		/// </summary>
 		public string DisplayMember
 		{
-			get { return this.propertyBrowserDisplay.SelectedProperty; }
-			set { this.propertyBrowserDisplay.SelectedProperty = value; }
+			get => this.propertyBrowserDisplay.SelectedProperty;
+			set => this.propertyBrowserDisplay.SelectedProperty = value;
 		}
 
 		/// <summary>
@@ -61,8 +61,8 @@ namespace KaupischIT.Charting
 		/// </summary>
 		public string ValueMember
 		{
-			get { return this.propertyBrowserValue.SelectedProperty; }
-			set { this.propertyBrowserValue.SelectedProperty = value; }
+			get => this.propertyBrowserValue.SelectedProperty;
+			set => this.propertyBrowserValue.SelectedProperty = value;
 		}
 
 		/// <summary>
@@ -82,18 +82,18 @@ namespace KaupischIT.Charting
 
 			this.GetFormatString = (name) => null;
 			this.propertyBrowserValue.TypeFilter = (type) => type.IsNumeric();
-			this.propertyBrowserDisplay.SelectedValueChanged += delegate { this.PrintChart(); };
-			this.propertyBrowserValue.SelectedValueChanged += delegate { this.PrintChart(); };
-			this.numericUpDownPercentageThreshold.ValueChanged += delegate { this.PrintChart(); };
+			this.propertyBrowserDisplay.SelectedValueChanged += delegate
+			{ this.PrintChart(); };
+			this.propertyBrowserValue.SelectedValueChanged += delegate
+			{ this.PrintChart(); };
+			this.numericUpDownPercentageThreshold.ValueChanged += delegate
+			{ this.PrintChart(); };
 		}
 
 		/// <summary>
 		/// Initiales Zeichnen der Diagramms beim Laden
 		/// </summary>
-		private void PieForm_Load(object sender,EventArgs e)
-		{
-			this.PrintChart();
-		}
+		private void PieForm_Load(object sender,EventArgs e) => this.PrintChart();
 
 		/// <summary>
 		/// Erstellt das Diagramm uns zeigt es an
@@ -158,7 +158,7 @@ namespace KaupischIT.Charting
 				}
 		}
 
-		
+
 		/// <summary>
 		/// Erzeugt ein Bild mit einer Fehlermeldung 
 		/// </summary>
@@ -198,7 +198,7 @@ namespace KaupischIT.Charting
 
 			// wenn es mehrere Kuchenstücke gibt, deren prozentualer Anteil unter dem Schwellwert liegen, diese zu einem einzigen Stück zusammenfassen
 			var slicesToMerge = items.Where(item => item.Percent<percentageThreshold && !emphasizedElements.Contains(item.Key)).ToList();
-			var slices =
+			IEnumerable<ChartItem> slices =
 				items.Where(item => slicesToMerge.Count()<=1 || !slicesToMerge.Contains(item))
 				.Select(item => new ChartItem
 				{
@@ -254,19 +254,19 @@ namespace KaupischIT.Charting
 		/// <summary>
 		/// Das aktuelle Bild in die Zwischenablage einfügen
 		/// </summary>
-		private void buttonToClipboard_Click(object sender,EventArgs e)
+		private void ButtonToClipboard_Click(object sender,EventArgs e)
 		{
 			Clipboard.SetImage(this.pictureBoxPie.Image);
 		}
 		/// <summary>
 		/// Button für die Zwischenablage nur anzeigen, wenn sich die Maus über dem Diagrammbild befindet
 		/// </summary>
-		private void pictureBoxPie_MouseEnter(object sender,EventArgs e)
+		private void PictureBoxPie_MouseEnter(object sender,EventArgs e)
 		{
 			this.buttonToClipboard.Location = new Point(this.pictureBoxPie.Location.X+this.pictureBoxPie.Width-this.buttonToClipboard.Width-5,this.pictureBoxPie.Location.Y+5);
 			this.buttonToClipboard.Visible = true;
 		}
-		private void pictureBoxPie_MouseLeave(object sender,EventArgs e)
+		private void PictureBoxPie_MouseLeave(object sender,EventArgs e)
 		{
 			if (!this.pictureBoxPie.Bounds.Contains(this.PointToClient(Control.MousePosition)))
 				this.buttonToClipboard.Visible = false;

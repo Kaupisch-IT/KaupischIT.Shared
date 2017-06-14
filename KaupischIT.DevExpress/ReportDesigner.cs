@@ -12,7 +12,7 @@ namespace KaupischIT.DevExpressControls
 	/// <summary>
 	/// Stellt ein Benutzersteuerelement zum Entwerfen eines Berichtes dar
 	/// </summary>
-	public partial class ReportDesigner : UserControl,ICommandHandler
+	public partial class ReportDesigner : UserControl, ICommandHandler
 	{
 		/// <summary>
 		/// Statischer Konstruktor
@@ -29,11 +29,7 @@ namespace KaupischIT.DevExpressControls
 		/// <summary>
 		/// Gibt den aktutellen Bericht zurück
 		/// </summary>
-		public XtraReport Report
-		{
-			get { return this.xrDesignPanel.Report; }
-		}
-
+		public XtraReport Report => this.xrDesignPanel.Report;
 
 		/// <summary>
 		/// Erstellt ein neues Benutzersteuerelement zum Entwerfen eines Berichtes
@@ -49,18 +45,12 @@ namespace KaupischIT.DevExpressControls
 		/// Öffnet den angegebenen Bericht zum Bearbeiten
 		/// </summary>
 		/// <param name="report">der Bericht, der geöffnet werden soll</param>
-		public void OpenReport(XtraReport report)
-		{
-			this.xrDesignPanel.OpenReport(report);
-		}
+		public void OpenReport(XtraReport report) => this.xrDesignPanel.OpenReport(report);
 
 		/// <summary>
 		/// Schließt den aktuell geöffneten Bericht
 		/// </summary>
-		public void CloseReport()
-		{
-			this.xrDesignPanel.CloseReport();
-		}
+		public void CloseReport() => this.xrDesignPanel.CloseReport();
 
 
 		/// <summary>
@@ -84,10 +74,9 @@ namespace KaupischIT.DevExpressControls
 				ImageCollection result = base.CreateImageCollection();
 
 				ComponentResourceManager resources = new ComponentResourceManager(typeof(ReportDesigner));
-				ImageList imageList = new ImageList();
-				imageList.ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream");
+				ImageList imageList = new ImageList() { ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream") };
 
-				for (int i=0;i<imageList.Images.Count;i++)
+				for (int i = 0;i<imageList.Images.Count;i++)
 					result.Images[i] = imageList.Images[i];
 
 				return result;

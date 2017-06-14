@@ -24,7 +24,7 @@ namespace KaupischIT.InfragisticsControls
 		public string Pattern { get; set; }
 	}
 
-	
+
 	/// <summary>
 	/// Stellt Funktionen zum Ermitteln und Verarbeiten von URL-Routen bereit
 	/// </summary>
@@ -33,7 +33,7 @@ namespace KaupischIT.InfragisticsControls
 		/// <summary>
 		/// Gibt eine Auflistung der verfügbaren URL-Routen zurück oder legt diese fest.
 		/// </summary>
-		public List<Route> Routes { get; set; }		
+		public List<Route> Routes { get; set; }
 
 		/// <summary>
 		/// Stellt Informationen über eine konkrete Route bereit
@@ -46,7 +46,8 @@ namespace KaupischIT.InfragisticsControls
 			/// <summary> Ruft die konkrete URL auf </summary>
 			public void Invoke()
 			{
-				try { Process.Start(this.Url); }
+				try
+				{ Process.Start(this.Url); }
 				catch (Exception ex) { ErrorMessageBox.Show(ex); }
 			}
 		}
@@ -55,10 +56,7 @@ namespace KaupischIT.InfragisticsControls
 		/// <summary>
 		/// Erstellt eine neue UrlProtocolHandler-Instanz
 		/// </summary>
-		public UrlProtocolHandler()
-		{
-			this.Routes = Settings.Default.UrlRoutes.ToList();
-		}
+		public UrlProtocolHandler() => this.Routes = Settings.Default.UrlRoutes.ToList();
 
 
 		/// <summary>

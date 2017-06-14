@@ -26,14 +26,11 @@ namespace KaupischIT.Shared
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
 		public override string Text
 		{
-			get { return this.label.Text; }
-			set { this.label.Text = value; }
+			get => this.label.Text;
+			set => this.label.Text = value;
 		}
 
-		private void Label_SizeChanged(object sender,EventArgs e)
-		{
-			this.DoLayout();
-		}
+		private void Label_SizeChanged(object sender,EventArgs e) => this.DoLayout();
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
@@ -58,9 +55,6 @@ namespace KaupischIT.Shared
 			this.DoLayout();
 		}
 
-		private void DoLayout()
-		{
-			this.Height = this.label.Height;
-		}
+		private void DoLayout() => this.Height = this.label.Height;
 	}
 }
