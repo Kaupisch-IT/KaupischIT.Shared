@@ -28,10 +28,11 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportDesigner));
+			this.components = new System.ComponentModel.Container();
 			DevExpress.XtraReports.UserDesigner.BarInfo barInfo1 = new DevExpress.XtraReports.UserDesigner.BarInfo();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportDesigner));
 			this.bar2 = new DevExpress.XtraBars.Bar();
-			this.xrDesignDockManager = new DevExpress.XtraReports.UserDesigner.XRDesignDockManager();
+			this.xrDesignDockManager = new DevExpress.XtraReports.UserDesigner.XRDesignDockManager(this.components);
 			this.toolBoxDockPanel1 = new DevExpress.XtraReports.UserDesigner.ToolBoxDockPanel();
 			this.toolBoxDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
 			this.xrDesignPanel = new DevExpress.XtraReports.UserDesigner.XRDesignPanel();
@@ -39,7 +40,7 @@
 			this.groupAndSortDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
 			this.errorListDockPanel1 = new DevExpress.XtraReports.UserDesigner.ErrorListDockPanel();
 			this.errorListDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
-			this.xrDesignBarManager = new DevExpress.XtraReports.UserDesigner.XRDesignBarManager();
+			this.xrDesignBarManager = new DevExpress.XtraReports.UserDesigner.XRDesignBarManager(this.components);
 			this.designBar3 = new DevExpress.XtraReports.UserDesigner.DesignBar();
 			this.barEditItem1 = new DevExpress.XtraBars.BarEditItem();
 			this.recentlyUsedItemsComboBox1 = new DevExpress.XtraReports.UserDesigner.RecentlyUsedItemsComboBox();
@@ -133,7 +134,7 @@
 			this.reportExplorerDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
 			this.propertyGridDockPanel1 = new DevExpress.XtraReports.UserDesigner.PropertyGridDockPanel();
 			this.propertyGridDockPanel1_Container = new DevExpress.XtraReports.UserDesigner.DesignControlContainer();
-			this.imageList = new System.Windows.Forms.ImageList();
+			this.imageList = new System.Windows.Forms.ImageList(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.xrDesignDockManager)).BeginInit();
 			this.toolBoxDockPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.xrDesignPanel)).BeginInit();
@@ -206,13 +207,13 @@
 			// 
 			// xrDesignPanel
 			// 
+			this.xrDesignPanel.ComponentVisibility = DevExpress.XtraReports.Design.ComponentVisibility.None;
 			this.xrDesignPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.xrDesignPanel.Location = new System.Drawing.Point(27, 29);
-			this.xrDesignPanel.LookAndFeel.SkinName = "Seven Classic";
+			this.xrDesignPanel.Location = new System.Drawing.Point(25, 29);
+			this.xrDesignPanel.LookAndFeel.SkinName = "Office 2013";
 			this.xrDesignPanel.LookAndFeel.UseDefaultLookAndFeel = false;
 			this.xrDesignPanel.Name = "xrDesignPanel";
-			this.xrDesignPanel.ComponentVisibility = DevExpress.XtraReports.Design.ComponentVisibility.None;
-			this.xrDesignPanel.Size = new System.Drawing.Size(881, 572);
+			this.xrDesignPanel.Size = new System.Drawing.Size(883, 572);
 			this.xrDesignPanel.TabIndex = 9;
 			// 
 			// groupAndSortDockPanel1
@@ -371,7 +372,7 @@
             this.designRepositoryItemComboBox1,
             this.designRepositoryItemComboBox2});
 			this.xrDesignBarManager.Toolbar = null;
-			this.xrDesignBarManager.TransparentEditors = true;
+			this.xrDesignBarManager.TransparentEditorsMode = DevExpress.Utils.DefaultBoolean.True;
 			this.xrDesignBarManager.Updates.AddRange(new string[] {
             "Toolbox"});
 			this.xrDesignBarManager.XRDesignPanel = this.xrDesignPanel;
@@ -401,10 +402,10 @@
 			// 
 			this.barEditItem1.Caption = "Schriftart";
 			this.barEditItem1.Edit = this.recentlyUsedItemsComboBox1;
+			this.barEditItem1.EditWidth = 120;
 			this.barEditItem1.Hint = "Schriftart";
 			this.barEditItem1.Id = 0;
 			this.barEditItem1.Name = "barEditItem1";
-			this.barEditItem1.Width = 120;
 			// 
 			// recentlyUsedItemsComboBox1
 			// 
@@ -413,16 +414,15 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
 			this.recentlyUsedItemsComboBox1.DropDownRows = 12;
 			this.recentlyUsedItemsComboBox1.Name = "recentlyUsedItemsComboBox1";
-			this.recentlyUsedItemsComboBox1.UseParentBackground = true;
 			// 
 			// barEditItem2
 			// 
 			this.barEditItem2.Caption = "Schriftgröße";
 			this.barEditItem2.Edit = this.designRepositoryItemComboBox1;
+			this.barEditItem2.EditWidth = 55;
 			this.barEditItem2.Hint = "Schriftgröße";
 			this.barEditItem2.Id = 1;
 			this.barEditItem2.Name = "barEditItem2";
-			this.barEditItem2.Width = 55;
 			// 
 			// designRepositoryItemComboBox1
 			// 
@@ -430,7 +430,6 @@
 			this.designRepositoryItemComboBox1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
 			this.designRepositoryItemComboBox1.Name = "designRepositoryItemComboBox1";
-			this.designRepositoryItemComboBox1.UseParentBackground = true;
 			// 
 			// commandBarItem1
 			// 
@@ -439,7 +438,7 @@
 			this.commandBarItem1.Enabled = false;
 			this.commandBarItem1.Hint = "Ändert die Schriftart auf Fett.";
 			this.commandBarItem1.Id = 2;
-			this.commandBarItem1.ImageIndex = 0;
+			this.commandBarItem1.ImageOptions.ImageIndex = 0;
 			this.commandBarItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B));
 			this.commandBarItem1.Name = "commandBarItem1";
 			// 
@@ -450,7 +449,7 @@
 			this.commandBarItem2.Enabled = false;
 			this.commandBarItem2.Hint = "Ändert die Schriftart auf Kursiv.";
 			this.commandBarItem2.Id = 3;
-			this.commandBarItem2.ImageIndex = 1;
+			this.commandBarItem2.ImageOptions.ImageIndex = 1;
 			this.commandBarItem2.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I));
 			this.commandBarItem2.Name = "commandBarItem2";
 			// 
@@ -461,7 +460,7 @@
 			this.commandBarItem3.Enabled = false;
 			this.commandBarItem3.Hint = "Ändert die Schriftart auf Unterstreichen.";
 			this.commandBarItem3.Id = 4;
-			this.commandBarItem3.ImageIndex = 2;
+			this.commandBarItem3.ImageOptions.ImageIndex = 2;
 			this.commandBarItem3.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U));
 			this.commandBarItem3.Name = "commandBarItem3";
 			// 
@@ -472,9 +471,9 @@
 			this.commandColorBarItem1.CloseSubMenuOnClick = false;
 			this.commandColorBarItem1.Command = DevExpress.XtraReports.UserDesigner.ReportCommand.ForeColor;
 			this.commandColorBarItem1.Enabled = false;
-			this.commandColorBarItem1.Glyph = ((System.Drawing.Image)(resources.GetObject("commandColorBarItem1.Glyph")));
 			this.commandColorBarItem1.Hint = "Ändert die Schriftfarbe des selektierten Elements.";
 			this.commandColorBarItem1.Id = 5;
+			this.commandColorBarItem1.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("commandColorBarItem1.ImageOptions.Image")));
 			this.commandColorBarItem1.Name = "commandColorBarItem1";
 			// 
 			// commandColorBarItem2
@@ -484,9 +483,9 @@
 			this.commandColorBarItem2.CloseSubMenuOnClick = false;
 			this.commandColorBarItem2.Command = DevExpress.XtraReports.UserDesigner.ReportCommand.BackColor;
 			this.commandColorBarItem2.Enabled = false;
-			this.commandColorBarItem2.Glyph = ((System.Drawing.Image)(resources.GetObject("commandColorBarItem2.Glyph")));
 			this.commandColorBarItem2.Hint = "Bestimmt die Hintergrundfarbe für das  selektierte Element.";
 			this.commandColorBarItem2.Id = 6;
+			this.commandColorBarItem2.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("commandColorBarItem2.ImageOptions.Image")));
 			this.commandColorBarItem2.Name = "commandColorBarItem2";
 			// 
 			// commandBarItem4
@@ -496,7 +495,7 @@
 			this.commandBarItem4.Enabled = false;
 			this.commandBarItem4.Hint = "Richtet den Text des Element links aus.";
 			this.commandBarItem4.Id = 7;
-			this.commandBarItem4.ImageIndex = 5;
+			this.commandBarItem4.ImageOptions.ImageIndex = 5;
 			this.commandBarItem4.Name = "commandBarItem4";
 			// 
 			// commandBarItem5
@@ -506,7 +505,7 @@
 			this.commandBarItem5.Enabled = false;
 			this.commandBarItem5.Hint = "Richtet den Text des Element zentriert aus.";
 			this.commandBarItem5.Id = 8;
-			this.commandBarItem5.ImageIndex = 6;
+			this.commandBarItem5.ImageOptions.ImageIndex = 6;
 			this.commandBarItem5.Name = "commandBarItem5";
 			// 
 			// commandBarItem6
@@ -516,7 +515,7 @@
 			this.commandBarItem6.Enabled = false;
 			this.commandBarItem6.Hint = "Richtet den Text des Element rechts aus.";
 			this.commandBarItem6.Id = 9;
-			this.commandBarItem6.ImageIndex = 7;
+			this.commandBarItem6.ImageOptions.ImageIndex = 7;
 			this.commandBarItem6.Name = "commandBarItem6";
 			// 
 			// commandBarItem7
@@ -526,7 +525,7 @@
 			this.commandBarItem7.Enabled = false;
 			this.commandBarItem7.Hint = "Richtet den Text des Element aus.";
 			this.commandBarItem7.Id = 10;
-			this.commandBarItem7.ImageIndex = 8;
+			this.commandBarItem7.ImageOptions.ImageIndex = 8;
 			this.commandBarItem7.Name = "commandBarItem7";
 			// 
 			// designBar4
@@ -569,7 +568,7 @@
 			this.commandBarItem8.Enabled = false;
 			this.commandBarItem8.Hint = "Richtet die selektierten Elemente am Raster aus.";
 			this.commandBarItem8.Id = 11;
-			this.commandBarItem8.ImageIndex = 17;
+			this.commandBarItem8.ImageOptions.ImageIndex = 17;
 			this.commandBarItem8.Name = "commandBarItem8";
 			// 
 			// commandBarItem9
@@ -579,7 +578,7 @@
 			this.commandBarItem9.Enabled = false;
 			this.commandBarItem9.Hint = "Richtet die selektierten Elemente nach links aus.";
 			this.commandBarItem9.Id = 12;
-			this.commandBarItem9.ImageIndex = 18;
+			this.commandBarItem9.ImageOptions.ImageIndex = 18;
 			this.commandBarItem9.Name = "commandBarItem9";
 			// 
 			// commandBarItem10
@@ -589,7 +588,7 @@
 			this.commandBarItem10.Enabled = false;
 			this.commandBarItem10.Hint = "Richtet die selektierten Elemente vertikal zentriert  aus.";
 			this.commandBarItem10.Id = 13;
-			this.commandBarItem10.ImageIndex = 19;
+			this.commandBarItem10.ImageOptions.ImageIndex = 19;
 			this.commandBarItem10.Name = "commandBarItem10";
 			// 
 			// commandBarItem11
@@ -599,7 +598,7 @@
 			this.commandBarItem11.Enabled = false;
 			this.commandBarItem11.Hint = "Richtet die selektierten Elemente nach rechts aus.";
 			this.commandBarItem11.Id = 14;
-			this.commandBarItem11.ImageIndex = 20;
+			this.commandBarItem11.ImageOptions.ImageIndex = 20;
 			this.commandBarItem11.Name = "commandBarItem11";
 			// 
 			// commandBarItem12
@@ -609,7 +608,7 @@
 			this.commandBarItem12.Enabled = false;
 			this.commandBarItem12.Hint = "Richtet die selektierten Elemente nach oben aus.";
 			this.commandBarItem12.Id = 15;
-			this.commandBarItem12.ImageIndex = 21;
+			this.commandBarItem12.ImageOptions.ImageIndex = 21;
 			this.commandBarItem12.Name = "commandBarItem12";
 			// 
 			// commandBarItem13
@@ -619,7 +618,7 @@
 			this.commandBarItem13.Enabled = false;
 			this.commandBarItem13.Hint = "Richtet die selektierten Elemente horizontal zentriert aus.";
 			this.commandBarItem13.Id = 16;
-			this.commandBarItem13.ImageIndex = 22;
+			this.commandBarItem13.ImageOptions.ImageIndex = 22;
 			this.commandBarItem13.Name = "commandBarItem13";
 			// 
 			// commandBarItem14
@@ -629,7 +628,7 @@
 			this.commandBarItem14.Enabled = false;
 			this.commandBarItem14.Hint = "Richtet die selektierten Elemente nach unten aus.";
 			this.commandBarItem14.Id = 17;
-			this.commandBarItem14.ImageIndex = 23;
+			this.commandBarItem14.ImageOptions.ImageIndex = 23;
 			this.commandBarItem14.Name = "commandBarItem14";
 			// 
 			// commandBarItem15
@@ -639,7 +638,7 @@
 			this.commandBarItem15.Enabled = false;
 			this.commandBarItem15.Hint = "Macht die selektierten Elemente gleich breit.";
 			this.commandBarItem15.Id = 18;
-			this.commandBarItem15.ImageIndex = 24;
+			this.commandBarItem15.ImageOptions.ImageIndex = 24;
 			this.commandBarItem15.Name = "commandBarItem15";
 			// 
 			// commandBarItem16
@@ -649,7 +648,7 @@
 			this.commandBarItem16.Enabled = false;
 			this.commandBarItem16.Hint = "Passt die selektierten Elemente an das Raster an und macht Sie gleich groß.";
 			this.commandBarItem16.Id = 19;
-			this.commandBarItem16.ImageIndex = 25;
+			this.commandBarItem16.ImageOptions.ImageIndex = 25;
 			this.commandBarItem16.Name = "commandBarItem16";
 			// 
 			// commandBarItem17
@@ -659,7 +658,7 @@
 			this.commandBarItem17.Enabled = false;
 			this.commandBarItem17.Hint = "Macht die selektierten Elemente gleich hoch.";
 			this.commandBarItem17.Id = 20;
-			this.commandBarItem17.ImageIndex = 26;
+			this.commandBarItem17.ImageOptions.ImageIndex = 26;
 			this.commandBarItem17.Name = "commandBarItem17";
 			// 
 			// commandBarItem18
@@ -669,7 +668,7 @@
 			this.commandBarItem18.Enabled = false;
 			this.commandBarItem18.Hint = "Macht die selektierten Elemente gleich groß.";
 			this.commandBarItem18.Id = 21;
-			this.commandBarItem18.ImageIndex = 27;
+			this.commandBarItem18.ImageOptions.ImageIndex = 27;
 			this.commandBarItem18.Name = "commandBarItem18";
 			// 
 			// commandBarItem19
@@ -679,7 +678,7 @@
 			this.commandBarItem19.Enabled = false;
 			this.commandBarItem19.Hint = "Macht den Abstand zwischen den markierten Elementen gleich.";
 			this.commandBarItem19.Id = 22;
-			this.commandBarItem19.ImageIndex = 28;
+			this.commandBarItem19.ImageOptions.ImageIndex = 28;
 			this.commandBarItem19.Name = "commandBarItem19";
 			// 
 			// commandBarItem20
@@ -689,7 +688,7 @@
 			this.commandBarItem20.Enabled = false;
 			this.commandBarItem20.Hint = "Erhöht den Abstand zwischen den markierten Elementen.";
 			this.commandBarItem20.Id = 23;
-			this.commandBarItem20.ImageIndex = 29;
+			this.commandBarItem20.ImageOptions.ImageIndex = 29;
 			this.commandBarItem20.Name = "commandBarItem20";
 			// 
 			// commandBarItem21
@@ -699,7 +698,7 @@
 			this.commandBarItem21.Enabled = false;
 			this.commandBarItem21.Hint = "Vermindert den Abstand zwischen den markierten Elementen.";
 			this.commandBarItem21.Id = 24;
-			this.commandBarItem21.ImageIndex = 30;
+			this.commandBarItem21.ImageOptions.ImageIndex = 30;
 			this.commandBarItem21.Name = "commandBarItem21";
 			// 
 			// commandBarItem22
@@ -709,7 +708,7 @@
 			this.commandBarItem22.Enabled = false;
 			this.commandBarItem22.Hint = "Löscht die Abstände zwischen den markierten Elementen.";
 			this.commandBarItem22.Id = 25;
-			this.commandBarItem22.ImageIndex = 31;
+			this.commandBarItem22.ImageOptions.ImageIndex = 31;
 			this.commandBarItem22.Name = "commandBarItem22";
 			// 
 			// commandBarItem23
@@ -719,7 +718,7 @@
 			this.commandBarItem23.Enabled = false;
 			this.commandBarItem23.Hint = "Macht den Abstand zwischen den markierten Elementen gleich.";
 			this.commandBarItem23.Id = 26;
-			this.commandBarItem23.ImageIndex = 32;
+			this.commandBarItem23.ImageOptions.ImageIndex = 32;
 			this.commandBarItem23.Name = "commandBarItem23";
 			// 
 			// commandBarItem24
@@ -729,7 +728,7 @@
 			this.commandBarItem24.Enabled = false;
 			this.commandBarItem24.Hint = "Erhöht den Abstand zwischen den markierten Elementen.";
 			this.commandBarItem24.Id = 27;
-			this.commandBarItem24.ImageIndex = 33;
+			this.commandBarItem24.ImageOptions.ImageIndex = 33;
 			this.commandBarItem24.Name = "commandBarItem24";
 			// 
 			// commandBarItem25
@@ -739,7 +738,7 @@
 			this.commandBarItem25.Enabled = false;
 			this.commandBarItem25.Hint = "Vermindert den Abstand zwischen den markierten Elementen.";
 			this.commandBarItem25.Id = 28;
-			this.commandBarItem25.ImageIndex = 34;
+			this.commandBarItem25.ImageOptions.ImageIndex = 34;
 			this.commandBarItem25.Name = "commandBarItem25";
 			// 
 			// commandBarItem26
@@ -749,7 +748,7 @@
 			this.commandBarItem26.Enabled = false;
 			this.commandBarItem26.Hint = "Löscht die Abstände zwischen den markierten Elementen.";
 			this.commandBarItem26.Id = 29;
-			this.commandBarItem26.ImageIndex = 35;
+			this.commandBarItem26.ImageOptions.ImageIndex = 35;
 			this.commandBarItem26.Name = "commandBarItem26";
 			// 
 			// commandBarItem27
@@ -759,7 +758,7 @@
 			this.commandBarItem27.Enabled = false;
 			this.commandBarItem27.Hint = "Richtet die selektierten Elemente horizontal zentriert am Band aus.";
 			this.commandBarItem27.Id = 30;
-			this.commandBarItem27.ImageIndex = 36;
+			this.commandBarItem27.ImageOptions.ImageIndex = 36;
 			this.commandBarItem27.Name = "commandBarItem27";
 			// 
 			// commandBarItem28
@@ -769,7 +768,7 @@
 			this.commandBarItem28.Enabled = false;
 			this.commandBarItem28.Hint = "Richtet die selektierten Elemente vertikal zentriert am Band aus.";
 			this.commandBarItem28.Id = 31;
-			this.commandBarItem28.ImageIndex = 37;
+			this.commandBarItem28.ImageOptions.ImageIndex = 37;
 			this.commandBarItem28.Name = "commandBarItem28";
 			// 
 			// commandBarItem29
@@ -779,7 +778,7 @@
 			this.commandBarItem29.Enabled = false;
 			this.commandBarItem29.Hint = "Bringt die selektierten Elemente in den Vordergrund.";
 			this.commandBarItem29.Id = 32;
-			this.commandBarItem29.ImageIndex = 38;
+			this.commandBarItem29.ImageOptions.ImageIndex = 38;
 			this.commandBarItem29.Name = "commandBarItem29";
 			// 
 			// commandBarItem30
@@ -789,7 +788,7 @@
 			this.commandBarItem30.Enabled = false;
 			this.commandBarItem30.Hint = "Bringt die selektierten Element in den Hintergrund.";
 			this.commandBarItem30.Id = 33;
-			this.commandBarItem30.ImageIndex = 39;
+			this.commandBarItem30.ImageOptions.ImageIndex = 39;
 			this.commandBarItem30.Name = "commandBarItem30";
 			// 
 			// barDockControlTop
@@ -797,6 +796,7 @@
 			this.barDockControlTop.CausesValidation = false;
 			this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
 			this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+			this.barDockControlTop.Manager = this.xrDesignBarManager;
 			this.barDockControlTop.Size = new System.Drawing.Size(1158, 29);
 			// 
 			// barDockControlBottom
@@ -804,6 +804,7 @@
 			this.barDockControlBottom.CausesValidation = false;
 			this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.barDockControlBottom.Location = new System.Drawing.Point(0, 601);
+			this.barDockControlBottom.Manager = this.xrDesignBarManager;
 			this.barDockControlBottom.Size = new System.Drawing.Size(1158, 0);
 			// 
 			// barDockControlLeft
@@ -811,13 +812,15 @@
 			this.barDockControlLeft.CausesValidation = false;
 			this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
 			this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-			this.barDockControlLeft.Size = new System.Drawing.Size(27, 572);
+			this.barDockControlLeft.Manager = this.xrDesignBarManager;
+			this.barDockControlLeft.Size = new System.Drawing.Size(25, 572);
 			// 
 			// barDockControlRight
 			// 
 			this.barDockControlRight.CausesValidation = false;
 			this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
 			this.barDockControlRight.Location = new System.Drawing.Point(1158, 29);
+			this.barDockControlRight.Manager = this.xrDesignBarManager;
 			this.barDockControlRight.Size = new System.Drawing.Size(0, 572);
 			// 
 			// barStaticItem1
@@ -826,7 +829,7 @@
 			this.barStaticItem1.Border = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
 			this.barStaticItem1.Id = 42;
 			this.barStaticItem1.Name = "barStaticItem1";
-			this.barStaticItem1.TextAlignment = System.Drawing.StringAlignment.Near;
+			this.barStaticItem1.Size = new System.Drawing.Size(32, 0);
 			this.barStaticItem1.Width = 32;
 			// 
 			// commandBarItem31
@@ -835,7 +838,7 @@
 			this.commandBarItem31.Command = DevExpress.XtraReports.UserDesigner.ReportCommand.NewReport;
 			this.commandBarItem31.Hint = "Erstellt einen neuen leeren Bericht.";
 			this.commandBarItem31.Id = 34;
-			this.commandBarItem31.ImageIndex = 9;
+			this.commandBarItem31.ImageOptions.ImageIndex = 9;
 			this.commandBarItem31.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
 			this.commandBarItem31.Name = "commandBarItem31";
 			// 
@@ -845,7 +848,7 @@
 			this.commandBarItem32.Command = DevExpress.XtraReports.UserDesigner.ReportCommand.OpenFile;
 			this.commandBarItem32.Hint = "Öffnet eine Berichtsdatei.";
 			this.commandBarItem32.Id = 35;
-			this.commandBarItem32.ImageIndex = 10;
+			this.commandBarItem32.ImageOptions.ImageIndex = 10;
 			this.commandBarItem32.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O));
 			this.commandBarItem32.Name = "commandBarItem32";
 			// 
@@ -856,7 +859,7 @@
 			this.commandBarItem33.Enabled = false;
 			this.commandBarItem33.Hint = "Speichert den Bericht.";
 			this.commandBarItem33.Id = 36;
-			this.commandBarItem33.ImageIndex = 11;
+			this.commandBarItem33.ImageOptions.ImageIndex = 11;
 			this.commandBarItem33.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
 			this.commandBarItem33.Name = "commandBarItem33";
 			// 
@@ -867,7 +870,7 @@
 			this.commandBarItem34.Enabled = false;
 			this.commandBarItem34.Hint = "Löscht und kopiert das selektierte Element in die Zwischenablage.";
 			this.commandBarItem34.Id = 37;
-			this.commandBarItem34.ImageIndex = 12;
+			this.commandBarItem34.ImageOptions.ImageIndex = 12;
 			this.commandBarItem34.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X));
 			this.commandBarItem34.Name = "commandBarItem34";
 			// 
@@ -878,7 +881,7 @@
 			this.commandBarItem35.Enabled = false;
 			this.commandBarItem35.Hint = "Kopiert das selektierte Element in die Zwischenablage.";
 			this.commandBarItem35.Id = 38;
-			this.commandBarItem35.ImageIndex = 13;
+			this.commandBarItem35.ImageOptions.ImageIndex = 13;
 			this.commandBarItem35.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C));
 			this.commandBarItem35.Name = "commandBarItem35";
 			// 
@@ -889,7 +892,7 @@
 			this.commandBarItem36.Enabled = false;
 			this.commandBarItem36.Hint = "Fügt ein Element aus der Zwischenablage ein.";
 			this.commandBarItem36.Id = 39;
-			this.commandBarItem36.ImageIndex = 14;
+			this.commandBarItem36.ImageOptions.ImageIndex = 14;
 			this.commandBarItem36.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V));
 			this.commandBarItem36.Name = "commandBarItem36";
 			// 
@@ -900,7 +903,7 @@
 			this.commandBarItem37.Enabled = false;
 			this.commandBarItem37.Hint = "Macht die letzte Operation rückgängig.";
 			this.commandBarItem37.Id = 40;
-			this.commandBarItem37.ImageIndex = 15;
+			this.commandBarItem37.ImageOptions.ImageIndex = 15;
 			this.commandBarItem37.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z));
 			this.commandBarItem37.Name = "commandBarItem37";
 			// 
@@ -911,7 +914,7 @@
 			this.commandBarItem38.Enabled = false;
 			this.commandBarItem38.Hint = "Wiederholt den letzte Operation.";
 			this.commandBarItem38.Id = 41;
-			this.commandBarItem38.ImageIndex = 16;
+			this.commandBarItem38.ImageOptions.ImageIndex = 16;
 			this.commandBarItem38.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y));
 			this.commandBarItem38.Name = "commandBarItem38";
 			// 
@@ -934,9 +937,9 @@
 			// 
 			this.commandBarItem39.Caption = "Neu mit &Assistenten";
 			this.commandBarItem39.Command = DevExpress.XtraReports.UserDesigner.ReportCommand.NewReportWizard;
-			this.commandBarItem39.Glyph = ((System.Drawing.Image)(resources.GetObject("commandBarItem39.Glyph")));
 			this.commandBarItem39.Hint = "Erstellt einen neuen Bericht mit Hilfe des Assistenten.";
 			this.commandBarItem39.Id = 60;
+			this.commandBarItem39.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("commandBarItem39.ImageOptions.Image")));
 			this.commandBarItem39.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W));
 			this.commandBarItem39.Name = "commandBarItem39";
 			// 
@@ -956,7 +959,7 @@
 			this.commandBarItem44.Enabled = false;
 			this.commandBarItem44.Hint = "Alle Berichte speichern";
 			this.commandBarItem44.Id = 65;
-			this.commandBarItem44.ImageIndex = 40;
+			this.commandBarItem44.ImageOptions.ImageIndex = 40;
 			this.commandBarItem44.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L));
 			this.commandBarItem44.Name = "commandBarItem44";
 			// 
@@ -1175,6 +1178,7 @@
 			// 
 			// commandBarCheckItem1
 			// 
+			this.commandBarCheckItem1.BindableChecked = true;
 			this.commandBarCheckItem1.Caption = "&Schnittstelle";
 			this.commandBarCheckItem1.Checked = true;
 			this.commandBarCheckItem1.CheckedCommand = DevExpress.XtraReports.UserDesigner.ReportCommand.ShowTabbedInterface;
@@ -1192,7 +1196,7 @@
 			this.commandBarItem45.Hint = "Arrangieren Sie alle geöffneten Dokumente kaskadiert, so dass sie einander überla" +
     "ppen";
 			this.commandBarItem45.Id = 68;
-			this.commandBarItem45.ImageIndex = 41;
+			this.commandBarItem45.ImageOptions.ImageIndex = 41;
 			this.commandBarItem45.Name = "commandBarItem45";
 			// 
 			// commandBarItem46
@@ -1202,7 +1206,7 @@
 			this.commandBarItem46.Enabled = false;
 			this.commandBarItem46.Hint = "Arrangieren Sie alle geöffneten Dokumente von oben nach unten";
 			this.commandBarItem46.Id = 69;
-			this.commandBarItem46.ImageIndex = 42;
+			this.commandBarItem46.ImageOptions.ImageIndex = 42;
 			this.commandBarItem46.Name = "commandBarItem46";
 			// 
 			// commandBarItem47
@@ -1212,7 +1216,7 @@
 			this.commandBarItem47.Enabled = false;
 			this.commandBarItem47.Hint = "Arrangieren Sie alle geöffneten Dokumente von links nach rechts";
 			this.commandBarItem47.Id = 70;
-			this.commandBarItem47.ImageIndex = 43;
+			this.commandBarItem47.ImageOptions.ImageIndex = 43;
 			this.commandBarItem47.Name = "commandBarItem47";
 			// 
 			// barMdiChildrenListItem1
@@ -1228,7 +1232,7 @@
 			this.commandBarItem49.Enabled = false;
 			this.commandBarItem49.Hint = "Die Designeroberfläche verkleinern";
 			this.commandBarItem49.Id = 73;
-			this.commandBarItem49.ImageIndex = 44;
+			this.commandBarItem49.ImageOptions.ImageIndex = 44;
 			this.commandBarItem49.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Subtract));
 			this.commandBarItem49.Name = "commandBarItem49";
 			// 
@@ -1236,11 +1240,11 @@
 			// 
 			this.xrZoomBarEditItem1.Caption = "Zoom";
 			this.xrZoomBarEditItem1.Edit = this.designRepositoryItemComboBox2;
+			this.xrZoomBarEditItem1.EditWidth = 70;
 			this.xrZoomBarEditItem1.Enabled = false;
 			this.xrZoomBarEditItem1.Hint = "Wählen Sie den Faktor aus oder geben Sie Ihn ein.";
 			this.xrZoomBarEditItem1.Id = 74;
 			this.xrZoomBarEditItem1.Name = "xrZoomBarEditItem1";
-			this.xrZoomBarEditItem1.Width = 70;
 			// 
 			// designRepositoryItemComboBox2
 			// 
@@ -1248,7 +1252,6 @@
 			this.designRepositoryItemComboBox2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
 			this.designRepositoryItemComboBox2.Name = "designRepositoryItemComboBox2";
-			this.designRepositoryItemComboBox2.UseParentBackground = true;
 			// 
 			// commandBarItem50
 			// 
@@ -1257,7 +1260,7 @@
 			this.commandBarItem50.Enabled = false;
 			this.commandBarItem50.Hint = "Die Designeroberfläche vergrößern";
 			this.commandBarItem50.Id = 75;
-			this.commandBarItem50.ImageIndex = 45;
+			this.commandBarItem50.ImageOptions.ImageIndex = 45;
 			this.commandBarItem50.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Add));
 			this.commandBarItem50.Name = "commandBarItem50";
 			// 
@@ -1293,10 +1296,10 @@
 			this.fieldListDockPanel1.Dock = DevExpress.XtraBars.Docking.DockingStyle.Fill;
 			this.fieldListDockPanel1.ID = new System.Guid("faf69838-a93f-4114-83e8-d0d09cc5ce95");
 			this.fieldListDockPanel1.ImageIndex = 0;
-			this.fieldListDockPanel1.Location = new System.Drawing.Point(7, 29);
+			this.fieldListDockPanel1.Location = new System.Drawing.Point(8, 29);
 			this.fieldListDockPanel1.Name = "fieldListDockPanel1";
 			this.fieldListDockPanel1.OriginalSize = new System.Drawing.Size(236, 220);
-			this.fieldListDockPanel1.Size = new System.Drawing.Size(236, 220);
+			this.fieldListDockPanel1.Size = new System.Drawing.Size(235, 219);
 			this.fieldListDockPanel1.Text = "Liste der Felder";
 			this.fieldListDockPanel1.XRDesignPanel = this.xrDesignPanel;
 			// 
@@ -1304,7 +1307,7 @@
 			// 
 			this.fieldListDockPanel1_Container.Location = new System.Drawing.Point(0, 0);
 			this.fieldListDockPanel1_Container.Name = "fieldListDockPanel1_Container";
-			this.fieldListDockPanel1_Container.Size = new System.Drawing.Size(236, 220);
+			this.fieldListDockPanel1_Container.Size = new System.Drawing.Size(235, 219);
 			this.fieldListDockPanel1_Container.TabIndex = 0;
 			// 
 			// reportExplorerDockPanel1
@@ -1313,10 +1316,10 @@
 			this.reportExplorerDockPanel1.Dock = DevExpress.XtraBars.Docking.DockingStyle.Fill;
 			this.reportExplorerDockPanel1.ID = new System.Guid("fb3ec6cc-3b9b-4b9c-91cf-cff78c1edbf1");
 			this.reportExplorerDockPanel1.ImageIndex = 3;
-			this.reportExplorerDockPanel1.Location = new System.Drawing.Point(7, 29);
+			this.reportExplorerDockPanel1.Location = new System.Drawing.Point(8, 29);
 			this.reportExplorerDockPanel1.Name = "reportExplorerDockPanel1";
 			this.reportExplorerDockPanel1.OriginalSize = new System.Drawing.Size(236, 220);
-			this.reportExplorerDockPanel1.Size = new System.Drawing.Size(236, 220);
+			this.reportExplorerDockPanel1.Size = new System.Drawing.Size(235, 219);
 			this.reportExplorerDockPanel1.Text = "Berichts Explorer";
 			this.reportExplorerDockPanel1.XRDesignPanel = this.xrDesignPanel;
 			// 
@@ -1324,7 +1327,7 @@
 			// 
 			this.reportExplorerDockPanel1_Container.Location = new System.Drawing.Point(0, 0);
 			this.reportExplorerDockPanel1_Container.Name = "reportExplorerDockPanel1_Container";
-			this.reportExplorerDockPanel1_Container.Size = new System.Drawing.Size(236, 220);
+			this.reportExplorerDockPanel1_Container.Size = new System.Drawing.Size(235, 219);
 			this.reportExplorerDockPanel1_Container.TabIndex = 0;
 			// 
 			// propertyGridDockPanel1
@@ -1342,9 +1345,9 @@
 			// 
 			// propertyGridDockPanel1_Container
 			// 
-			this.propertyGridDockPanel1_Container.Location = new System.Drawing.Point(7, 29);
+			this.propertyGridDockPanel1_Container.Location = new System.Drawing.Point(8, 29);
 			this.propertyGridDockPanel1_Container.Name = "propertyGridDockPanel1_Container";
-			this.propertyGridDockPanel1_Container.Size = new System.Drawing.Size(236, 253);
+			this.propertyGridDockPanel1_Container.Size = new System.Drawing.Size(235, 253);
 			this.propertyGridDockPanel1_Container.TabIndex = 0;
 			// 
 			// imageList
@@ -1391,6 +1394,7 @@
 			this.reportExplorerDockPanel1.ResumeLayout(false);
 			this.propertyGridDockPanel1.ResumeLayout(false);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
