@@ -38,5 +38,24 @@ namespace KaupischIT.Charting
 			BarChart barChart = new BarChart();
 			return barChart.Draw(bars);
 		}
+
+		private void InitializeComponent()
+		{
+			this.SuspendLayout();
+			// 
+			// BarChartForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+			this.ClientSize = new System.Drawing.Size(449, 319);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.Name = "BarChartForm";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
+			this.ResumeLayout(false);
+			this.PerformLayout();
+
+		}
 	}
 }

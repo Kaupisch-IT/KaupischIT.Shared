@@ -72,9 +72,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BarChartForm.resx">
+      <DependentUpon>BarChartForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChartForm.resx">
       <DependentUpon>ChartForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PieChartForm.resx">
+      <DependentUpon>PieChartForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TreeMapForm.resx">
+      <DependentUpon>TreeMapForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

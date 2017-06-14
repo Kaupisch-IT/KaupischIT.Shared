@@ -76,7 +76,6 @@
 			// 
 			// propertyBrowserValue
 			// 
-			this.propertyBrowserValue.DisplayedType = null;
 			this.propertyBrowserValue.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propertyBrowserValue.DropDownHeight = 212;
 			this.propertyBrowserValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -84,7 +83,6 @@
 			this.propertyBrowserValue.IntegralHeight = false;
 			this.propertyBrowserValue.Location = new System.Drawing.Point(78, 30);
 			this.propertyBrowserValue.Name = "propertyBrowserValue";
-			this.propertyBrowserValue.SelectedProperty = null;
 			this.propertyBrowserValue.Size = new System.Drawing.Size(148, 21);
 			this.propertyBrowserValue.TabIndex = 3;
 			this.propertyBrowserValue.TypeFilter = null;
@@ -111,7 +109,6 @@
 			// 
 			// propertyBrowserDisplay
 			// 
-			this.propertyBrowserDisplay.DisplayedType = null;
 			this.propertyBrowserDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propertyBrowserDisplay.DropDownHeight = 212;
 			this.propertyBrowserDisplay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -119,7 +116,6 @@
 			this.propertyBrowserDisplay.IntegralHeight = false;
 			this.propertyBrowserDisplay.Location = new System.Drawing.Point(78, 3);
 			this.propertyBrowserDisplay.Name = "propertyBrowserDisplay";
-			this.propertyBrowserDisplay.SelectedProperty = null;
 			this.propertyBrowserDisplay.Size = new System.Drawing.Size(148, 21);
 			this.propertyBrowserDisplay.TabIndex = 2;
 			this.propertyBrowserDisplay.TypeFilter = null;
@@ -194,8 +190,11 @@
 			this.ClientSize = new System.Drawing.Size(386, 280);
 			this.Controls.Add(this.buttonToClipboard);
 			this.Controls.Add(this.tableLayoutPanel1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "ChartForm";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Diagramm";
 			this.Load += new System.EventHandler(this.PieForm_Load);
