@@ -38,10 +38,11 @@
 			// 
 			this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
 			this.imageList.TransparentColor = System.Drawing.Color.Fuchsia;
-			this.imageList.Images.SetKeyName(0,"up");
-			this.imageList.Images.SetKeyName(1,"down");
-			this.imageList.Images.SetKeyName(2,"right");
-			this.imageList.Images.SetKeyName(3,"searchGlyph");
+			this.imageList.Images.SetKeyName(0, "up");
+			this.imageList.Images.SetKeyName(1, "down");
+			this.imageList.Images.SetKeyName(2, "right");
+			this.imageList.Images.SetKeyName(3, "searchGlyph");
+			this.imageList.Images.SetKeyName(4, "ColumnDetail");
 			// 
 			// CustomizedUltraGrid
 			// 

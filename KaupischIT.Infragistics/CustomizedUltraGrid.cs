@@ -170,6 +170,7 @@ namespace KaupischIT.InfragisticsControls
 				this.SyncWithCurrencyManager = false;
 				this.DisplayLayout.Override.AllowMultiCellOperations = AllowMultiCellOperation.CopyWithHeaders;
 				this.DisplayLayout.Override.SummaryFooterCaptionVisible = DefaultableBoolean.False;
+				this.DisplayLayout.Override.RowSelectorHeaderAppearance.Image = this.imageList.Images["columnDetail"];
 
 				this.DisplayLayout.Override.FilterOperatorDefaultValue = FilterOperatorDefaultValue.Contains;
 				this.DisplayLayout.Override.FilterUIType = FilterUIType.FilterRow;
