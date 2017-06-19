@@ -25,11 +25,23 @@ namespace KaupischIT.Extensions
 			string propertyName = propertySelector.GetMemberName();
 			string memberName = dataMemberSelector.GetMemberName();
 
+			bindable.RemoveBinding(propertySelector);
+			return bindable.DataBindings.Add(propertyName,dataSource,memberName,true,dataSourceUpdateMode);
+		}
+
+
+		/// <summary>
+		///  Entfernt die angegebene Datenbindung
+		/// </summary>
+		/// <typeparam name="TBindable">der Typ der Komponente, an die Daten gebunden werden sollen</typeparam>
+		/// <param name="bindable">die Komponente, an die Daten gebunden werden sollen</param>
+		/// <param name="propertySelector">die Steuerelementeigenschaft für die Bindung</param>
+		public static void RemoveBinding<TBindable>(this TBindable bindable,Expression<Func<TBindable,object>> propertySelector) where TBindable : IBindableComponent
+		{
+			string propertyName = propertySelector.GetMemberName();
 			Binding oldBinding = bindable.DataBindings[propertyName];
 			if (oldBinding!=null)
 				bindable.DataBindings.Remove(oldBinding);
-
-			return bindable.DataBindings.Add(propertyName,dataSource,memberName,true,dataSourceUpdateMode);
 		}
 	}
 }
