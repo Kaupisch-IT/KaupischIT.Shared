@@ -43,6 +43,9 @@
 			this.imageList.Images.SetKeyName(2, "right");
 			this.imageList.Images.SetKeyName(3, "searchGlyph");
 			this.imageList.Images.SetKeyName(4, "ColumnDetail");
+			this.imageList.Images.SetKeyName(5, "Filter");
+			this.imageList.Images.SetKeyName(6, "DeleteFilter");
+			this.imageList.Images.SetKeyName(7, "FilterTextbox");
 			// 
 			// CustomizedUltraGrid
 			// 

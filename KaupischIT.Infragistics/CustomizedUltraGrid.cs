@@ -177,6 +177,8 @@ namespace KaupischIT.InfragisticsControls
 				this.DisplayLayout.Override.RowFilterMode = RowFilterMode.AllRowsInBand;
 				this.DisplayLayout.Override.FilterOperandStyle = FilterOperandStyle.Edit;
 				this.DisplayLayout.Override.FilterOperatorLocation = FilterOperatorLocation.Hidden;
+				this.DisplayLayout.Override.FilterRowAppearance.Image = this.imageList.Images["FilterTextbox"];
+				this.DisplayLayout.Override.FilterClearButtonAppearance.Image = this.imageList.Images["DeleteFilter"];
 
 				// Anpassung diverser Farben und Zeichenstile zur Vereinheitlichung des Aussehens mit den DevExpress-Steuerelementen
 				Color borderColor = Color.FromArgb(202,203,211);
