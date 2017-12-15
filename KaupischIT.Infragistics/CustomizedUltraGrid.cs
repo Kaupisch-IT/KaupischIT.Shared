@@ -777,7 +777,7 @@ namespace KaupischIT.InfragisticsControls
 		/// </summary>
 		public bool DrawElement(DrawPhase drawPhase,ref UIElementDrawParams drawParams)
 		{
-			// Aggregat-Zellöe
+			// Aggregat-Zelle
 			if (drawParams.Element is SummaryValueUIElement)
 			{
 				Rectangle rectangle = new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y-1,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height);
@@ -804,9 +804,21 @@ namespace KaupischIT.InfragisticsControls
 					drawParams.Graphics.DrawRectangle(pen,rectangle);
 			}
 
+			// BandHeader 
+			if (drawParams.Element is HeaderUIElement headerElement && headerElement.GetContext(typeof(UltraGridColumn))==null)
+			{
+				UltraGridBand band = headerElement.Header.Band;
+				List<UltraGridBand> equalNamedBands = this.DisplayLayout.Bands.OfType<UltraGridBand>().Where(b => b.Key==band.Key).ToList();
+				if (equalNamedBands.Count>1) // falls es mehrere Bänder mit dem gleichen Namen gibt, eine Nummerierung anzeigen
+				{
+					Rectangle rectangle = new Rectangle(x: drawParams.Element.Rect.X-1,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width,height: drawParams.Element.Rect.Height-((headerElement.Header.Column!=null) ? 1 : 0));
+					using (StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Far,LineAlignment = StringAlignment.Center })
+						drawParams.Graphics.DrawString("("+(equalNamedBands.IndexOf(band)+1)+")",this.Font,Brushes.Gray,rectangle,stringFormat);
+				}
+			}
+
 			// Markierung für die Sortierung
 			if (drawParams.Element is SortIndicatorUIElement)
-			{
 				if (drawParams.Element.GetContext(typeof(UltraGridColumn)) is UltraGridColumn column)
 				{
 					Rectangle rectangle = new Rectangle(x: drawParams.Element.Rect.X,y: drawParams.Element.Rect.Y,width: drawParams.Element.Rect.Width-1,height: drawParams.Element.Rect.Height-1);
@@ -830,7 +842,6 @@ namespace KaupischIT.InfragisticsControls
 							drawParams.Graphics.DrawString(index.ToString(),font,Brushes.Gray,rectangle,stringFormat);
 					}
 				}
-			}
 
 			return true;
 		}
