@@ -706,10 +706,23 @@ namespace KaupischIT.InfragisticsControls
 				excelExporter.InitializeColumn += (sender,initializeColumnEventArgs) => initializeColumnEventArgs.ExcelFormatStr = this.GetExcelFormatStr(initializeColumnEventArgs.FrameworkFormatStr,initializeColumnEventArgs.Column.DataType);
 
 				int lastOutlineLevel = -1;
+				bool cancelColumnHeader = false;
 				excelExporter.HeaderRowExporting += delegate (object sender,HeaderRowExportingEventArgs e) // Header nur über der ersten Zeile eines ausgeklappten Bereichs exportieren 
 				{
 					if (lastOutlineLevel>=e.CurrentOutlineLevel)
-						e.Cancel = true;
+					{
+						if (e.HeaderType==HeaderTypes.BandHeader)
+						{
+							e.Cancel = true;
+							cancelColumnHeader = true;
+						}
+						if (e.HeaderType==HeaderTypes.ColumnHeader)
+						{
+							e.Cancel = cancelColumnHeader || e.Band.Index==0;
+							cancelColumnHeader = false;
+						}
+					}
+
 					lastOutlineLevel = e.CurrentOutlineLevel;
 				};
 
