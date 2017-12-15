@@ -147,7 +147,7 @@ namespace KaupischIT.InfragisticsControls
 		{
 			using (new WaitCursorChanger(this))
 			{
-				this.DisplayLayout.MaxBandDepth = 5; // bei zyklischen Datenstrukturen hängt das Grid gern mal beim Laden. 5 scheint relativ in Ordnung zu sein: Viel tiefer wird (eigentlich) nie aufgeklappt; schon bei 7 kann es sein, dass das Grid hängen bleibt
+				this.DisplayLayout.MaxBandDepth = 7; // bei zyklischen Datenstrukturen hängt das Grid gern mal beim Laden. 5 scheint relativ in Ordnung zu sein: Viel tiefer wird (eigentlich) nie aufgeklappt; schon bei 7 kann es sein, dass das Grid hängen bleibt
 				this.DisplayLayout.LoadStyle = LoadStyle.LoadOnDemand;
 
 				// diverse Einstellungen für Aussehen & Verhalten
