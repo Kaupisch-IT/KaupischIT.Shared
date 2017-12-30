@@ -41,8 +41,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Infragistics4.Documents.Core.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
-      <HintPath>C:\Program Files (x86)\Infragistics\2013.2\Windows Forms\CLR4.0\Bin\Infragistics4.Documents.Core.v13.2.dll</HintPath>
-      <Name>Infragistics4.Documents.Core.v13.2</Name>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Infragistics4.Win.UltraWinGrid.ExcelExport.v13.2, Version=13.2.20132.2098, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
