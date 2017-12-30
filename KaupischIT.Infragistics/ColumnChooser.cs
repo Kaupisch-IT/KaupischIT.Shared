@@ -32,7 +32,7 @@ namespace KaupischIT.InfragisticsControls
 			this.CheckBoxes = true;
 
 			// alle Spalten des Bandes zur Auswahl stellen - außer komplexe Datentypen (es sei denn, es sind IEnumerable, die als Unter-Band dargestellt werden)
-			foreach (UltraGridColumn column in this.currentBand.Columns.OfType<UltraGridColumn>().OrderBy(c => c.Header.Caption))
+			foreach (UltraGridColumn column in this.currentBand.Columns.OfType<UltraGridColumn>().OrderBy(c => c.IsChaptered).ThenBy(c => c.Header.Caption))
 				if (column.DataType.IsValueType || column.DataType==typeof(string) || column.IsChaptered)
 				{
 					bool isHidden = (column.IsChaptered) ? this.currentBand.Layout.Bands[column.Key].Hidden : column.Hidden; // (IsChaptered gibt an, dass es ein Unter-Band ist)
