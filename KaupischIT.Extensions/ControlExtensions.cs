@@ -85,15 +85,22 @@ namespace KaupischIT.Extensions
 		/// <summary>
 		/// Unterbricht vorübergehend die Zeichnenvorgangslogik für das Steuerelement.
 		/// </summary>
-		public static void SuspendDrawing(this Control control) => control.SendMessage(WM_SETREDRAW,IntPtr.Zero,IntPtr.Zero);
-		
+		public static void SuspendDrawing(this Control control)
+		{
+			if (control.IsHandleCreated)
+				control.SendMessage(WM_SETREDRAW,IntPtr.Zero,IntPtr.Zero);
+		}
+
 		/// <summary>
 		/// Nimmt die übliche Zeichnenvorgangslogik wieder auf.
 		/// </summary>
 		public static void ResumeDrawing(this Control control)
 		{
-			control.SendMessage(WM_SETREDRAW,new IntPtr(1),IntPtr.Zero);
-			control.Refresh();
+			if (control.IsHandleCreated)
+			{
+				control.SendMessage(WM_SETREDRAW,new IntPtr(1),IntPtr.Zero);
+				control.Refresh();
+			}
 		}
 		private const int WM_SETREDRAW = 0XB;
 	}
