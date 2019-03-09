@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyExtensions.cs" />
+    <Compile Include="AssemblyNameExtensions.cs" />
     <Compile Include="BindableComponentExtensions.cs" />
     <Compile Include="ColorExtensions.cs" />
     <Compile Include="ControlExtensions.cs" />
