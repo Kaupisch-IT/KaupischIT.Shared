@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="BindableComponentExtensions.cs" />
     <Compile Include="ColorExtensions.cs" />
     <Compile Include="ControlExtensions.cs" />
