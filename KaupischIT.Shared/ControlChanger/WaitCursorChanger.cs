@@ -37,7 +37,7 @@ namespace KaupischIT.Shared
 			baseControl.Cursor = Cursors.Default;
 			//			Cursor.Current = Cursor.Current;
 
-			Application.DoEvents();
+			//Application.DoEvents();
 			Cursor.Position = Cursor.Position;
 		}
 	}
