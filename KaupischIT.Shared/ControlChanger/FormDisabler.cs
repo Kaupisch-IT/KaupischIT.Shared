@@ -14,7 +14,7 @@ namespace KaupischIT.Shared
 
 
 		/// <summary>
-		/// Erstellt ein neues FormDisabler-Objekt und setzt die Enabled-Eigenschaft der aktivierten Kindcontrols des angegbeben Controls auf false.
+		/// Erstellt ein neues FormDisabler-Objekt und setzt die Enabled-Eigenschaft der aktivierten Kindcontrols des angegrabenen Controls auf false.
 		/// Sobald alle erstellten FormDisabler-Objekte zu einem Basiscontrol freigegeben wurden, werden die deaktivierten Controls wieder aktiviert.
 		/// </summary>
 		/// <param name="control"></param>
@@ -28,7 +28,7 @@ namespace KaupischIT.Shared
 
 
 		/// <summary>
-		/// Alle aktierten Kindcontrols des Basiscontrols deaktivieren
+		/// Alle aktivierten Kindcontrols des Basiscontrols deaktivieren
 		/// </summary>
 		/// <param name="baseControl">das Basiscontrol</param>
 		protected override void EnableChanger(Control baseControl)

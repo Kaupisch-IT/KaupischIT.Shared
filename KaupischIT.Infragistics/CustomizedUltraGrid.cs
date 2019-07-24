@@ -522,7 +522,7 @@ namespace KaupischIT.InfragisticsControls
 		{
 			foreach (UltraGridBand band in this.DisplayLayout.Bands)
 			{
-				// für die automatische Breitenanpassung eine maximalbreite für die Spalten verwenden (sonst wird es manchmal sehr unübersichtlich) -> dazu die alten Maximalbreiten merken
+				// für die automatische Breitenanpassung eine Maximalbreite für die Spalten verwenden (sonst wird es manchmal sehr unübersichtlich) -> dazu die alten Maximalbreiten merken
 				Dictionary<UltraGridColumn,int> oldMaxWidths = new Dictionary<UltraGridColumn,int>(band.Columns.Count);
 				foreach (UltraGridColumn column in band.Columns)
 				{

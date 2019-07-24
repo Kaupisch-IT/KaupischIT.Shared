@@ -41,7 +41,7 @@ namespace KaupischIT.Shared
 		}
 
 		/// <summary>
-		/// Ggf Leertext und Bild in die Textbox zeichnen
+		/// Ggf. Leertext und Bild in die Textbox zeichnen
 		/// </summary>
 		private void CustomPaint()
 		{

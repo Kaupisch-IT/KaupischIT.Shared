@@ -13,7 +13,7 @@ namespace KaupischIT.Charting
 	internal class BarChart
 	{
 		/// <summary>
-		/// Stellt Informationen über einen Balken im Balkendiagram bereit
+		/// Stellt Informationen über einen Balken im Balkendiagramm bereit
 		/// </summary>
 		public class Item
 		{

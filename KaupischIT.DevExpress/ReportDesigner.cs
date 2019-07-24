@@ -27,7 +27,7 @@ namespace KaupischIT.DevExpressControls
 
 
 		/// <summary>
-		/// Gibt den aktutellen Bericht zurück
+		/// Gibt den aktuellen Bericht zurück
 		/// </summary>
 		public XtraReport Report => this.xrDesignPanel.Report;
 

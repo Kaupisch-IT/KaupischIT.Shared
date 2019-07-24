@@ -6,7 +6,7 @@ namespace KaupischIT.Extensions
 	public static class TreeViewExtensions
 	{
 		/// <summary>
-		/// Gibt alle Knoten eines TreeViews zurück (inklusiver verschachtelter Kindknoten)
+		/// Gibt alle Knoten eines TreeViews zurück (inklusive verschachtelter Kindknoten)
 		/// </summary>
 		public static IEnumerable<TreeNode> GetAllNodes(this TreeView treeView)
 		{
@@ -16,7 +16,7 @@ namespace KaupischIT.Extensions
 		}
 
 		/// <summary>
-		/// Gibt alle Knoten eines TreeNodes zurück (inklusiver verschachtelter Kindknoten)
+		/// Gibt alle Knoten eines TreeNodes zurück (inklusive verschachtelter Kindknoten)
 		/// </summary>
 		public static IEnumerable<TreeNode> GetAllNodes(this TreeNode treeNode)
 		{

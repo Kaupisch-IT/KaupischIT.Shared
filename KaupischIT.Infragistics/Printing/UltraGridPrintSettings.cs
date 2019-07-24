@@ -57,7 +57,7 @@ namespace KaupischIT.InfragisticsControls.Printing
 		public string Printer { get; set; }
 
 		/// <summary>
-		/// Gibt den Kopfszeilentext zurück oder legt diesen fest
+		/// Gibt den Kopfzeilentext zurück oder legt diesen fest
 		/// </summary>
 		public string HeaderText { get; set; }
 

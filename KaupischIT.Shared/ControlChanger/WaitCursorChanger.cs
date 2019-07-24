@@ -10,7 +10,7 @@ namespace KaupischIT.Shared
 	public class WaitCursorChanger : ControlChangerBase
 	{
 		/// <summary>
-		/// Erstellt ein neues WaitCursorChanger-Objekt und setzt die UseWaitCursor-Eigenschaft des angegbeben Controls auf true.
+		/// Erstellt ein neues WaitCursorChanger-Objekt und setzt die UseWaitCursor-Eigenschaft des angegrabenen Controls auf true.
 		/// Sobald alle erstellten WaitCursor-Objekte zu einem Control freigegeben wurden, wird die UseWaitCursor-Eigenschaft wieder auf den Ursprungswert gesetzt
 		/// </summary>
 		/// <param name="control"></param>

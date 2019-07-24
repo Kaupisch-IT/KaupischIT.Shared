@@ -56,7 +56,7 @@ namespace KaupischIT.Shared
 
 
 		/// <summary>
-		/// Erstellt ein neues Subverions-Attribut
+		/// Erstellt ein neues Subversion-Attribut
 		/// </summary>
 		/// <param name="id">die Subversion-ID</param>
 		public SubversionAttribute(string id)
