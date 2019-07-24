@@ -54,13 +54,11 @@ namespace KaupischIT.DevExpressControls
 			this.FormatConditions.Add(formatCondition);
 
 			// Klick in ein Zelle selektiert diese
-			this.CellClick += delegate (object sender,PivotCellEventArgs e)
-			{ this.Cells.MultiSelection.SetSelection(new Point(e.ColumnIndex,e.RowIndex)); };
+			this.CellClick += delegate (object sender,PivotCellEventArgs e) { this.Cells.MultiSelection.SetSelection(new Point(e.ColumnIndex,e.RowIndex)); };
 
 			// Diagramm-Einstellungen
 			this.OptionsChartDataSource.SelectionOnly = false;
-			this.CellSelectionChanged += delegate
-			{ this.OptionsChartDataSource.SelectionOnly = this.Cells.MultiSelection.SelectedCells.Count()>1; };
+			this.CellSelectionChanged += delegate { this.OptionsChartDataSource.SelectionOnly = this.Cells.MultiSelection.SelectedCells.Count()>1; };
 			this.OptionsChartDataSource.AutoTransposeChart = true;
 		}
 		protected override void Dispose(bool disposing)
@@ -252,8 +250,7 @@ namespace KaupischIT.DevExpressControls
 				{
 					PivotSummaryDisplayType summaryDisplayType = summaryDisplayTypes[key];
 					DXMenuCheckItem menuItem = new DXMenuCheckItem { Caption = key,Checked = pivotGridField.SummaryDisplayType==summaryDisplayType };
-					menuItem.Click += delegate
-					{ this.DuplicatePivotGridField(pivotGridField,pivotGridField.SummaryType,summaryDisplayType); };
+					menuItem.Click += delegate { this.DuplicatePivotGridField(pivotGridField,pivotGridField.SummaryType,summaryDisplayType); };
 					summaryDisplayMenuItem.Items.Add(menuItem);
 				}
 			}

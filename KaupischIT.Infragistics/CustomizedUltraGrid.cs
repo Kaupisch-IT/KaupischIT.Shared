@@ -287,8 +287,7 @@ namespace KaupischIT.InfragisticsControls
 				toolStripTextBox.Tag = toolStripTextBox.Text;
 				this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty);
 			};
-			toolStripTextBox.Click += delegate
-			{ this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty); };
+			toolStripTextBox.Click += delegate { this.FormatMenuItem_Click(toolStripTextBox,EventArgs.Empty); };
 			this.formatToolStripMenuItem.DropDownItems.Add(toolStripTextBox);
 
 			// Zusammenfassungen
@@ -298,28 +297,20 @@ namespace KaupischIT.InfragisticsControls
 
 			// Formatierungen
 			this.fontToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Text formatieren");
-			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate (object sender,EventArgs e)
-			{ this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate (object sender,EventArgs e)
-			{ this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate (object sender,EventArgs e)
-			{ this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Fett",null,delegate (object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Bold = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Kursiv",null,delegate (object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Italic =((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Unterstrichen",null,delegate (object sender,EventArgs e) { this.ContextUltraGridColumn.CellAppearance.FontData.Underline = ((ToolStripMenuItem)sender).Checked ? DefaultableBoolean.False : DefaultableBoolean.True; });
 
 			// wertbasierte Formatierungen
 			this.fontToolStripMenuItem.DropDownItems.Add(new ToolStripSeparator());
-			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate (object sender,EventArgs e)
-			{ ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues = !((ToolStripMenuItem)sender).Checked; });
-			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate (object sender,EventArgs e)
-			{ ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators = !((ToolStripMenuItem)sender).Checked; });
+			this.fontToolStripMenuItem.DropDownItems.Add("negative Werte rot",null,delegate (object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).HighlightNegativeValues = !((ToolStripMenuItem)sender).Checked; });
+			this.fontToolStripMenuItem.DropDownItems.Add("Tendenzpfeile",null,delegate (object sender,EventArgs e) { ((ValueAppearance)this.ContextUltraGridColumn.ValueBasedAppearance).ShowTrendIndicators = !((ToolStripMenuItem)sender).Checked; });
 
 			// Visualisierungen
 			this.visualizationToolStripMenuItem = (ToolStripMenuItem)this.ColumnCellContextMenuStrip.Items.Add("Visualisierung");
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate
-			{ this.ShowChartForm(new PieChartForm()); });
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate
-			{ this.ShowChartForm(new BarChartForm()); });
-			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate
-			{ this.ShowChartForm(new TreeMapForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Kreisdiagramm anzeigen",null,delegate { this.ShowChartForm(new PieChartForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Balkendiagramm anzeigen",null,delegate { this.ShowChartForm(new BarChartForm()); });
+			this.visualizationToolStripMenuItem.DropDownItems.Add("Flächendiagramm anzeigen",null,delegate { this.ShowChartForm(new TreeMapForm()); });
 		}
 
 		/// <summary>
@@ -409,15 +400,11 @@ namespace KaupischIT.InfragisticsControls
 		{
 			this.RowSelectorContextMenuStrip = new ContextMenuStrip();
 
-			this.RowSelectorContextMenuStrip.Items.Add("Erweitern",null,delegate
-			{ this.ContextUltraGridRow.Expanded = true; });
-			this.RowSelectorContextMenuStrip.Items.Add("Reduzieren",null,delegate
-			{ this.ContextUltraGridRow.Expanded = false; });
+			this.RowSelectorContextMenuStrip.Items.Add("Erweitern",null,delegate { this.ContextUltraGridRow.Expanded = true; });
+			this.RowSelectorContextMenuStrip.Items.Add("Reduzieren",null,delegate { this.ContextUltraGridRow.Expanded = false; });
 			this.RowSelectorContextMenuStrip.Items.Add("-");
-			this.RowSelectorContextMenuStrip.Items.Add("Alles erweitern",null,delegate
-			{ this.ContextUltraGridRow.ParentCollection.ExpandAll(false); });
-			this.RowSelectorContextMenuStrip.Items.Add("Alles reduzieren",null,delegate
-			{ this.ContextUltraGridRow.ParentCollection.CollapseAll(false); });
+			this.RowSelectorContextMenuStrip.Items.Add("Alles erweitern",null,delegate { this.ContextUltraGridRow.ParentCollection.ExpandAll(false); });
+			this.RowSelectorContextMenuStrip.Items.Add("Alles reduzieren",null,delegate { this.ContextUltraGridRow.ParentCollection.CollapseAll(false); });
 		}
 
 
@@ -520,8 +507,7 @@ namespace KaupischIT.InfragisticsControls
 					foreach (UrlProtocolHandler.ConcreteRoute r in validRoutes)
 					{
 						UrlProtocolHandler.ConcreteRoute route = r;
-						contextMenuStrip.Items.Add(route.Name,null,delegate
-						{ route.Invoke(); }).Tag = this.urlProtocolHandler;
+						contextMenuStrip.Items.Add(route.Name,null,delegate { route.Invoke(); }).Tag = this.urlProtocolHandler;
 					}
 				}
 			}
@@ -591,13 +577,13 @@ namespace KaupischIT.InfragisticsControls
 				Cursor oldCursor = Cursor.Current;
 				Cursor.Current = Cursors.WaitCursor;
 
-				EventHandler tickEventHandler = null;
-				tickEventHandler = delegate
+				void tickEventHandler(object sender,EventArgs e)
 				{
 					this.timer.Stop();
 					Cursor.Current = oldCursor;
 					this.timer.Tick -= tickEventHandler;
-				};
+				}
+
 				this.timer.Tick += tickEventHandler;
 				this.timer.Interval = 1;
 				this.timer.Start();

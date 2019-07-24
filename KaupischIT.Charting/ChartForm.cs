@@ -82,12 +82,9 @@ namespace KaupischIT.Charting
 
 			this.GetFormatString = (name) => null;
 			this.propertyBrowserValue.TypeFilter = (type) => type.IsNumeric();
-			this.propertyBrowserDisplay.SelectedValueChanged += delegate
-			{ this.PrintChart(); };
-			this.propertyBrowserValue.SelectedValueChanged += delegate
-			{ this.PrintChart(); };
-			this.numericUpDownPercentageThreshold.ValueChanged += delegate
-			{ this.PrintChart(); };
+			this.propertyBrowserDisplay.SelectedValueChanged += delegate { this.PrintChart(); };
+			this.propertyBrowserValue.SelectedValueChanged += delegate { this.PrintChart(); };
+			this.numericUpDownPercentageThreshold.ValueChanged += delegate { this.PrintChart(); };
 		}
 
 		/// <summary>

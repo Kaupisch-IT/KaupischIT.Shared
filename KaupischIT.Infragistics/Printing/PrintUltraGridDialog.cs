@@ -63,8 +63,7 @@ namespace KaupischIT.InfragisticsControls.Printing
 			this.ultraPrintDocument.Page.BorderStyle = UIElementBorderStyle.None;
 			this.ultraPrintDocument.Header.Margins.Bottom = 10;
 			this.ultraPrintDocument.Footer.TextLeft = "[Date Printed] [Time Printed]";
-			this.ultraPrintDocument.BeginPrint += delegate
-			{ this.pageNumber = 0; };
+			this.ultraPrintDocument.BeginPrint += delegate { this.pageNumber = 0; };
 			this.ultraPrintDocument.PagePrinting += delegate
 			{
 				this.ultraPrintDocument.Footer.TextRight = (this.ultraPrintDocument.PrinterSettings.PrintRange==PrintRange.AllPages) ? "Seite <#> von <##>" : "Seite "+(this.ultraPrintDocument.PrinterSettings.FromPage+this.pageNumber);

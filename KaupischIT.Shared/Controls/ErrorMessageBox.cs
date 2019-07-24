@@ -167,8 +167,7 @@ namespace KaupischIT.Shared
 			{
 				errorMessageBox.StartPosition = FormStartPosition.CenterParent;
 				errorMessageBox.ShowInTaskbar = false;
-				activeForm.Invoke((MethodInvoker)delegate
-				{ errorMessageBox.ShowDialog(activeForm); });
+				activeForm.Invoke((MethodInvoker)delegate { errorMessageBox.ShowDialog(activeForm); });
 			}
 			else
 				errorMessageBox.ShowDialog();
