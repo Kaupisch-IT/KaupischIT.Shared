@@ -27,7 +27,7 @@ namespace KaupischIT.Shared
 		internal ErrorMessageBox(string message,string caption,Exception exception)
 		{
 			this.Font = SystemFonts.MessageBoxFont;
-			InitializeComponent();
+			this.InitializeComponent();
 
 			Bitmap bitmap = SystemIcons.Error.ToBitmap();
 			this.pictureBoxIcon.Image = bitmap;

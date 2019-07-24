@@ -11,7 +11,7 @@ namespace KaupischIT.Extensions
 	/// </summary>
 	public static class ExpressionExtensions
 	{
-		private static MethodInfo stringConcatMethodInfo = typeof(string).GetMethod("Concat",new[] { typeof(string),typeof(string) });  // für den Plus-Operator für für Zeichenketten
+		private static readonly MethodInfo stringConcatMethodInfo = typeof(string).GetMethod("Concat",new[] { typeof(string),typeof(string) });  // für den Plus-Operator für für Zeichenketten
 
 
 		/// <summary>

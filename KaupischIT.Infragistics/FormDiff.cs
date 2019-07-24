@@ -18,7 +18,7 @@ namespace KaupischIT.InfragisticsControls
 		public FormDiff(IEnumerable values)
 		{
 			this.Font = SystemFonts.MessageBoxFont;
-			InitializeComponent();
+			this.InitializeComponent();
 
 			this.customizedUltraGrid.DisplayLayout.MaxBandDepth = 1;
 			this.customizedUltraGrid.DataSource = values;

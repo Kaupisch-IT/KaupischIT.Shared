@@ -13,7 +13,7 @@ namespace KaupischIT.Shared.Controls
 	{
 		private bool isProcessing = false;  // gibt ab, ob die Syntaxhervorhebung gerade durchgeführt wird
 		private string highlightedWord;     // gibt das momentan (durch eine Hintergrundfarbe) hervorgehobene Wort an
-		private Timer timerCurrentWord = new Timer { Interval = 1000 }; // der Timer für die verzögerte Hervorhebung des momentanen Wortes 
+		private readonly Timer timerCurrentWord = new Timer { Interval = 1000 }; // der Timer für die verzögerte Hervorhebung des momentanen Wortes 
 
 
 		/// <summary>
@@ -72,6 +72,7 @@ namespace KaupischIT.Shared.Controls
 		{
 			this.Rules.Add(new Rule
 			{
+				Name = name,
 				ForeColor = foreColor,
 				Regex = new Regex(pattern,RegexOptions.Compiled|RegexOptions.Multiline)
 			});

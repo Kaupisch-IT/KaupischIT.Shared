@@ -87,7 +87,7 @@ namespace KaupischIT.Shared
 
 			if (first.ImplementsInterface(typeof(IEnumerable<>)) && second.ImplementsInterface(typeof(IEnumerable<>)))
 			{
-				Func<Type,Type> getElementType = (type) => type.GetInterfaces().Concat(new[] { type }).First(itype => itype.IsGenericType && itype.GetGenericTypeDefinition()==typeof(IEnumerable<>)).GetGenericArguments()[0];
+				Type getElementType(Type type) => type.GetInterfaces().Concat(new[] { type }).First(itype => itype.IsGenericType && itype.GetGenericTypeDefinition()==typeof(IEnumerable<>)).GetGenericArguments()[0];
 				return this.AreEquivalentTypes(getElementType(first),getElementType(second));
 			}
 
@@ -145,8 +145,7 @@ namespace KaupischIT.Shared
 				this.AddMemberNodes(parentTreeNode.Nodes,type,parentTreeNode.Name,true);
 			else
 			{
-				TreeViewCancelEventHandler treeViewCancelEventHandler = null;
-				treeViewCancelEventHandler = delegate (object sender,TreeViewCancelEventArgs e)
+				void treeViewCancelEventHandler(object sender,TreeViewCancelEventArgs e)
 				{
 					if (e.Node==parentTreeNode.Parent)
 					{
@@ -171,7 +170,8 @@ namespace KaupischIT.Shared
 						if (!this.isUpdating)
 							this.EndUpdate();
 					}
-				};
+				}
+
 				this.BeforeExpand += treeViewCancelEventHandler;
 			}
 		}

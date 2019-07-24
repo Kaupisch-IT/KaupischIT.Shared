@@ -78,7 +78,7 @@ namespace KaupischIT.Charting
 		public ChartForm()
 		{
 			this.Font = SystemFonts.MessageBoxFont;
-			InitializeComponent();
+			this.InitializeComponent();
 
 			this.GetFormatString = (name) => null;
 			this.propertyBrowserValue.TypeFilter = (type) => type.IsNumeric();
@@ -101,8 +101,8 @@ namespace KaupischIT.Charting
 				if (this.Elements!=null)
 				{
 					// Delegaten zum Ermitteln des Anzeigetexts und des Wertes
-					Func<object,object> getDisplay = (item) => this.propertyBrowserDisplay.GetSelectedPropertyValue(item);
-					Func<object,double?> getValue = (item) =>
+					object getDisplay(object item) => this.propertyBrowserDisplay.GetSelectedPropertyValue(item);
+					double? getValue(object item)
 					{
 						double result = 1;
 						if (String.IsNullOrEmpty(this.propertyBrowserValue.SelectedProperty))
@@ -112,12 +112,12 @@ namespace KaupischIT.Charting
 							object rawValue = this.propertyBrowserValue.GetSelectedPropertyValue(item);
 							return (rawValue!=null && Double.TryParse(rawValue.ToString(),out result)) ? result : (double?)null;
 						}
-					};
+					}
 
 					// Delegaten zum Ermitteln der Anzeigetexte
-					Func<object,string,string> getFormattedText = (value,formatString) => (value is IFormattable) ? ((IFormattable)value).ToString(formatString,null).Trim() : (value??"").ToString().Trim();
-					Func<object,string> getDisplayText = (value) => getFormattedText(value,this.GetFormatString(this.propertyBrowserDisplay.SelectedProperty));
-					Func<object,string> getValueText = (value) => (String.IsNullOrEmpty(this.propertyBrowserValue.SelectedProperty)) ? "#:"+value : getFormattedText(value,this.GetFormatString(this.propertyBrowserValue.SelectedProperty));
+					string getFormattedText(object value,string formatString) => (value is IFormattable) ? ((IFormattable)value).ToString(formatString,null).Trim() : (value??"").ToString().Trim();
+					string getDisplayText(object value) => getFormattedText(value,this.GetFormatString(this.propertyBrowserDisplay.SelectedProperty));
+					string getValueText(object value) => (String.IsNullOrEmpty(this.propertyBrowserValue.SelectedProperty)) ? "#:"+value : getFormattedText(value,this.GetFormatString(this.propertyBrowserValue.SelectedProperty));
 
 					// Elemente entsprechend des Beschreibungstextes gruppieren und die Werte zusammenfassen
 					var values = this.Elements

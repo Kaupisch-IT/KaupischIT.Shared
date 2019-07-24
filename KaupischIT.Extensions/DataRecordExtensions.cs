@@ -36,7 +36,7 @@ namespace KaupischIT.Extensions
 			type = Nullable.GetUnderlyingType(type) ?? type;
 
 			return (value is DBNull)
-				? default(T)
+				? default
 				: (changeType) ? (T)Convert.ChangeType(value,type) : (T)value;
 		}
 	}

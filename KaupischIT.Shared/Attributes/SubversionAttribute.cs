@@ -100,8 +100,7 @@ namespace KaupischIT.Shared
 			SubversionAttribute[] subversionAttributes = SubversionAttribute.FindAll(customAttributeProvider).ToArray();
 			if (subversionAttributes.Length>0)
 			{
-				Comparison<SubversionAttribute> comparer = (first,second) => second.Revision.CompareTo(first.Revision);
-				Array.Sort(subversionAttributes,comparer);
+				Array.Sort(subversionAttributes,(first,second) => second.Revision.CompareTo(first.Revision));
 				return subversionAttributes[0];
 			}
 			else

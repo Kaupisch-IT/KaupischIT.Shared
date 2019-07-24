@@ -181,8 +181,8 @@ namespace KaupischIT.Charting
 				using (Brush brush = new SolidBrush(Color.FromArgb(this.Opacity,pieSlice.Color)))
 				{
 					// Mittelpunkt der Ellipse und transformierte Start-/Endwinkel ermitteln
-					float startAngleT = TransformAngle(pieSlice.StartAngle);
-					float sweepAngleT = (TransformAngle(pieSlice.EndAngle)-startAngleT+360)%360;
+					float startAngleT = this.TransformAngle(pieSlice.StartAngle);
+					float sweepAngleT = (this.TransformAngle(pieSlice.EndAngle)-startAngleT+360)%360;
 					PointF sliceFocus = this.GetSliceFocus(pieSlice);
 
 					// Kreisausschnittfläche und Kontur zeichnen
@@ -204,8 +204,8 @@ namespace KaupischIT.Charting
 			slicesWithBackground = slicesWithBackground.OrderBy(ps => Math.Abs(ps.StartAngle+ps.SweepAngle/2-270));
 
 			// entsprechende Seitenflächen zeichnen (fangen frühestens bei 180° an und hören spätestens bei 360° auf)
-			Func<Slice,float> start = (pieSlice) => Math.Max(180,pieSlice.StartAngle);
-			Func<Slice,float> end = (pieSlice) => (pieSlice.EndAngle>180) ? pieSlice.EndAngle : 0;
+			float start(Slice pieSlice) => Math.Max(180,pieSlice.StartAngle);
+			float end(Slice pieSlice) => (pieSlice.EndAngle>180) ? pieSlice.EndAngle : 0;
 			this.DrawSurfaces(graphics,slicesWithBackground,start,end);
 		}
 
@@ -221,8 +221,8 @@ namespace KaupischIT.Charting
 			slicesWithForeground = slicesWithForeground.OrderByDescending(ps => Math.Abs(ps.StartAngle+ps.SweepAngle/2-90));
 
 			// entsprechende Seitenflächen zeichnen (fangen frühestens bei 0° an und hören spätestens bei 180° auf)
-			Func<Slice,float> start = (pieSlice) => (pieSlice.StartAngle<180) ? pieSlice.StartAngle : 0;
-			Func<Slice,float> end = (pieSlice) => Math.Min(180,pieSlice.EndAngle);
+			float start(Slice pieSlice) => (pieSlice.StartAngle<180) ? pieSlice.StartAngle : 0;
+			float end(Slice pieSlice) => Math.Min(180,pieSlice.EndAngle);
 			this.DrawSurfaces(graphics,slicesWithForeground,start,end);
 		}
 
@@ -257,8 +257,8 @@ namespace KaupischIT.Charting
 
 						// Mittelpunkt und transformierte Start-/Endwinkel bestimmen
 						PointF sliceFocus = this.GetSliceFocus(pieSlice);
-						float startAngleT = TransformAngle(getStartAngle(pieSlice));
-						float sweepAngleT = (TransformAngle(getEndAngle(pieSlice))-startAngleT+360)%360;
+						float startAngleT = this.TransformAngle(getStartAngle(pieSlice));
+						float sweepAngleT = (this.TransformAngle(getEndAngle(pieSlice))-startAngleT+360)%360;
 
 						using (GraphicsPath graphicsPath = new GraphicsPath())
 						{
@@ -314,7 +314,7 @@ namespace KaupischIT.Charting
 				using (Brush brush = new SolidBrush(Color.FromArgb(this.Opacity,pieSlice.Color)))
 				{
 					// Winkel und Radius/Länge der Seitenfläche bestimmen
-					float angleT = TransformAngle(angle);
+					float angleT = this.TransformAngle(angle);
 					float radius = this.GetEllipseRadius(angleT);
 
 					// Koordinaten auf dem Außenkreis berechnen
@@ -352,7 +352,7 @@ namespace KaupischIT.Charting
 					{
 						// Mittelpunkt und Winkel der Winkelhalbierenden des Kuchenstücks bestimmen                        
 						PointF sliceFocus = this.GetSliceFocus(pieSlice);
-						float bisectorAngleT = TransformAngle(pieSlice.StartAngle+pieSlice.SweepAngle/2);
+						float bisectorAngleT = this.TransformAngle(pieSlice.StartAngle+pieSlice.SweepAngle/2);
 
 						// (Vorberechnungen)
 						float radius = this.GetEllipseRadius(bisectorAngleT);
@@ -412,8 +412,8 @@ namespace KaupischIT.Charting
 		private PointF GetSliceFocus(Slice pieSlice)
 		{
 			// Winkelhalbierende bestimmen...
-			float startAngleT = TransformAngle(pieSlice.StartAngle);
-			float sweepAngleT = (TransformAngle(pieSlice.EndAngle)-startAngleT+360)%360;
+			float startAngleT = this.TransformAngle(pieSlice.StartAngle);
+			float sweepAngleT = (this.TransformAngle(pieSlice.EndAngle)-startAngleT+360)%360;
 			float bisectorAngleT = startAngleT + sweepAngleT/2;
 
 			// ... und entsprechend des Offsets dort entlang verschieben

@@ -11,7 +11,7 @@ namespace KaupischIT.Shared
 	[DebuggerDisplay("DisplayedType = {DisplayedType}, SelectedProperty = {SelectedProperty}")]
 	public class PropertyBrowser : ComboBoxControlHost
 	{
-		private ObjectBrowser objectBrowser = new ObjectBrowser();
+		private readonly ObjectBrowser objectBrowser = new ObjectBrowser();
 
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string SelectedProperty

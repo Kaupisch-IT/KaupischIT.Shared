@@ -9,8 +9,8 @@ namespace KaupischIT.InfragisticsControls.ValueAppearances
 	public class ValueAppearance : IValueAppearance
 	{
 		// kombinierte ValueAppearances
-		private IconValueAppearance iconValueAppearance = new IconValueAppearance();
-		private NegativeValueAppearance negativeValueAppearance = new NegativeValueAppearance();
+		private readonly IconValueAppearance iconValueAppearance = new IconValueAppearance();
+		private readonly NegativeValueAppearance negativeValueAppearance = new NegativeValueAppearance();
 
 		/// <summary>
 		/// Wird ausgelöst, wenn eine Eigenschaft geändert wurde

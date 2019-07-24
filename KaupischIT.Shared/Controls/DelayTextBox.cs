@@ -8,7 +8,7 @@ namespace KaupischIT.Shared
 	/// </summary>
 	public class DelayTextBox : TextBox
 	{
-		private Timer timer = new Timer();  // Timer, der nach einer bestimmten Zeit das OnTextChanged-Ereignis auslöst
+		private readonly Timer timer = new Timer();  // Timer, der nach einer bestimmten Zeit das OnTextChanged-Ereignis auslöst
 
 
 		/// <summary>

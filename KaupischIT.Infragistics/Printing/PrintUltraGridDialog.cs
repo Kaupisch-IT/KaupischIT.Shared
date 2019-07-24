@@ -30,7 +30,7 @@ namespace KaupischIT.InfragisticsControls.Printing
 		public PrintUltraGridDialog(UltraGrid ultraGrid,string title,string description)
 		{
 			this.Font = SystemFonts.MessageBoxFont;
-			InitializeComponent();
+			this.InitializeComponent();
 			this.ultraPrintPreviewControl.Settings.Appearance.BackColor = SystemColors.Control;
 
 			this.ultraPrintDocument.Grid = ultraGrid;
@@ -136,10 +136,10 @@ namespace KaupischIT.InfragisticsControls.Printing
 			this.ultraPrintDocument.PrinterSettings.Copies = (short)this.numericUpDownCopies.Value;
 			this.ultraPrintDocument.PrintColorStyle = (ColorRenderMode)this.comboBoxColorStyle.SelectedValue;
 			this.ultraPrintDocument.DefaultPageSettings.PaperSize = (PaperSize)this.comboBoxPapersize.SelectedItem;
-			this.ultraPrintDocument.DefaultPageSettings.Margins.Top = CmToPrintInch(this.numericUpDownTop.Value);
-			this.ultraPrintDocument.DefaultPageSettings.Margins.Bottom = CmToPrintInch(this.numericUpDownBottom.Value);
-			this.ultraPrintDocument.DefaultPageSettings.Margins.Left = CmToPrintInch(this.numericUpDownLeft.Value);
-			this.ultraPrintDocument.DefaultPageSettings.Margins.Right = CmToPrintInch(this.numericUpDownRight.Value);
+			this.ultraPrintDocument.DefaultPageSettings.Margins.Top = this.CmToPrintInch(this.numericUpDownTop.Value);
+			this.ultraPrintDocument.DefaultPageSettings.Margins.Bottom = this.CmToPrintInch(this.numericUpDownBottom.Value);
+			this.ultraPrintDocument.DefaultPageSettings.Margins.Left = this.CmToPrintInch(this.numericUpDownLeft.Value);
+			this.ultraPrintDocument.DefaultPageSettings.Margins.Right = this.CmToPrintInch(this.numericUpDownRight.Value);
 			this.ultraPrintDocument.DefaultPageSettings.Landscape = this.radioButtonLandscape.Checked;
 			this.ultraPrintDocument.FitWidthToPages = (this.radioButtonColumnDefaultSize.Checked) ? 0 : (int)this.numericUpDownAutoFitPageCount.Value;
 		}

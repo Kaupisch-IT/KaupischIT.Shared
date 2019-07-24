@@ -58,7 +58,7 @@ namespace KaupischIT.Extensions
 		/// <remarks>http://james.newtonking.com/archive/2008/03/29/formatwith-2-0-string-formatting-with-named-variables.aspx</remarks>
 		public static string FormatWith(this string format,object value,IFormatProvider provider = null)
 		{
-			Func<string,object> matchEvaluator = (propertyName) =>
+			object matchEvaluator(string propertyName)
 			{
 				if (propertyName=="0")
 					return value;
@@ -68,7 +68,7 @@ namespace KaupischIT.Extensions
 						return DataBinder.Eval(value,propertyName);
 					}
 					catch (HttpException e) { throw new FormatException(null,e); }
-			};
+			}
 
 			return StringExtensions.FormatWith(format,matchEvaluator,provider);
 		}

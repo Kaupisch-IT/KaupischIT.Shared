@@ -22,18 +22,18 @@ namespace KaupischIT.InfragisticsControls
 	/// </summary>
 	public partial class CustomizedUltraGrid : UltraGrid, IUIElementDrawFilter
 	{
-		private static ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
-		private Timer timer = new Timer();                      // Timer für den WaitCursor
+		private static readonly ComponentResourceManager resources = new ComponentResourceManager(typeof(CustomizedUltraGrid));
+		private readonly Timer timer = new Timer();                      // Timer für den WaitCursor
 		private List<ExpandedGroupByRow> expandedRowsState;     // enthält ggf. die gespeicherten ausgeklappten Gruppierungszeilen
 
 		private ToolStripMenuItem summaryToolStripMenuItem;     // Kontextmenüeintrag für Zusammenfassungen
 		private ToolStripMenuItem formatToolStripMenuItem;      // Kontextmenüeintrag für Wertformatierungen
 		private ToolStripMenuItem fontToolStripMenuItem;        // Kontextmenüeintrag für Schriftformatierungen
 		private ToolStripMenuItem visualizationToolStripMenuItem; // Kontextmenüeintrag für Visualisierungen
-		private UrlProtocolHandler urlProtocolHandler = new UrlProtocolHandler(); // der UrlProtocolHandler für benutzerdefinierte Kontextmenüeinträge
+		private readonly UrlProtocolHandler urlProtocolHandler = new UrlProtocolHandler(); // der UrlProtocolHandler für benutzerdefinierte Kontextmenüeinträge
 
 		// alle verfügbaren Zusammenfassungen mit Beschreibungstext und Symbol
-		private Dictionary<SummaryType,string[]> availableSummaries = new Dictionary<SummaryType,string[]>()
+		private readonly Dictionary<SummaryType,string[]> availableSummaries = new Dictionary<SummaryType,string[]>()
 		{
 			{ SummaryType.Sum, new [] { "Summe","Σ" }},
 			{ SummaryType.Average, new [] {"Durchschnitt","Ø" }},
@@ -43,7 +43,7 @@ namespace KaupischIT.InfragisticsControls
 		};
 
 		// alle verfügbaren vordefinierten Wertformatierungen mit Beschreibungstext
-		private Dictionary<string,string> availableFormats = new Dictionary<string,string>()
+		private readonly Dictionary<string,string> availableFormats = new Dictionary<string,string>()
 		{
 			{ "","keine Formatierung" },
 			{ "N0","Zahl (mit Tausendertrennzeichen)" },

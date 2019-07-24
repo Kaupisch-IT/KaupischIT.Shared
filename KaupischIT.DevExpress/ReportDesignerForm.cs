@@ -26,7 +26,7 @@ namespace KaupischIT.DevExpressControls
 		/// </summary>
 		public ReportDesignerForm()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 
 			Rectangle workingArea = Screen.FromControl(this).WorkingArea;
 			this.Size = new Size(Math.Min(workingArea.Width,Settings.Default.ReportDesignerFormSize.Width),Math.Min(workingArea.Height,Settings.Default.ReportDesignerFormSize.Height));

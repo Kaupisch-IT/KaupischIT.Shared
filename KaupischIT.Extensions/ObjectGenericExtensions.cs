@@ -9,7 +9,7 @@ namespace KaupischIT.Extensions
 	/// </summary>
 	public static class ObjectGenericExtensions
 	{
-		public static TResult IfNotNull<T, TResult>(this T value,Func<T,TResult> func) => (value!=null) ? func(value) : default(TResult);
+		public static TResult IfNotNull<T, TResult>(this T value,Func<T,TResult> func) => (value!=null) ? func(value) : default;
 
 
 		/// <summary>

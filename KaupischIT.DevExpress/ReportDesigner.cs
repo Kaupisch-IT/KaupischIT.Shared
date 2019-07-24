@@ -36,7 +36,7 @@ namespace KaupischIT.DevExpressControls
 		/// </summary>
 		public ReportDesigner()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 			this.xrDesignPanel.AddCommandHandler(this);
 		}
 

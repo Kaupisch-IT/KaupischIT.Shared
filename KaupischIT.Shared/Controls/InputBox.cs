@@ -48,7 +48,7 @@ namespace KaupischIT.Shared
 		public InputBox()
 		{
 			this.Font = SystemFonts.MessageBoxFont;
-			InitializeComponent();
+			this.InitializeComponent();
 
 			this.CanClickOK = (value) => !String.IsNullOrEmpty(value);
 			this.IsValidInputChar = _ => true;

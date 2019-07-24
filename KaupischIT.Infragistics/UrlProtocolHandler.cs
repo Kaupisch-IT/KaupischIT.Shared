@@ -66,11 +66,11 @@ namespace KaupischIT.InfragisticsControls
 		/// <returns>eine Auflistung aller gefundenen konkreten URL-Routen zurück</returns>
 		public IEnumerable<ConcreteRoute> GetValidRoutes(UltraGridRow ultraGridRow)
 		{
-			Func<string,string,bool> equals = (patternPart,name) =>
+			bool equals(string patternPart,string name)
 			{
 				string pattern = Regex.Escape(patternPart).Replace(Regex.Escape("*"),".*?");
 				return Regex.IsMatch(name,"^"+pattern+"$",RegexOptions.IgnoreCase);
-			};
+			}
 
 			if (ultraGridRow!=null && ultraGridRow.Cells!=null)
 				foreach (Route route in this.Routes)
