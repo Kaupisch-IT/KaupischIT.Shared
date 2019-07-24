@@ -84,6 +84,7 @@
     <Compile Include="Controls\ComboBoxControlHost.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ConsoleForWindowsApplication.cs" />
     <Compile Include="Controls\ControlHelper.cs" />
     <Compile Include="Controls\DelayTextBox.cs">
       <SubType>Component</SubType>
